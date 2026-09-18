@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.1-engine">
+<meta name="guts-build" content="v0.2-test">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#222;background:#fff}
@@ -31,6 +31,27 @@ let state={screen:"home",book:null,ci:0,pi:0};
 const cache=new Map(), KEY="guts-magic-v01";
 let magic=Object.assign({phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null},JSON.parse(sessionStorage.getItem(KEY)||"{}"));
 const save=()=>sessionStorage.setItem(KEY,JSON.stringify(magic));
+function invariant(){
+ const phases=["READY","ARMED","PAID","CLEAN"];
+ if(!phases.includes(magic.phase))throw Error("bad phase "+magic.phase);
+ if(magic.phase==="READY"&&(magic.force||magic.paid))throw Error("READY contamination");
+ if(magic.phase==="ARMED"&&!magic.force)throw Error("ARMED without force");
+ if(magic.phase==="PAID"&&(!magic.force||!magic.paid))throw Error("PAID incomplete");
+ if(magic.phase==="CLEAN"&&magic.force)throw Error("CLEAN retains force");
+ return true;
+}
+function torture(){
+ const old=JSON.parse(JSON.stringify(magic)); const report=[];
+ try{
+   magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null}; report.push(["READY",invariant()]);
+   magic={phase:"ARMED",force:"Gophers",paid:null,dwell:null,selectedChapter:null}; report.push(["ARMED",invariant()]);
+   magic.dwell={key:"test:0:1",qualified:true}; magic.phase="PAID";magic.paid="test:0:1"; report.push(["PAID",invariant()]);
+   magic.phase="CLEAN";magic.force=""; report.push(["CLEAN",invariant()]);
+   magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null}; report.push(["RESET",invariant()]);
+   return {ok:true,report};
+ }catch(e){return {ok:false,error:String(e),report}}
+ finally{magic=old;save()}
+}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function meta(id){return META.find(x=>x.id===id)}
 async function load(id){
@@ -60,6 +81,6 @@ function render(){
  const p=current(), ps=visible(p);a.innerHTML='<div class="top"><button onclick="state.screen=\'contents\';render()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="reader"><div class="hit left" onclick="turn(-1)"></div><div class="hit right" onclick="turn(1)"></div><div class="page">'+ps.map((x,i)=>'<p'+(i===0&&/^CHAPTER\b|^COLLECTION\b/i.test(x)?' class="chapter"':'')+'>'+esc(x)+'</p>').join("")+'</div><div class="pageno">'+(state.pi+1)+'</div></div>';
 }
 let taps=0,timer;document.getElementById("admin").onclick=()=>{taps++;clearTimeout(timer);timer=setTimeout(()=>taps=0,1200);if(taps>=4){taps=0;showAdmin()}};
-function showAdmin(){let p=document.getElementById("panel");if(p){p.remove();return}p=document.createElement("div");p.id="panel";p.className="panel";p.innerHTML='<input id="force" placeholder="force word"><button id="arm">ARM</button><button id="clean">CLEAN</button><button id="reset">RESET</button>';document.body.appendChild(p);document.getElementById("force").value=magic.force;document.getElementById("arm").onclick=()=>{let w=document.getElementById("force").value.trim();if(w){magic={phase:"ARMED",force:w,paid:null,dwell:null,selectedChapter:null};save();p.remove()}};document.getElementById("clean").onclick=()=>{if(magic.phase==="PAID"){magic.phase="CLEAN";magic.force="";save();render()}p.remove()};document.getElementById("reset").onclick=()=>{magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};save();home();p.remove()}}
+function showAdmin(){let p=document.getElementById("panel");if(p){p.remove();return}p=document.createElement("div");p.id="panel";p.className="panel";p.innerHTML='<input id="force" placeholder="force word"><button id="arm">ARM</button><button id="clean">CLEAN</button><button id="reset">RESET</button><button id="test">TEST</button>';document.body.appendChild(p);document.getElementById("force").value=magic.force;document.getElementById("arm").onclick=()=>{let w=document.getElementById("force").value.trim();if(w){magic={phase:"ARMED",force:w,paid:null,dwell:null,selectedChapter:null};save();p.remove()}};document.getElementById("clean").onclick=()=>{if(magic.phase==="PAID"){magic.phase="CLEAN";magic.force="";save();render()}p.remove()};document.getElementById("reset").onclick=()=>{magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};save();home();p.remove()};document.getElementById("test").onclick=()=>alert(JSON.stringify(torture(),null,2))}
 render();
 </script></body></html>
