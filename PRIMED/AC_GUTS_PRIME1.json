@@ -1,0 +1,10 @@
+{
+  "code": "AC",
+  "priming_version": "GUTS PRIME 1",
+  "source": "FORMAT1/AC_GUTS_FORMAT1_PAGES.json",
+  "page_count": 176,
+  "marker": "$$$",
+  "target": "first new paragraph",
+  "insertion_policy": "runtime sidecar; every reader page is socket-capable; source text remains untouched",
+  "force_paragraph": "For no sensible reason, one word stayed in my mind: ‘$$$’. I made a mental note of it and went on."
+}
