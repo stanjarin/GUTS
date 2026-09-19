@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.21-visible-test">
+<meta name="guts-build" content="v0.22-opener-fix">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#222;background:#fff}
@@ -68,7 +68,7 @@ function key(){return state.book?state.book.id+":"+state.ci+":"+state.pi:""}
 function current(){return state.book.chapters[state.ci].pages[state.pi]}
 function inject(s){return magic.force?s.replaceAll("$$$",magic.force):s}
 function visible(p){const k=key();const protectedOpener=state.pi===0&&magic.selectedChapter&&magic.selectedChapter.book===state.book.id&&magic.selectedChapter.ci===state.ci;const forceHere=!protectedOpener&&(magic.phase==="ARMED"||(magic.phase==="PAID"&&magic.paid===k));return (forceHere&&p.force_paragraphs?p.force_paragraphs:p.paragraphs).map(x=>forceHere?inject(x):x)}
-function dwell(){clearTimeout(magic._timer);if(magic.phase!=="ARMED")return;const p=current(),k=key();if(!p.force_paragraphs)return;magic.dwell={key:k,qualified:false};magic._timer=setTimeout(()=>{if(magic.phase==="ARMED"&&key()===k){magic.dwell.qualified=true;save()}},6000)}
+function dwell(){clearTimeout(magic._timer);if(magic.phase!=="ARMED")return;const p=current(),k=key();const protectedOpener=state.pi===0&&magic.selectedChapter&&magic.selectedChapter.book===state.book.id&&magic.selectedChapter.ci===state.ci;if(!p.force_paragraphs||protectedOpener)return;magic.dwell={key:k,qualified:false};magic._timer=setTimeout(()=>{if(magic.phase==="ARMED"&&key()===k&&magic.dwell?.key===k){magic.dwell.qualified=true;save()}},6000)}
 function depart(){const k=key();if(magic.phase==="ARMED"&&magic.dwell?.qualified&&magic.dwell.key===k){magic.phase="PAID";magic.paid=k;magic.dwell=null;save()}}
 function home(){state={screen:"home",book:null,ci:0,pi:0};render()}
 async function openBook(id){state.book=await load(id);state.screen="contents";state.ci=0;state.pi=0;render()}
