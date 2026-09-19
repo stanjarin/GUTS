@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.2-test">
+<meta name="guts-build" content="v0.21-visible-test">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#222;background:#fff}
@@ -11,9 +11,9 @@
 .top{height:48px;display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #ddd;position:sticky;top:0;background:#fff;z-index:4}.top b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.top button{border:0;background:none;font-size:18px}
 .contents{padding:12px 18px}.contents h1{font:700 24px Georgia,serif}.chapter{display:block;width:100%;text-align:left;padding:13px 2px;border:0;border-bottom:1px solid #ddd;background:#fff;font:16px Georgia,serif}
 .reader{height:calc(100vh - 48px);position:relative}.page{height:100%;overflow:auto;padding:26px 22px 54px;font:19px/1.5 Georgia,serif}.page p{margin:0 0 .85em}.page .chapter{font-weight:700;border:0;padding:0;margin:0 0 1em}.pageno{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#777}.hit{position:absolute;top:0;bottom:40px;width:20%;z-index:3}.left{left:0}.right{right:0}
-.admin{position:fixed;right:0;bottom:0;width:44px;height:44px;z-index:10}
+.admin{position:fixed;left:calc(50% + 145px);bottom:12px;width:72px;height:34px;z-index:10;border:1px solid #777;border-radius:5px;background:#eee;color:#222;font:700 12px/32px Arial;text-align:center;cursor:pointer}
 .panel{position:fixed;left:12px;right:12px;bottom:12px;background:#eee;border:1px solid #999;padding:10px;z-index:20;display:flex;gap:6px}.panel input{min-width:0;flex:1}.panel button{padding:7px}.hidden{display:none}
-</style></head><body><div id="app"></div><div class="admin" id="admin"></div>
+</style></head><body><div id="app"></div><div class="admin" id="admin">TEST</div>
 <script>
 const META=[
 {id:"aam",title:"The House at Pooh Corner",author:"A. A. Milne",file:"PRIMED/AAM_GUTS_PRIME2.json"},
@@ -80,7 +80,7 @@ function render(){
  if(state.screen==="contents"){a.innerHTML='<div class="top"><button onclick="home()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="contents"><h1>Contents</h1>'+state.book.chapters.map((c,i)=>'<button class="chapter" onclick="openChapter('+i+')">'+esc(c.title||("Chapter "+(i+1)))+'</button>').join("")+'</div>';return}
  const p=current(), ps=visible(p);a.innerHTML='<div class="top"><button onclick="state.screen=\'contents\';render()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="reader"><div class="hit left" onclick="turn(-1)"></div><div class="hit right" onclick="turn(1)"></div><div class="page">'+ps.map((x,i)=>'<p'+(i===0&&/^CHAPTER\b|^COLLECTION\b/i.test(x)?' class="chapter"':'')+'>'+esc(x)+'</p>').join("")+'</div><div class="pageno">'+(state.pi+1)+'</div></div>';
 }
-let taps=0,timer;document.getElementById("admin").onclick=()=>{taps++;clearTimeout(timer);timer=setTimeout(()=>taps=0,1200);if(taps>=4){taps=0;showAdmin()}};
+document.getElementById("admin").onclick=()=>showAdmin();
 function showAdmin(){let p=document.getElementById("panel");if(p){p.remove();return}p=document.createElement("div");p.id="panel";p.className="panel";p.innerHTML='<input id="force" placeholder="force word"><button id="arm">ARM</button><button id="clean">CLEAN</button><button id="reset">RESET</button><button id="test">TEST</button>';document.body.appendChild(p);document.getElementById("force").value=magic.force;document.getElementById("arm").onclick=()=>{let w=document.getElementById("force").value.trim();if(w){magic={phase:"ARMED",force:w,paid:null,dwell:null,selectedChapter:null};save();p.remove()}};document.getElementById("clean").onclick=()=>{if(magic.phase==="PAID"){magic.phase="CLEAN";magic.force="";save();render()}p.remove()};document.getElementById("reset").onclick=()=>{magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};save();home();p.remove()};document.getElementById("test").onclick=()=>alert(JSON.stringify(torture(),null,2))}
 render();
 </script></body></html>
