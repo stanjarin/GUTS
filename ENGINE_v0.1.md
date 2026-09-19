@@ -13,4 +13,4 @@ Nine-book spectator reader shell with NoBo-derived performance state machine.
 - three inherited finished books load unchanged from canonical NoBo NoFo raw masters pending physical repository copy
 - hidden maintenance control: four taps at bottom-right
 
-This is an engineering build. Visual Gutenberg camouflage is provisional; pairing/Cloudflare spectator-session transport is not yet implemented.
+This is an engineering build. Visual Gutenberg camouflage is provisional.\n\nCloudflare transport contract is now defined in `CLOUDFLARE_BRIDGE_v0.1.md`: **H2 PUSHES — GUT PULLS**. Per-performance HTML is never rewritten/redeployed. The present Stanley/single-performer build uses one tiny shared remote record; commercial multi-performer/session isolation remains deferred.
