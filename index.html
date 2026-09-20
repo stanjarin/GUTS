@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.22-opener-fix">
+<meta name="guts-build" content="v0.23-cloudflare-pull-seam">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#222;background:#fff}
@@ -28,9 +28,29 @@ const META=[
 {id:"jt",title:"My Life and Hard Times",author:"James Thurber",file:"PRIMED/JT_GUTS_PRIME2.json"}];
 const DISPLAY=["jt","jeeves","farewell","aam","huck","dp","dr","ac","jj"];
 let state={screen:"home",book:null,ci:0,pi:0};
-const cache=new Map(), KEY="guts-magic-v01";
+const cache=new Map(), KEY="guts-magic-v01", REMOTE_KEY="guts-remote-revision-v01";
 let magic=Object.assign({phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null},JSON.parse(sessionStorage.getItem(KEY)||"{}"));
 const save=()=>sessionStorage.setItem(KEY,JSON.stringify(magic));
+function applyRemoteState(remote){
+ if(!remote||!["READY","ARMED","CLEAN"].includes(remote.phase))return false;
+ const revision=Number(remote.revision||0), seen=Number(sessionStorage.getItem(REMOTE_KEY)||0);
+ if(revision<=seen)return false;
+ if(remote.phase==="ARMED"&&String(remote.word||"").trim()){
+   if(magic.phase!=="PAID")magic={phase:"ARMED",force:String(remote.word).trim(),paid:null,dwell:null,selectedChapter:null};
+ }else if(remote.phase==="CLEAN"){
+   magic={phase:"CLEAN",force:"",paid:null,dwell:null,selectedChapter:null};
+ }else if(remote.phase==="READY"&&(magic.phase==="READY"||magic.phase==="CLEAN")){
+   magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};
+ }
+ sessionStorage.setItem(REMOTE_KEY,String(revision));save();return true;
+}
+async function pullRemoteState(){
+ try{
+   const r=await fetch("/api/state",{cache:"no-store",headers:{"Accept":"application/json"}});
+   if(!r.ok)return false;
+   return applyRemoteState(await r.json());
+ }catch(e){return false}
+}
 function invariant(){
  const phases=["READY","ARMED","PAID","CLEAN"];
  if(!phases.includes(magic.phase))throw Error("bad phase "+magic.phase);
@@ -83,4 +103,5 @@ function render(){
 document.getElementById("admin").onclick=()=>showAdmin();
 function showAdmin(){let p=document.getElementById("panel");if(p){p.remove();return}p=document.createElement("div");p.id="panel";p.className="panel";p.innerHTML='<input id="force" placeholder="force word"><button id="arm">ARM</button><button id="clean">CLEAN</button><button id="reset">RESET</button><button id="test">TEST</button>';document.body.appendChild(p);document.getElementById("force").value=magic.force;document.getElementById("arm").onclick=()=>{let w=document.getElementById("force").value.trim();if(w){magic={phase:"ARMED",force:w,paid:null,dwell:null,selectedChapter:null};save();p.remove()}};document.getElementById("clean").onclick=()=>{if(magic.phase==="PAID"){magic.phase="CLEAN";magic.force="";save();render()}p.remove()};document.getElementById("reset").onclick=()=>{magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};save();home();p.remove()};document.getElementById("test").onclick=()=>alert(JSON.stringify(torture(),null,2))}
 render();
+pullRemoteState().then(changed=>{if(changed)render()});
 </script></body></html>
