@@ -1,32 +1,30 @@
-# GUTS CLOUDFLARE BRIDGE v0.1
+# GUTS CLOUDFLARE BRIDGE v0.2 — SESSION ARCHITECTURE
 
-Status: canonical transport contract for the current single-performer GUTS build.
+Status: canonical transport contract. Supersedes the single-global-state assumption in v0.1.
 
 ## Doctrine
 
 **H2 PUSHES — GUT PULLS.**
 
-H2G2 remains the covert performer input. Per-performance HTML is never rewritten, uploaded, rebuilt, or redeployed.
+Cloudflare = **HOST WEBSITE + REMEMBER SESSION STATE**.
 
-Flow:
+Multiple performers may operate simultaneously. No performer may overwrite another performer's force word.
+
+## Session isolation
+
+Each performance uses an opaque random session ID, for example:
 
 ```
-P phone / H2G2
-      |
-      | PUSH { phase, word, revision }
-      v
-Cloudflare tiny shared state
-      ^
-      | PULL
-      |
-Sp phone / GUTS
+8f2d7c6a4b...
 ```
 
-Cloudflare = **HOST WEBSITE + REMEMBER WORD**.
+KV keys are namespaced:
 
-## Runtime state
+```
+session:<opaque-id>
+```
 
-For Stanley's present single-performer implementation, one mutable record is sufficient:
+Each record remains microscopic:
 
 ```json
 {
@@ -37,86 +35,51 @@ For Stanley's present single-performer implementation, one mutable record is suf
 }
 ```
 
-Allowed remote phases initially: `READY`, `ARMED`, `CLEAN`.
+Remote phases: READY / ARMED / CLEAN.
 
-`PAID`, the paid page key, dwell qualification, selected chapter, and reader navigation remain **local to the spectator browser**. They are performance-engine state, not transport state.
+PAID, paid-page key, dwell, selected chapter and reader navigation remain local to the spectator browser.
 
-## Endpoints
+## Pairing rule
 
-### GET /api/state
+The spectator must never type or see a session number.
 
-GUTS pulls the current tiny record.
+The public gateway associates the arriving spectator browser with the correct opaque session and stores that association in an HttpOnly cookie. Subsequent GUTS state pulls use the cookie; the force word and session ID do not appear in visible book URLs.
 
-Response must be JSON, `Cache-Control: no-store`, same-origin in production.
+The exact handoff from P to Sp is a transport detail and must preserve the existing innocent spectator choreography. Do not adopt Inject-style visible pairing.
 
-### POST /api/state
+## Performer authentication
 
-H2 pushes a complete new record. Payload:
+PIN 1 authenticates ARM/CLEAN operations. The PIN itself is a Cloudflare encrypted secret and is never committed to GitHub.
 
-```json
-{ "phase": "ARMED", "word": "GOPHERS" }
-```
+A successful performer request acts only on the supplied opaque session ID.
 
-or:
+PIN 2 controls site mode: REHEARSAL / SHOW.
 
-```json
-{ "phase": "CLEAN", "word": "" }
-```
+## Site modes
 
-or RESET:
+REHEARSAL: only a browser authorised by PIN 2 may see spectator static assets; others receive 404.
 
-```json
-{ "phase": "READY", "word": "" }
-```
+SHOW: spectator gateway is public.
 
-The Worker increments `revision` and stamps `updatedAt`.
+SHOW -> REHEARSAL also CLEANs active session state.
 
-POST must require a performer secret/authentication mechanism. The secret must never be shipped in spectator JavaScript.
+## Compatibility
 
-## GUTS pull rule
+The current production single-session endpoints remain untouched until the session handoff is implemented and tested. Today's proven GUTS production path therefore continues to work while v0.2 is built alongside it.
 
-On entry/load, GUTS calls `GET /api/state`.
+## Migration sequence
 
-- Remote `ARMED` + non-empty word: initialise local engine as `ARMED` with that word.
-- Remote `READY`: initialise/retain pristine READY only when there is no active local performance.
-- Remote `CLEAN`: clean force material locally.
-- Once local GUTS has reached `PAID`, an unchanged remote ARMED record must **not** re-arm or destroy the paid-page state.
+1. Define isolated session records and opaque IDs.
+2. Add session-aware performer endpoints.
+3. Add invisible spectator-session handoff.
+4. Teach GUTS pull to use its bound session.
+5. Test two simultaneous sessions with different words.
+6. Only then retire the legacy global state path.
 
-Use `revision` to make applying remote state idempotent.
+## Non-negotiables
 
-Initial implementation can pull once on page load because choreography is **arm first → spectator enters second**. Polling is not required for v0.1.
-
-## What does NOT happen
-
-- no HTML mutation on the server per performance
-- no GitHub commit/deploy per force
-- no propagation wait
 - no force word in spectator URL
-- no Inject-style visitor claiming/pairing in Stanley v0.1
-- no remote storage of chapter/page/dwell/paid-page details
-- no Cloudflare commercial multi-performer/session architecture yet
-
-## Existing engine boundary
-
-Current `index.html` v0.22-opener-fix already owns:
-
-READY → ARMED → PAID → CLEAN
-
-six-second dwell, protected selected chapter opener, payoff persistence, cleanup, RESET, and `$$$` injection.
-
-The bridge must feed that engine; it must not replace or reopen it.
-
-## Development seam
-
-Until the Cloudflare Worker exists, the visible TEST/admin control remains the local transport simulator. Cloudflare integration should be introduced behind small functions such as:
-
-```js
-async function pullRemoteState() { /* GET /api/state */ }
-async function pushRemoteState(next) { /* H2 side only */ }
-```
-
-Do not entangle network transport with page visibility/dwell/payoff logic.
-
-## Deferred commercial problem
-
-A commercial multi-performer product will require independent performer/session isolation and authentication. That is deliberately outside this single-performer bridge and must not be solved by adopting Inject's Auto Pair architecture.
+- no PIN or master secret in public JavaScript
+- no per-performance GitHub deploy
+- no global force record in final multi-performer architecture
+- no reopening the signed-off local READY -> ARMED -> PAID -> CLEAN engine
