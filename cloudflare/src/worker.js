@@ -170,6 +170,18 @@ export default {
       return json(await writeState(env,phase,word),200,cors);
     }
 
+    // First-party performer rehearsal authorisation. PIN2 is submitted on gutenbrg.com,
+    // so the rehearsal cookie is first-party rather than a cross-site Set-Cookie.
+    if(url.pathname==="/performer/rehearsal"){
+      if(request.method==="GET") return new Response('<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rehearsal</title><form method="post" style="font:18px Helvetica,sans-serif;max-width:22rem;margin:20vh auto;padding:1rem"><label>SHOW PIN<br><input name="pin" type="password" autofocus style="font:inherit;width:100%;box-sizing:border-box;margin:.5rem 0"></label><button style="font:inherit">REHEARSE</button></form>',{headers:{"content-type":"text/html; charset=utf-8","cache-control":"no-store"}});
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
+      const form=await request.formData();
+      if(!pinOK(form.get("pin"),env.GUTS_SITE_PIN)) return new Response("Wrong PIN",{status:401,headers:{"content-type":"text/plain; charset=utf-8","cache-control":"no-store"}});
+      await env.GUTS_STATE.put(MODE_KEY,"REHEARSAL");
+      await writeState(env,"CLEAN","");
+      return new Response(null,{status:303,headers:{"location":"/","set-cookie":"guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Lax","cache-control":"no-store"}});
+    }
+
     // PIN 2: switch spectator visibility. REHEARSAL authorises this browser via HttpOnly cookie.
     if(url.pathname==="/api/performer/mode"){
       const origin=request.headers.get("origin")||"";
