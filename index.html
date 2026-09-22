@@ -86,7 +86,7 @@ async function load(id){
 }
 function key(){return state.book?state.book.id+":"+state.ci+":"+state.pi:""}
 function current(){return state.book.chapters[state.ci].pages[state.pi]}
-function inject(s){return magic.force?s.replaceAll("$$$",magic.force):s}
+function inject(s){return magic.force?String(s).split("$$").join(magic.force):s}
 function visible(p){const k=key();const protectedOpener=state.pi===0&&magic.selectedChapter&&magic.selectedChapter.book===state.book.id&&magic.selectedChapter.ci===state.ci;const forceHere=!protectedOpener&&(magic.phase==="ARMED"||(magic.phase==="PAID"&&magic.paid===k));return (forceHere&&p.force_paragraphs?p.force_paragraphs:p.paragraphs).map(x=>forceHere?inject(x):x)}
 function dwell(){clearTimeout(magic._timer);if(magic.phase!=="ARMED")return;const p=current(),k=key();const protectedOpener=state.pi===0&&magic.selectedChapter&&magic.selectedChapter.book===state.book.id&&magic.selectedChapter.ci===state.ci;if(!p.force_paragraphs||protectedOpener)return;magic.dwell={key:k,qualified:false};magic._timer=setTimeout(()=>{if(magic.phase==="ARMED"&&key()===k&&magic.dwell?.key===k){magic.dwell.qualified=true;save()}},6000)}
 function depart(){const k=key();if(magic.phase==="ARMED"&&magic.dwell?.qualified&&magic.dwell.key===k){magic.phase="PAID";magic.paid=k;magic.dwell=null;save()}}
