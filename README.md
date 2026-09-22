@@ -495,3 +495,28 @@ During the mistaken GUTS diagnosis two changes were made that were **not causal 
 ### Current priority
 
 The force bridge is no longer blocking. Next functional work is the parked **LEAVE NO TRACE** camouflage: outside SHOW / in REHEARSAL, ordinary outsider revisits should resolve harmlessly to the real Project Gutenberg rather than expose a GUTS 404. Preserve authorised performer/development access and avoid redirect loops. PIN2 practical SHOW/REHEARSAL control remains to be finished after/with that work.
+
+
+## TWO-REPO SYSTEM MAP
+
+GUTS is now one operational system spanning **two sibling GitHub repositories**:
+
+```text
+stanjarin ›
+├── GUTS ›
+│   ├── README.md
+│   ├── NEXT_EWE_BRIEF_2026-09-22.md
+│   ├── GUTS_PERFORMANCE_FLOW_POV_v1.md
+│   ├── cloudflare ›
+│   ├── PRIMED ›
+│   └── index.html
+│
+└── NoBoNoFo ›
+    └── index.html   ← performer-side H2G2 + PIN/ARM machinery
+```
+
+**Division of responsibility:**
+- **NoBoNoFo** = P-side interface. H2G2 covert input, ARM PIN preactivation/persistence/de-authorisation, authenticated ARM push.
+- **GUTS** = Sp-side experience plus Cloudflare Worker/KV transport, display state, library/reader and production hosting.
+
+Do **not** look for performer/H2 implementation inside the GUTS repo. When debugging the P-side half of the production bridge, inspect `stanjarin/NoBoNoFo`. When debugging spectator display, Worker/KV, corpus or production routing, inspect `stanjarin/GUTS`.
