@@ -17,4 +17,4 @@ id = "85ae7131c91e492abb79aca57d6817a6"
 [assets]
 directory = ".."
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+run_worker_first = true
