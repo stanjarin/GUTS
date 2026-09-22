@@ -2,13 +2,13 @@
 
 GUTS is the spectator-phone development branch of the NoBo NoFo concept.
 
-## Current state — 21 September 2026
+## Current state — 22 September 2026
 
 The nine-book corpus, force machinery, spectator reader, local performance-state engine and Cloudflare transport seam are built and mechanically QA'd.
 
 Current reader/engine: **v0.23-cloudflare-pull-seam**.
 
-Production deployment is now moving from GitHub Pages development to Cloudflare and the production domain **gutenbrg.com**.
+**Production deployment is LIVE on Cloudflare at `https://gutenbrg.com`.** The Worker, static spectator site, KV state store and custom production domain are connected and the first end-to-end remote force test has passed.
 
 ## Library
 
@@ -115,22 +115,25 @@ The H2 push seam is `armMagic(w)` in the NoBo NoFo performer interface. Producti
 
 Development: GitHub Pages.
 
-Production target: Cloudflare + **gutenbrg.com**.
+Production: Cloudflare + **gutenbrg.com** — **LIVE 22 September 2026**.
 
 Cloudflare's job is deliberately narrow:
 
 **HOST WEBSITE + REMEMBER WORD.**
 
-The new Cloudflare zone has been rebuilt with the required DNS records and the registrar nameservers have been changed to the new Cloudflare assignment. As of 21 September 2026, delegation propagation is still pending. Do not delete the old Cloudflare zone until the new zone is confirmed Active and the domain resolves correctly.
+The new Cloudflare zone is Active on the new account and registrar delegation is complete. The obsolete GoDaddy apex A records (`13.248.243.5` and `76.223.105.230`) were removed, and the root custom domain `gutenbrg.com` is now attached directly to the GUTS Worker. Static assets and `/api/state` are served by the same Worker deployment.
 
-After propagation:
+Production proof completed 22 September 2026:
 
-1. confirm the new zone is Active
-2. verify apex and www resolution
-3. deploy the real GUTS Worker and KV binding
-4. set the push secret securely
-5. test H2 push → Cloudflare → GUTS pull end to end
-6. deploy static production assets/routes
+1. real GUTS Worker deployed from GitHub with root directory `/cloudflare`
+2. `GUTS_STATE` KV namespace bound successfully
+3. encrypted `GUTS_PUSH_SECRET` deployed in Cloudflare
+4. authenticated POST armed the live state with `GOPHERS`
+5. independent GET returned `ARMED`, `GOPHERS`, revision `1`
+6. actual spectator GUTS site pulled the remote state and injected `GOPHERS` into the book corpus
+7. `gutenbrg.com` custom domain connected and confirmed serving GUTS successfully
+
+This proves the production chain: **authenticated PUSH → Worker → KV → spectator PULL → corpus payoff.**
 
 ## Spectator entry / camouflage
 
@@ -241,7 +244,4 @@ Binary visual assets are batch-uploaded manually when required; repository wirin
 
 ## Immediate next stage
 
-Wait for the new Cloudflare nameserver delegation to propagate.
-
-Then verify the production domain and complete the real Worker/KV/secret deployment before wiring the final spectator-facing assets.
-
+The Cloudflare production transport and domain are proven. Next development work can proceed from this known-good production baseline: complete the performer-side H2 authenticated push path and wire the final spectator-facing visual assets/gateway without reopening the signed-off transport architecture.
