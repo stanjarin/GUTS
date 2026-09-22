@@ -202,11 +202,9 @@ export default {
 
     // In REHEARSAL only the browser authorised by PIN 2 can see static GUTS.
     const mode=await readMode(env);
-    // Rehearsal authorisation belongs only to the performer browser. A stale cookie
-    // must not let a former spectator/development browser survive SHOW -> REHEARSAL.\n    const rehearsalAuthorised=cookie(request,"guts_rehearsal")==="1";
-      if(mode==="REHEARSAL" && !rehearsalAuthorised) {
-      // LEAVE NO TRACE: to an ordinary outsider/revisiting spectator, Gutenbrg has vanished.
-      // Preserve path/search where practical so a history revisit lands in the real Gutenberg world.
+    const rehearsalAuthorised=cookie(request,"guts_rehearsal")==="1";
+    if(mode==="REHEARSAL" && !rehearsalAuthorised) {
+      // LEAVE NO TRACE: outsiders and revisiting spectators return to real Project Gutenberg.
       const real=new URL("https://www.gutenberg.org/");
       if(url.pathname!=="/") real.pathname=url.pathname;
       real.search=url.search;
