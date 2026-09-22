@@ -6,8 +6,9 @@ compatibility_date = "2026-09-20"
 binding = "GUTS_STATE"
 id = "85ae7131c91e492abb79aca57d6817a6"
 
-# Set GUTS_PUSH_SECRET as an encrypted Worker secret at deployment time.
-# Never put the secret in this file or spectator-side JavaScript.
+# Encrypted Worker secrets required at runtime: GUTS_PUSH_SECRET, GUTS_ARM_PIN, GUTS_SITE_PIN.
+# Values are set in Cloudflare only. Never put secret values in this file or spectator-side JavaScript.
+# IMPORTANT: GitHub/Wrangler deployments must preserve all three secret bindings.
 
 [assets]
 directory = "../"
