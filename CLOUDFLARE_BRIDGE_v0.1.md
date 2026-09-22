@@ -45,7 +45,23 @@ The spectator must never type or see a session number.
 
 The public gateway associates the arriving spectator browser with the correct opaque session and stores that association in an HttpOnly cookie. Subsequent GUTS state pulls use the cookie; the force word and session ID do not appear in visible book URLs.
 
-The exact handoff from P to Sp is a transport detail and must preserve the existing innocent spectator choreography. Do not adopt Inject-style visible pairing.
+The handoff is carried by the existing short-link gateway choreography, not by a visible pairing step.
+
+### Short-link slot handoff
+
+In SHOW mode the performer claims a short-lived **arrival slot** for an isolated session immediately before inviting Sp to type the existing public shortcut. The public Resources gateway consumes the next valid arrival slot and binds that browser to the session with an HttpOnly cookie. The browser then continues through the ordinary Resources page and clean book URL.
+
+The spectator therefore still types only the familiar short URL. No session number, performer ID, PIN, force word, QR code or pairing screen is shown.
+
+The arrival slot must:
+- contain only an opaque session ID
+- expire quickly
+- be consumed once
+- never contain the force word
+- fail closed if no valid slot exists
+- be suitable for a later multi-performer allocation scheme rather than a single global "next visitor" assumption.
+
+For Stanley's first production proof, do **not** silently implement a global next-arrival slot: that would reintroduce the exact simultaneous-performer collision v0.2 is intended to remove. The allocator must have a deterministic discriminator before multi-performer is declared complete.
 
 ## Performer authentication
 
