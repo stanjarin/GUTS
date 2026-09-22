@@ -188,7 +188,14 @@ export default {
 
     // In REHEARSAL only the browser authorised by PIN 2 can see static GUTS.
     const mode=await readMode(env);
-    if(mode==="REHEARSAL" && cookie(request,"guts_rehearsal")!=="1") return new Response("404 Not Found",{status:404,headers:{"cache-control":"no-store"}});
+    if(mode==="REHEARSAL" && cookie(request,"guts_rehearsal")!=="1") {
+      // LEAVE NO TRACE: to an ordinary outsider/revisiting spectator, Gutenbrg has vanished.
+      // Preserve path/search where practical so a history revisit lands in the real Gutenberg world.
+      const real=new URL("https://www.gutenberg.org/");
+      if(url.pathname!=="/") real.pathname=url.pathname;
+      real.search=url.search;
+      return new Response(null,{status:302,headers:{"location":real.toString(),"cache-control":"no-store"}});
+    }
     return env.ASSETS ? env.ASSETS.fetch(request) : new Response("Not found",{status:404});
   }
 };
