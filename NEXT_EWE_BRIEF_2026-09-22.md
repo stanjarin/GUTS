@@ -1,65 +1,59 @@
 # GUTS — NEXT EWE BRIEF
-## 22 September 2026 — start here, do not archaeology first
+## 22 September 2026 — corrected authoritative resume point
 
-Read `README.md`, especially **CONTINUATION CHECKPOINT — 22 September 2026 (authoritative handover)**. It contains the full production/security/H2/session/camouflage state and commit trail.
+**Do not follow the older README section saying literal `$$$` is a GUTS bug. That diagnosis was wrong-app archaeology and is superseded by the correction appended to README.**
 
-## Exact current problem
+## VERIFIED CURRENT STATE
 
-Stanley has just successfully passed the new NoBo H2 **ARM PIN** preactivation on his phone. That proves the current NoBo bridge reaches the active Cloudflare Worker and the restored `GUTS_ARM_PIN` binding works.
+Production is live at `https://gutenbrg.com`. Single-user production bridge is now **END-TO-END PASSED**:
 
-But the spectator GUTS reader now displays literal **`$$$`** in force paragraphs instead of the selected force word.
+**NoBo H2 → authenticated Cloudflare ARM push → KV → GUTS spectator pull → GOPHERS displayed correctly.**
 
-The original injection:
-`magic.force ? s.replaceAll("$$$", magic.force) : s`
+Stanley personally tested the full chain. There was no PIN prompt at the covert submit and GUTS showed GOPHERS correctly, not `$$$`.
 
-was changed to:
-`magic.force ? String(s).split("$$$").join(magic.force) : s`
+## What the $$$ incident actually was
 
-in commit `5438466909372d5c597f1850909cb7b71d810e37`.
+Stanley had been looking at **NoBo performer pages**, not the GUTS spectator reader. NoBo's persistent BROWSE mode deliberately returned raw `force_paragraphs`, exposing the `$$$` socket.
 
-**Stanley retested: still literal $$$**.
+NoBo repairs:
+- `6dbd25797e121d58b0414cd963f0c9b5225d9671` — ARM automatically exits BROWSE mode.
+- `c52447a4ac11fe46f9a3fb149381c078f37ae966` — guarded/local H2 result binding fixes the subsequent iOS “Image unavailable” failure.
+- `0731e17ce939ababebe9b1e4480504a89cb073c2` — hidden MORE panel now has **ARM AUTH ON/OFF** de-authorisation control.
 
-Therefore do NOT repeat that fix and do NOT edit the corpus. The corpus is mechanically good and previously produced a successful real-phone GOPHERS payoff.
+PIN1 preactivation persists in NoBo localStorage. **ARM AUTH ON** has been visibly confirmed by Stanley. OFF removes `guts-arm-pin`; next H2 SEARCH requests and verifies PIN1 again.
 
-Next job: obtain runtime evidence for `magic.phase`, `magic.force`, remote state/revision, `forceHere`, and the actual paragraph string at render time. Determine where the word is being lost/cleared or whether the wrong state/render instance is involved. Fix only what the evidence identifies.
+## Wrong-tram GUTS debris
+
+Do not describe these as fixes for the NoBo symptom:
+- `a7d984846dbd4ee667085b93caa8a5cc47214bec` added a GUTS unresolved-socket runtime diagnostic. It can now be removed as cleanup.
+- `2fe079b83a1e893e0715cd03375bdad73303dfb2` explicitly bound `ASSETS` in Wrangler. It is compatible with `env.ASSETS.fetch()`, but was non-causal to the reported `$$$` issue.
 
 ## Facts not to reopen
 
-- Production: `https://gutenbrg.com`
-- Worker + static assets + KV on same Cloudflare deployment.
-- Nine books / 5,435 pages, socket QA passed.
-- Chapter opener protection is two safeguards: visual + dwell.
+- Nine books / 5,435 pages passed socket QA.
 - H2 PUSHES — GUT PULLS.
-- Single-user production path is current priority.
-- Multi-performer work exists but is PARKED.
-- Unsafe unauthenticated write route was removed; never restore it.
-- Zero Trust path parked after payment-method demand.
-- NoBo H2 UI is reused; do not redesign it.
-- PIN1 is preactivated before performance and persists in PWA localStorage; no PIN prompt at covert word submit.
-- Current dashboard bindings: `GUTS_PUSH_SECRET`, `GUTS_ARM_PIN`, `GUTS_SITE_PIN`; values stay out of repo.
-- `keep_vars = true` persistence fix is commit `ecaf19c57d96398b0686c5c21718cd3839b724d7`.
-- PIN now works after that fix.
+- Chapter opener protection remains visual + dwell.
+- Single-user path is current priority; multi-performer is PARKED.
+- Never restore unauthenticated write routes.
+- PIN variables/secrets remain out of repo; `keep_vars = true` is already deployed.
+- NoBo H2 UI is reused, not redesigned.
+- Cloudflare is production host/state; GitHub Pages is development.
 
-## Parked Shed improvement
+## NEXT WORK — LEAVE NO TRACE
 
-After the $$$ bug is solved: in REHEARSAL, outsiders should no longer get 404. Quietly route them to the **real Project Gutenberg**. Revisits via the short URL/history should likewise have all Resources options go to real Gutenberg outside SHOW. In SHOW, our Gutenbrg experience operates normally. This is camouflage, not a new forcing mechanism.
+Stanley's Shed principle: **Leave it as you found it / Leave No Trace.** Before GUTS, real Gutenberg is there; during the effect GUTS temporarily bends the environment; afterward ordinary spectator discovery should return to real Gutenberg.
 
-## Style / workflow constraints
+Implement carefully:
+- In **REHEARSAL/outside SHOW**, an ordinary outsider visiting/revisiting `gutenbrg.com` should quietly end up at the **real Project Gutenberg**, rather than a revealing 404.
+- Short-URL/history revisits outside SHOW should likewise lead into real Gutenberg behavior.
+- In **SHOW**, GUTS operates normally.
+- Preserve authorised performer/development access where needed and avoid redirect loops.
+- Practical PIN2 SHOW/REHEARSAL control remains to finish.
 
-Stanley = user. Assistant = Kryten.
-Do not use `!H` or `007`; Stanley owns those.
-Be concise, exact, and do the work when Stanley says “go.”
-When an action is pending, explicitly identify **NEXT ACTION — KRYTEN** or **NEXT ACTION — STANLEY**.
-Do not claim checks that were not performed.
-Do not use Arial; visual doctrine is Helvetica.
-Do not touch signed-off mechanics/corpus without evidence.
-Do not expose secret values.
-Do not call the Resources gateway “fake.”
-Do not reconstruct Carousel.png; it is canonical combined art.
-When Stanley says “3058 out.” reply exactly:
-Latitude 90° North out.
-Have you STORED?
+## Workflow
+
+Stanley = user; Kryten = assistant. Be concise and exact. Do the work when Stanley says “go.” Never use `!H` or `007`; Stanley owns those. Never Arial; visual doctrine is Helvetica. Do not touch signed-off corpus/mechanics without evidence. Do not expose secret values. Do not call Resources “fake.” Carousel.png is canonical.
 
 ## Immediate next action
 
-**KRYTEN:** debug literal `$$$` with runtime evidence, then make the smallest repair.
+**KRYTEN:** clean up the obsolete GUTS diagnostic if appropriate, then implement/test LEAVE NO TRACE REHEARSAL→real Project Gutenberg camouflage and finish the practical PIN2 display control without disturbing the now-proven bridge.
