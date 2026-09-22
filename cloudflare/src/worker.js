@@ -195,13 +195,16 @@ export default {
       let state=await readState(env);
       if(mode==="REHEARSAL") state=await writeState(env,"CLEAN","");
       const headers={...cors};
-      if(mode==="REHEARSAL") headers["set-cookie"]="guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=None";\n      else headers["set-cookie"]="guts_rehearsal=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None";
+      if(mode==="REHEARSAL") headers["set-cookie"]="guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=None";
+      else headers["set-cookie"]="guts_rehearsal=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None";
       return json({mode,state},200,headers);
     }
 
     // In REHEARSAL only the browser authorised by PIN 2 can see static GUTS.
     const mode=await readMode(env);
-    // Rehearsal authorisation belongs only to the performer browser. A stale cookie\n    // must not let a former spectator/development browser survive SHOW -> REHEARSAL.\n    const rehearsalAuthorised=cookie(request,"guts_rehearsal")==="1";\n    if(mode==="REHEARSAL" && !rehearsalAuthorised) {
+    // Rehearsal authorisation belongs only to the performer browser. A stale cookie
+    // must not let a former spectator/development browser survive SHOW -> REHEARSAL.\n    const rehearsalAuthorised=cookie(request,"guts_rehearsal")==="1";
+      if(mode==="REHEARSAL" && !rehearsalAuthorised) {
       // LEAVE NO TRACE: to an ordinary outsider/revisiting spectator, Gutenbrg has vanished.
       // Preserve path/search where practical so a history revisit lands in the real Gutenberg world.
       const real=new URL("https://www.gutenberg.org/");
