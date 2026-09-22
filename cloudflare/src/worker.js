@@ -172,17 +172,30 @@ export default {
 
     // PIN 2: switch spectator visibility. REHEARSAL authorises this browser via HttpOnly cookie.
     if(url.pathname==="/api/performer/mode"){
-      if(request.method==="GET") return json({mode:await readMode(env)});
-      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
-      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
-      if(!pinOK(body?.pin,env.GUTS_SITE_PIN)) return json({error:"unauthorized"},401);
+      const origin=request.headers.get("origin")||"";
+      const allowedOrigin="https://stanjarin.github.io";
+      const cors=origin===allowedOrigin?{
+        "access-control-allow-origin":allowedOrigin,
+        "access-control-allow-methods":"GET, POST, OPTIONS",
+        "access-control-allow-headers":"content-type",
+        "access-control-allow-credentials":"true",
+        "vary":"Origin"
+      }:{};
+      if(request.method==="OPTIONS"){
+        if(origin!==allowedOrigin) return new Response(null,{status:403});
+        return new Response(null,{status:204,headers:cors});
+      }
+      if(request.method==="GET") return json({mode:await readMode(env)},200,cors);
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405,headers:cors});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400,cors)}
+      if(!pinOK(body?.pin,env.GUTS_SITE_PIN)) return json({error:"unauthorized"},401,cors);
       const mode=String(body?.mode||"").toUpperCase();
-      if(!["REHEARSAL","SHOW"].includes(mode)) return json({error:"invalid_mode"},400);
+      if(!["REHEARSAL","SHOW"].includes(mode)) return json({error:"invalid_mode"},400,cors);
       await env.GUTS_STATE.put(MODE_KEY,mode);
       let state=await readState(env);
       if(mode==="REHEARSAL") state=await writeState(env,"CLEAN","");
-      const headers={};
-      if(mode==="REHEARSAL") headers["set-cookie"]="guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Strict";
+      const headers={...cors};
+      if(mode==="REHEARSAL") headers["set-cookie"]="guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=None";
       return json({mode,state},200,headers);
     }
 
