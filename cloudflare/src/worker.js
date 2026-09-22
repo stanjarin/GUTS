@@ -1,5 +1,6 @@
 const STATE_KEY = "current";
 const MODE_KEY = "site-mode";
+const SESSION_COOKIE = "guts_session";
 
 function json(data,status=200,extra={}){
   return new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store",...extra}});
@@ -26,10 +27,64 @@ async function readMode(env){
   return (await env.GUTS_STATE.get(MODE_KEY)) || "SHOW";
 }
 function pinOK(got,want){ return !!want && String(got||"")===String(want); }
+function sessionKey(id){ return `session:${id}`; }
+function validSession(id){ return /^[A-Za-z0-9_-]{16,96}$/.test(String(id||"")); }
+async function readSession(env,id){
+  const saved=await env.GUTS_STATE.get(sessionKey(id),"json");
+  return saved || {phase:"READY",word:"",revision:0,updatedAt:0};
+}
+async function writeSession(env,id,phase,word=""){
+  const current=await readSession(env,id);
+  const next={phase,word,revision:Number(current.revision||0)+1,updatedAt:Date.now()};
+  await env.GUTS_STATE.put(sessionKey(id),JSON.stringify(next),{expirationTtl:86400});
+  return next;
+}
 
 export default {
   async fetch(request,env){
     const url=new URL(request.url);
+
+    // v0.2 isolated-session transport. Built alongside the proven legacy path.
+    if(url.pathname==="/api/session/create"){
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
+      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401);
+      const id=crypto.randomUUID().replaceAll("-","");
+      const state=await writeSession(env,id,"READY","");
+      return json({session:id,state});
+    }
+    if(url.pathname==="/api/session/state"){
+      const id=cookie(request,SESSION_COOKIE);
+      if(!validSession(id)) return json({error:"no_session"},404);
+      if(request.method!=="GET") return new Response("Method not allowed",{status:405});
+      return json(await readSession(env,id));
+    }
+    if(url.pathname==="/api/performer/session"){
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
+      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401);
+      const id=String(body?.session||"");
+      if(!validSession(id)) return json({error:"invalid_session"},400);
+      const phase=String(body?.phase||"").toUpperCase();
+      if(!["ARMED","CLEAN"].includes(phase)) return json({error:"invalid_phase"},400);
+      const word=phase==="ARMED"?String(body?.word||"").trim():"";
+      if(phase==="ARMED"&&!word) return json({error:"armed_requires_word"},400);
+      if(word.length>120) return json({error:"word_too_long"},400);
+      return json(await writeSession(env,id,phase,word));
+    }
+    // Invisible spectator handoff: opaque ticket is consumed once, then removed from the visible URL.
+    if(url.pathname==="/api/join"){
+      const ticket=String(url.searchParams.get("t")||"");
+      if(!validSession(ticket)) return new Response("404 Not Found",{status:404});
+      const existing=await env.GUTS_STATE.get(sessionKey(ticket));
+      if(!existing) return new Response("404 Not Found",{status:404});
+      const clean="/project_library/books/browse/";
+      return new Response(null,{status:302,headers:{
+        "location":clean,
+        "set-cookie":`${SESSION_COOKIE}=${encodeURIComponent(ticket)}; Path=/; Max-Age=86400; Secure; HttpOnly; SameSite=Lax`,
+        "cache-control":"no-store"
+      }});
+    }
 
     // Existing public state pull + master-secret maintenance POST.
     if(url.pathname==="/api/state"){
