@@ -245,3 +245,214 @@ Binary visual assets are batch-uploaded manually when required; repository wirin
 ## Immediate next stage
 
 The Cloudflare production transport and domain are proven. Next development work can proceed from this known-good production baseline: complete the performer-side H2 authenticated push path and wire the final spectator-facing visual assets/gateway without reopening the signed-off transport architecture.
+
+
+---
+
+## CONTINUATION CHECKPOINT — 22 September 2026 (authoritative handover)
+
+This section supersedes stale “immediate next stage” wording above. **Do not reconstruct the current state from old chat. Start here.**
+
+### Production status
+
+Production is live at `https://gutenbrg.com`.
+
+Proven production chain earlier today:
+
+**authenticated PUSH → Worker → KV → spectator PULL → injected force word → dwell → PAID persistence**
+
+A real phone test previously succeeded with `GOPHERS`: ARMED, approximately six-second dwell, leave page, PAID, only payoff page retained GOPHERS and other sockets cleaned.
+
+Cloudflare zone/domain:
+- registrar: GoDaddy
+- Cloudflare nameservers: `carlos.ns.cloudflare.com`, `wanda.ns.cloudflare.com`
+- obsolete GoDaddy apex A records removed: `13.248.243.5`, `76.223.105.230`
+- `gutenbrg.com` serves the GUTS Worker/static assets
+- KV namespace: `GUTS_STATE`
+- KV namespace ID: `85ae7131c91e492abb79aca57d6817a6`
+- Worker: `guts`
+- public workers.dev route: `https://guts.stanjarin.workers.dev`
+- old disposable test Worker `sparkling-term-874e.stanjarin.workers.dev` still exists; do not delete unless explicitly requested.
+
+Runtime bindings currently expected in Cloudflare:
+- `GUTS_PUSH_SECRET` — Secret
+- `GUTS_ARM_PIN` — currently a dashboard Variable; current value known to Stanley
+- `GUTS_SITE_PIN` — currently a dashboard Variable; current value known to Stanley
+
+**Never put actual secret/PIN values in this README or public source.**
+
+### Binding persistence fix
+
+The ARM/SITE PIN dashboard bindings disappeared after earlier Wrangler/GitHub deployments. They were recreated manually.
+
+Commit `ecaf19c57d96398b0686c5c21718cd3839b724d7` — **Preserve dashboard PIN bindings across Wrangler deploys** — added:
+- `keep_vars = true`
+- declarations that the three runtime secret/binding names are required
+
+After that deployment became Active, Stanley tested NoBo H2 preactivation and reported: **PIN worked**. This is the first proof that the current PIN binding/preservation path is functioning.
+
+### Performer NoBo / H2 bridge
+
+Performer UI is the existing NoBo NoFo PWA; do not rebuild it.
+
+NoBo repository: `stanjarin/NoBoNoFo`.
+
+The seam is the existing H2G2 covert word entry. Historical local call was `armMagic(w)`; current bridge first securely pushes ARMED to GUTS, then retains the local NoBo behavior.
+
+Relevant NoBo commits:
+- `d32ad00` — Wire H2G2 covert input to secure GUTS ARM endpoint
+- `b31a4ee` is GUTS-side CORS support, not NoBo
+- `ac7c002` — move ARM PIN entry to preactivation before covert word submit
+- `232c128` — persist preactivated ARM PIN in `localStorage` across PWA launches
+- `bc1a6c7` — verify ARM PIN during preactivation by sending CLEAN before storing it
+
+Current intended choreography:
+1. Before performance, enter H2G2 SEARCH.
+2. If no stored PIN, prompt says **ARM PIN**.
+3. PIN is verified immediately via `POST https://gutenbrg.com/api/performer/state` with phase CLEAN.
+4. Only a successful PIN is stored in NoBo PWA `localStorage`.
+5. During the covert H2 word submit there must be **no PIN prompt** and no security business; stored PIN silently sends ARMED + word.
+6. A rejected PIN is removed from localStorage.
+
+Visible NoBo version label may still say **6.18S**; that does not prove the bridge code is stale.
+
+CORS history:
+- initial cross-origin JSON POST from GitHub Pages failed because OPTIONS/CORS was absent
+- `b31a4ee1327729c074eaae34dc2bc5e36e866988` added exact-origin CORS/preflight for `https://stanjarin.github.io`
+- `86659e2bd42aedf9f6422d6b1403df746add564f` added CORS headers to error responses, turning generic Safari “Load failed” into useful “PIN rejected”
+- later Cloudflare Settings revealed PIN bindings had disappeared; they were recreated
+- after persistence fix, **PIN now works**
+
+### Current blocking bug — literal $$$ after successful PIN
+
+**THIS IS THE EXACT RESUME POINT.**
+
+Latest Stanley report after PIN success:
+
+> “Pin worked but pages show, literally, $$$”
+
+The reader is selecting force paragraphs but displaying the literal socket marker rather than the force word.
+
+Inspection of current `index.html` found:
+- remote ARMED handling sets `magic.force = String(remote.word).trim()`
+- `visible(p)` selects `p.force_paragraphs` when ARMED (except protected chapter opener)
+- injection happens before HTML escaping/render:
+  `function inject(s){return magic.force?s.replaceAll("$$$",magic.force):s}`
+- reader render calls `visible(p)`, then `esc(x)`
+- therefore literal `$$$` proves the force paragraph is being selected, but substitution is not occurring as expected.
+
+A first hardening attempt changed the socket substitution from `replaceAll` to literal split/join:
+`function inject(s){return magic.force?String(s).split("$$$").join(magic.force):s}`
+
+Commit:
+`5438466909372d5c597f1850909cb7b71d810e37` — **Harden force-word socket substitution**
+
+Stanley retested after that change and reported:
+
+> **“Still seeing $$$.”**
+
+Therefore **do not repeat the replaceAll/split-join theory. It is disproven.**
+
+Next investigation must determine why `forceHere` can apparently choose force paragraphs while `inject()` receives no usable `magic.force`, or whether another render/state path is replacing/clearing `magic.force` between remote pull and page rendering. Instrument/inspect actual runtime state before changing corpus or state machinery.
+
+**Do not touch the corpus.** All 5,435 pages previously passed mechanical socket QA and a real production test previously injected GOPHERS successfully.
+
+Potentially relevant current pull logic:
+- `pullRemoteState()` GETs `/api/state`
+- `applyRemoteState(remote)` ignores revisions `<= sessionStorage[REMOTE_KEY]`
+- ARMED + word sets local ARMED unless local phase is PAID
+- CLEAN clears force
+- READY resets only from READY/CLEAN
+- remote revision is recorded after handling
+Be alert to stale revision/local-state interactions. Do not assume this is the cause without evidence.
+
+### Worker controls / security
+
+Current single-user routes:
+- `GET /api/state` — public state pull
+- `POST /api/state` — master-secret protected
+- `POST /api/performer/state` — PIN1 protected, ARMED/CLEAN
+- `GET /api/performer/mode` — current mode
+- `POST /api/performer/mode` — PIN2 protected, REHEARSAL/SHOW
+- SHOW→REHEARSAL writes CLEAN
+- REHEARSAL currently gates static assets by performer cookie
+
+Known security/logic caveat still to fix later:
+`GET /api/state` and `GET /api/performer/mode` are evaluated before the static REHEARSAL gate and remain publicly readable.
+
+An unsafe unauthenticated performer write endpoint was briefly added and immediately removed in commit `7599b9a15316c8eb346718fc5d6cd40fc48d4a56`. **Never reintroduce unauthenticated writes.**
+
+Zero Trust/Access was considered but its “free” setup demanded payment details. Stanley declined. Do not resume that path unless explicitly requested.
+
+### The Shed idea — PARKED until literal-$$$ bug is solved
+
+New idea from Stanley, not yet implemented:
+
+In **REHEARSAL**, instead of outsiders receiving a 404 from `gutenbrg.com`, invisibly/quietly send them to the **real Project Gutenberg**. This is better camouflage because a mistyped/revisited “Gutenberg” address simply produces the expected real site.
+
+Likewise, when someone later revisits the short URL from browser history, **all Resources options should lead to real Project Gutenberg** outside SHOW.
+
+In **SHOW**, our Gutenbrg experience intercepts the journey as designed.
+
+This should replace the current 404 camouflage once the current force-word bug is fixed. Preserve the existing performer-authorised rehearsal behavior as needed; work out redirect routing carefully rather than creating loops.
+
+### REHEARSAL / SHOW doctrine
+
+Two states only:
+- **REHEARSAL** — between shows/development; performer-authorised access remains possible, outsiders should ultimately escape to real Gutenberg (new parked requirement)
+- **SHOW** — spectator-facing GUTS public
+
+No third CLOSED state unless Stanley changes the design.
+
+PIN2/display toggle is pre/post-show, never part of the covert moment. Backend exists; practical control UI is not yet finished.
+
+### Multi-performer work — PARKED
+
+Do not resume unless Stanley explicitly asks.
+
+Partial architecture exists alongside single-user and must not break it:
+- opaque sessions, KV `session:<id>`
+- session cookie `guts_session`
+- session create/state routes
+- permanent alias prototype
+- P1 prototype alias `shortcuts`
+- P2 QA alias `test-p2`
+
+Relevant commits:
+- `e74b54e` — session architecture spec
+- `207d973` — isolated session transport
+- `c29f97a` — short-link handoff constraints
+- `da63c67` — permanent performer aliases for P1/P2 QA
+
+Production custom-domain route proved alias code existed even when Cloudflare workers.dev HTTP tester misleadingly returned 404. Resume point if ever unparked: bootstrap P1/P2 on production, ARM different words, prove isolation.
+
+Commercial doctrine: each purchaser eventually gets a permanent innocent alias/short URL; aliases are never recycled.
+
+### Spectator entry and visual work — not current priority
+
+Spoken prototype remains:
+**“Look, quickest way is to just go to is.gd/shortcuts.”**
+
+Resources gateway concept is locked:
+- vague institutional/educational gateway, not Project Gutenberg identity
+- wordless crest
+- ochre “Resources”
+- heading: “From Project Gutenberg, free books in the public domain”
+- explanatory institutional waffle
+- “Make a start here:”
+- four classic links: Recent additions / Popular titles / Reader recommendations / Staff picks
+- performance line on unexpected gateway: **“Oh. … OK, that'll do. Tap any of those.”**
+
+Gutenberg-style landing follows. Canonical moving art is `Carousel.png`; Suggestions is a separate static transparent overlay ABOVE it while carousel moves underneath. Do not rebuild the carousel.
+
+Typography doctrine: **Helvetica. No Arial. Ever.** Current development CSS may still contain Arial; fix during visual/Arts & Crafts pass, not by destabilising current debugging.
+
+### Immediate order from this checkpoint
+
+1. **Solve literal `$$$` bug using runtime evidence.**
+2. Re-prove phone ARMED → force word → dwell → PAID → CLEAN.
+3. Implement/test The Shed REHEARSAL→real Project Gutenberg camouflage.
+4. Finish practical PIN2 SHOW/REHEARSAL control.
+5. Return to Resources/assets/page-flip/visual Arts & Crafts.
+6. Multi-performer remains parked.
+
