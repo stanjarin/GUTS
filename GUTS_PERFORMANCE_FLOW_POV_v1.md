@@ -58,3 +58,16 @@ After the effect: **real Gutenberg is there again.**
 This is more than conventional “end clean.” The temporary performance environment itself cleans up. The spectator should be left with no special app, prepared page, revealing route, or persistent constructed library to rediscover.
 
 Any future GUTS feature should be tested against this principle: **does it improve the effect without leaving unnecessary traces afterward?**
+
+## 23 September 2026 — tested entry update
+
+The spectator no longer needs a third-party shortener. The performance front door is simply **`gutenbrg.com`**.
+
+- P tells Sp to go to `gutenbrg.com`.
+- In SHOW, Sp reaches Resources, chooses any offered route, then reaches the GUTS landing/library.
+- After P returns the system to REHEARSAL, Sp revisits/history refreshes resolve to real Project Gutenberg.
+- For private rehearsal access while SHW OFF, authorise P first-party at `gutenbrg.com/performer/rehearsal` using PIN2.
+- A clean/unauthorised browser remains a valid Sp test browser.
+- Full REHEARSAL / SHOWTIME / SHOW OFF visibility sequence passed 23 September 2026.
+
+**RETIRED:** `is.gd/shortcuts`. Do not use it in performance documentation or scripting.
