@@ -456,3 +456,42 @@ Typography doctrine: **Helvetica. No Arial. Ever.** Current development CSS may 
 5. Return to Resources/assets/page-flip/visual Arts & Crafts.
 6. Multi-performer remains parked.
 
+
+
+## CORRECTION / VERIFIED END-TO-END STATE — 22 September 2026
+
+The earlier checkpoint section describing literal `$$$` as a GUTS spectator-reader bug was a **wrong-app diagnosis**. Stanley was looking at the **NoBo performer app**, not GUTS. Do not resume GUTS runtime debugging from that stale section.
+
+### Actual cause and repairs
+
+In NoBo, persistent BROWSE mode deliberately returned raw `force_paragraphs`, so literal `$$$` was visible and normal injection was bypassed. Fixed in NoBo commit:
+- `6dbd25797e121d58b0414cd963f0c9b5225d9671` — Exit socket browse mode when arming performance.
+
+A subsequent H2 result-page “Image unavailable” failure was repaired by binding the result click handler through the local results container with a null guard:
+- `c52447a4ac11fe46f9a3fb149381c078f37ae966` — Guard H2 result binding on iOS.
+
+ARM authorisation is now persistent in NoBo localStorage and a deliberate de-authorise control was added to the hidden MORE maintenance panel:
+- `0731e17ce939ababebe9b1e4480504a89cb073c2` — Add ARM authorisation off control.
+- The panel shows **ARM AUTH ON** when `guts-arm-pin` is stored. Pressing it removes that localStorage item; the next H2 SEARCH preactivation asks for and verifies PIN1 again.
+
+### FULL BRIDGE — PASSED
+
+Stanley performed the complete production test successfully:
+
+**NoBo H2 → PIN-authenticated Cloudflare ARM push → KV → GUTS spectator pull → GOPHERS displayed correctly.**
+
+Observed conditions:
+- no PIN interruption during the covert H2 submit;
+- no literal `$$$`;
+- force word displayed once and correctly in GUTS;
+- therefore the single-user production bridge is now **END-TO-END PASSED**.
+
+### Wrong-tram debris in GUTS
+
+During the mistaken GUTS diagnosis two changes were made that were **not causal fixes** for the reported `$$$` symptom:
+- `a7d984846dbd4ee667085b93caa8a5cc47214bec` — runtime unresolved-socket diagnostic remains in GUTS and may be removed as cleanup.
+- `2fe079b83a1e893e0715cd03375bdad73303dfb2` — explicit `ASSETS` binding in Wrangler. This aligns with `env.ASSETS.fetch()` but was not the solution to the NoBo symptom.
+
+### Current priority
+
+The force bridge is no longer blocking. Next functional work is the parked **LEAVE NO TRACE** camouflage: outside SHOW / in REHEARSAL, ordinary outsider revisits should resolve harmlessly to the real Project Gutenberg rather than expose a GUTS 404. Preserve authorised performer/development access and avoid redirect loops. PIN2 practical SHOW/REHEARSAL control remains to be finished after/with that work.
