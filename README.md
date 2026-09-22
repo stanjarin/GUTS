@@ -520,3 +520,16 @@ stanjarin ›
 - **GUTS** = Sp-side experience plus Cloudflare Worker/KV transport, display state, library/reader and production hosting.
 
 Do **not** look for performer/H2 implementation inside the GUTS repo. When debugging the P-side half of the production bridge, inspect `stanjarin/NoBoNoFo`. When debugging spectator display, Worker/KV, corpus or production routing, inspect `stanjarin/GUTS`.
+
+## TESTED MACHINE MILESTONE — 23 September 2026
+
+**THE MACHINE IS BUILT.** Core single-performer production behaviour has been tested successfully.
+
+- REHEARSAL / SHW OFF: authorised P browser sees Resources → GUTS; unauthorised Sp goes to real Project Gutenberg.
+- SHOWTIME / SHW ON: clean Sp sees Resources → GUTS landing/library.
+- SHOW OFF after performance: same Sp refresh/revisit returns to real Project Gutenberg. LEAVE NO TRACE PASSED.
+- First-party P rehearsal entry: `https://gutenbrg.com/performer/rehearsal` → PIN2 → rehearsal cookie → Resources. Commit `8803aa2d0c5488d08ffc5475f3f1ddafccfde0cc`.
+- Leave No Trace requires `run_worker_first = true`; commit `907b85536065ad6c4f5ef0918b57fbee92e40f04`. Do not revert to `/api/*` only.
+- Resources gateway is live; all four choices currently converge on existing GUTS library. Gateway prototype `d84ece5`; final escaped-newline repair `ee5613b`.
+- PERFORMANCE FRONT DOOR: use `gutenbrg.com` directly. Retire `is.gd/shortcuts`; it points elsewhere. No replacement shortener is required.
+- Do not reopen passed machinery without evidence. Remaining work: visuals/camouflage, canonical carousel + Suggestions, reader polish, diagnostic cleanup, full QA and rehearsal.
