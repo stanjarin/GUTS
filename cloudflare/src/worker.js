@@ -28,6 +28,8 @@ async function readMode(env){
 }
 function pinOK(got,want){ return !!want && String(got||"")===String(want); }
 function sessionKey(id){ return `session:${id}`; }
+function aliasKey(alias){ return `alias:${alias}`; }
+function validAlias(alias){ return /^[a-z0-9-]{3,48}$/.test(String(alias||"")); }
 function validSession(id){ return /^[A-Za-z0-9_-]{16,96}$/.test(String(id||"")); }
 async function readSession(env,id){
   const saved=await env.GUTS_STATE.get(sessionKey(id),"json");
@@ -45,6 +47,48 @@ export default {
     const url=new URL(request.url);
 
     // v0.2 isolated-session transport. Built alongside the proven legacy path.
+    // Permanent performer alias -> current isolated performance session.
+    // "shortcuts" is Stanley/P1. "test-p2" is temporary QA/P2.
+    if(url.pathname==="/api/alias/bootstrap"){
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
+      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401);
+      const alias=String(body?.alias||"").toLowerCase();
+      if(!validAlias(alias) || !["shortcuts","test-p2"].includes(alias)) return json({error:"invalid_alias"},400);
+      let id=await env.GUTS_STATE.get(aliasKey(alias));
+      if(!validSession(id)){
+        id=crypto.randomUUID().replaceAll("-","");
+        await writeSession(env,id,"READY","");
+        await env.GUTS_STATE.put(aliasKey(alias),id);
+      }
+      return json({alias,session:id,state:await readSession(env,id)});
+    }
+    if(url.pathname==="/api/alias/state"){
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
+      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401);
+      const alias=String(body?.alias||"").toLowerCase();
+      const id=await env.GUTS_STATE.get(aliasKey(alias));
+      if(!validSession(id)) return json({error:"unknown_alias"},404);
+      const phase=String(body?.phase||"").toUpperCase();
+      if(!["ARMED","CLEAN"].includes(phase)) return json({error:"invalid_phase"},400);
+      const word=phase==="ARMED"?String(body?.word||"").trim():"";
+      if(phase==="ARMED"&&!word) return json({error:"armed_requires_word"},400);
+      if(word.length>120) return json({error:"word_too_long"},400);
+      return json({alias,state:await writeSession(env,id,phase,word)});
+    }
+    if(url.pathname.startsWith("/entry/")){
+      const alias=url.pathname.slice(7).replace(/\/$/,"").toLowerCase();
+      if(!validAlias(alias)) return new Response("404 Not Found",{status:404});
+      const id=await env.GUTS_STATE.get(aliasKey(alias));
+      if(!validSession(id)) return new Response("404 Not Found",{status:404});
+      return new Response(null,{status:302,headers:{
+        "location":"/project_library/books/browse/",
+        "set-cookie":`${SESSION_COOKIE}=${encodeURIComponent(id)}; Path=/; Max-Age=86400; Secure; HttpOnly; SameSite=Lax`,
+        "cache-control":"no-store"
+      }});
+    }
+
     if(url.pathname==="/api/session/create"){
       if(request.method!=="POST") return new Response("Method not allowed",{status:405});
       let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
