@@ -159,14 +159,14 @@ export default {
         if(origin!==allowedOrigin) return new Response(null,{status:403});
         return new Response(null,{status:204,headers:cors});
       }
-      if(request.method!=="POST") return new Response("Method not allowed",{status:405});
-      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400)}
-      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401);
+      if(request.method!=="POST") return new Response("Method not allowed",{status:405,headers:cors});
+      let body; try{body=await request.json()}catch{return json({error:"invalid_json"},400,cors)}
+      if(!pinOK(body?.pin,env.GUTS_ARM_PIN)) return json({error:"unauthorized"},401,cors);
       const phase=String(body?.phase||"").toUpperCase();
-      if(!["ARMED","CLEAN"].includes(phase)) return json({error:"invalid_phase"},400);
+      if(!["ARMED","CLEAN"].includes(phase)) return json({error:"invalid_phase"},400,cors);
       const word=phase==="ARMED"?String(body?.word||"").trim():"";
-      if(phase==="ARMED"&&!word) return json({error:"armed_requires_word"},400);
-      if(word.length>120) return json({error:"word_too_long"},400);
+      if(phase==="ARMED"&&!word) return json({error:"armed_requires_word"},400,cors);
+      if(word.length>120) return json({error:"word_too_long"},400,cors);
       return json(await writeState(env,phase,word),200,cors);
     }
 
