@@ -1,6 +1,10 @@
 name = "guts"
 main = "src/worker.js"
 compatibility_date = "2026-09-20"
+keep_vars = true
+
+[secrets]
+required = ["GUTS_PUSH_SECRET", "GUTS_ARM_PIN", "GUTS_SITE_PIN"]
 
 [[kv_namespaces]]
 binding = "GUTS_STATE"
