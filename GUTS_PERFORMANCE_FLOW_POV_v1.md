@@ -83,3 +83,20 @@ This has been tested both ways:
 - SHW ON → Resources → GUTS.
 
 The short URL is functional camouflage: Sp does not have to see or type the deliberately near-Gutenberg `gutenbrg.com` domain. `is.gd/shortcuts` remains retired.
+
+---
+
+## 23 September 2026 — SHED PERFORMANCE REFINEMENT
+
+This supplements the POV flow above; it is performance architecture, **not locked wording**.
+
+- P may first write/supply a deliberately stupid improbable sentence, demonstrating that nonsense is allowed before Sp invents theirs.
+- After H2, the visible NoBo library is useful motivation: **“But rather than use MY books…”** leads naturally to Sp's phone / online books.
+- Canonical Sp entry remains **`tinyurl.com/ebooks-0`**.
+- Resources remains in play for now. The apparent wrong-turn can be treated casually: approximately **“Oh wait, that ain’t— ah, it’ll do. Tap one of those.”** Its extra tap helps explain both the remembered shortcut and the long destination URL after a link click.
+- Once Sp is wandering through the library, P still largely butts out.
+- **Immediately before the payoff, P returns to frame the scale.** At Sp's stopping point, zoom out: any book, any chapter, any page, tens of thousands of pages. Reconnect Sp's invented sentence with the arbitrary place they stopped. Only then ask for the first new paragraph.
+- Purpose: the choices were experienced sequentially; the zoom-out lets Sp appreciate the combined search space before the impossible correlation appears.
+- Do not polish this into a final script yet.
+
+Visual note: `Carousel.png` remains canonical moving artwork; **Suggestions** is a separate transparent overlay above it.
