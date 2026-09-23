@@ -71,3 +71,15 @@ The spectator no longer needs a third-party shortener. The performance front doo
 - Full REHEARSAL / SHOWTIME / SHOW OFF visibility sequence passed 23 September 2026.
 
 **RETIRED:** `is.gd/shortcuts`. Do not use it in performance documentation or scripting.
+
+## 23 September 2026 — FRONT DOOR CORRECTION
+
+The earlier same-day statement that Sp should use `gutenbrg.com` directly is superseded.
+
+**P gives Sp: `tinyurl.com/ebooks-0`**
+
+This has been tested both ways:
+- SHW OFF → real Project Gutenberg.
+- SHW ON → Resources → GUTS.
+
+The short URL is functional camouflage: Sp does not have to see or type the deliberately near-Gutenberg `gutenbrg.com` domain. `is.gd/shortcuts` remains retired.
