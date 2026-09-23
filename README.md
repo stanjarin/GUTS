@@ -545,3 +545,39 @@ Tested:
 - SHW ON: `tinyurl.com/ebooks-0` → `gutenbrg.com` → Resources → GUTS.
 
 Thus the short URL restores camouflage while preserving the already-passed Leave No Trace behaviour. `is.gd/shortcuts` remains retired.
+
+---
+
+# 23 September 2026 — EVENING HANDOVER (LATEST AUTHORITY)
+
+This section supersedes stale earlier “next stage” wording.
+
+## Machine state
+Core single-performer machine is built and passed: NoBo H2 authenticated ARM → Cloudflare/KV → GUTS pull/payoff; REHEARSAL/SHOW visibility; first-party P rehearsal access; and LEAVE NO TRACE. Do not reopen these without evidence.
+
+Canonical Sp front door remains **https://tinyurl.com/ebooks-0**. Direct `gutenbrg.com` is not spoken/shown to Sp. `is.gd/shortcuts` remains retired.
+
+## Current dramaturgy from The Shed
+The visible NoBo screen contains **P's books**. This now motivates the handoff naturally: after H2, P can say, in substance, **“But rather than use MY books…”** and move to Sp's phone / online books.
+
+Resources remains **in play, not permanently locked**. Its present theatrical value is the apparent minor wrong-turn: P gives the remembered shortcut, Resources appears, and P can react along the lines of **“Oh wait, that ain’t— ah, it’ll do. Tap one of those.”** A clicked Resources link also makes the subsequent long destination URL psychologically ordinary. Do not call Resources fake. Compare keeping/removing it only after final visual assets are wired.
+
+New opening thought: P first demonstrates a stupid/improbable sentence, lowering stakes and showing that nonsense is welcome; Sp then invents one.
+
+New climax architecture: the payoff currently needs a **zoom-out beat immediately before reveal**. After Sp stops, remind them of the size/freedom of the field — any book, any chapter, any page, tens of thousands of pages — then reconnect Sp's invented sentence to that arbitrary stopping point, then ask for the first new paragraph. This is architecture, not locked script; do not over-polish it yet.
+
+## Visual / asset state
+Stanley is finishing the **real final visual assets** before Kryten tunes transitions/page slides. Do not tune motion against temporary furniture.
+
+Gutenberg-style landing artwork shown 23 Sep is sufficiently high-resolution for phone use and reads as Gutenberg at a glance.
+
+Canonical moving art remains `Carousel.png`. The tag over it is **Suggestions**, as a **separate transparent overlay above the carousel**, never baked into the carousel.
+
+Safe-area doctrine: fixed-art critical content stays inside ESSENTIAL 1804×3640; Resources, Gutenberg landing and book text pages may deliberately continue below the bottom safe boundary because they scroll. The bottom safe line means “not required without scrolling,” not “nothing below.”
+
+Affinity Photo 1 note: an apparent layer/group Move Tool fault on 23 Sep was a transient application bug; relaunch fixed it. Do not encode the speculative Auto Select/Command-click diagnosis as workflow.
+
+## Next action
+**STANLEY:** finish/export final visual assets (“real toys”).
+
+**KRYTEN:** keep paws off visual redesign until those assets arrive; then wire them exactly, clean obsolete diagnostic/Arial residue, tune page slides/transitions in context, and run the full dress rehearsal/QA.
