@@ -97,3 +97,15 @@ Do **not** look for performer/H2 implementation inside the GUTS repo. When debug
 8. PERFORMANCE FRONT DOOR: `gutenbrg.com`. Retire `is.gd/shortcuts`; it points elsewhere. No replacement shortener required.
 9. Do not reopen passed bridge, corpus, PIN machinery, Leave No Trace, or gateway mechanics without evidence.
 10. NEXT: visuals/camouflage, canonical carousel + Suggestions, reader polish, diagnostic cleanup, full QA, rehearsal.
+
+## FRONT DOOR UPDATE — 23 September 2026
+
+Direct `gutenbrg.com` is **not** the performance front door; showing/typing it gives away the near-Gutenberg camouflage domain.
+
+**Canonical Sp entry: `https://tinyurl.com/ebooks-0`**
+
+Verified:
+- SHW OFF → real Project Gutenberg.
+- SHW ON → Resources → GUTS.
+
+`is.gd/shortcuts` remains retired. Do not revert documentation or scripting to direct `gutenbrg.com` for Sp.
