@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.25-big-covers">
+<meta name="guts-build" content="v0.26-carousel-motion">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Helvetica,sans-serif;color:#222;background:#fff}
@@ -11,13 +11,11 @@
 .gateway-art .hot{position:absolute;left:8%;width:48%;height:4.2%;border:0;background:transparent;padding:0;cursor:pointer}
 .gateway-art .h1{top:35.3%}.gateway-art .h2{top:39.5%}.gateway-art .h3{top:43.8%}.gateway-art .h4{top:48.0%}
 .landing-art{overflow:hidden}.carousel-window{position:absolute;left:5.5%;right:5.5%;top:30.5%;height:18.2%;overflow:hidden;border-radius:0 0 14px 14px}
-.carousel-track{position:absolute;left:0;top:0;height:100%;width:max-content;animation:gutsCarousel 24s ease-in-out infinite alternate}
+.carousel-track{position:absolute;left:0;top:0;height:100%;will-change:transform}
 .carousel-track img{display:block;height:100%;width:auto;max-width:none}
 .carousel-links{position:absolute;inset:0;display:grid;grid-template-columns:repeat(9,1fr)}
 .carousel-links button{border:0;background:transparent;padding:0;cursor:pointer}
 .suggestions-overlay{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:3}
-@keyframes gutsCarousel{from{transform:translateX(0)}to{transform:translateX(calc(-100% + 94vw))}}
-@media (prefers-reduced-motion:reduce){.carousel-track{animation:none}}
 .gateway{padding:24px 20px;font-family:Georgia,"Times New Roman",serif}
 .gateway .crest{width:54px;height:54px;border:2px solid #9a7b2f;border-radius:50%;margin:4px auto 18px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#9a7b2f}
 .gateway .resources{font:700 18px Helvetica,sans-serif;color:#9a7b2f;text-align:center;letter-spacing:.04em}
@@ -118,10 +116,21 @@ async function openBook(id){state.book=await load(id);state.screen="cover";state
 function openContents(){state.screen="contents";render()}
 function openChapter(i){state.ci=i;state.pi=0;if(magic.phase==="ARMED")magic.selectedChapter={book:state.book.id,ci:i};save();state.screen="reader";render();dwell()}
 function turn(d){depart();let n=state.pi+d;if(n<0){if(state.ci>0){state.ci--;state.pi=state.book.chapters[state.ci].pages.length-1}}else if(n>=state.book.chapters[state.ci].pages.length){if(state.ci<state.book.chapters.length-1){state.ci++;state.pi=0}}else state.pi=n;render();dwell()}
+function startCarousel(){
+ const track=document.getElementById("carouselTrack"), win=track?.parentElement, img=track?.querySelector("img");
+ if(!track||!win||!img)return;
+ const go=()=>{
+   const distance=Math.max(0,img.getBoundingClientRect().width-win.getBoundingClientRect().width);
+   if(distance<2)return;
+   track.getAnimations().forEach(a=>a.cancel());
+   track.animate([{transform:"translateX(0px)"},{transform:"translateX(-"+distance+"px)"}],{duration:24000,iterations:Infinity,direction:"alternate",easing:"ease-in-out"});
+ };
+ if(img.complete)go();else img.addEventListener("load",go,{once:true});
+}
 function render(){
  const a=document.getElementById("app");
  if(state.screen==="gateway"){a.innerHTML='<div class="artpage gateway-art"><img class="base" src="Pre-Page.jpg" alt=""><button class="hot h1" aria-label="Recent additions" onclick="gatewayChoice()"></button><button class="hot h2" aria-label="Popular titles" onclick="gatewayChoice()"></button><button class="hot h3" aria-label="Reader recommendations" onclick="gatewayChoice()"></button><button class="hot h4" aria-label="Staff picks" onclick="gatewayChoice()"></button></div>';return}
- if(state.screen==="home"){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg" alt=""><div class="carousel-window"><div class="carousel-track"><img src="Carousel.jpg" alt=""><div class="carousel-links">'+DISPLAY.map(id=>'<button aria-label="'+esc(meta(id).title)+'" onclick="openBook(\''+id+'\')"></button>').join("")+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png" alt=""></div>';return}
+ if(state.screen==="home"){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg" alt=""><div class="carousel-window"><div class="carousel-track" id="carouselTrack"><img src="Carousel.jpg" alt=""><div class="carousel-links">'+DISPLAY.map(id=>'<button aria-label="'+esc(meta(id).title)+'" onclick="openBook(\''+id+'\')"></button>').join("")+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png" alt=""></div>';requestAnimationFrame(startCarousel);return}
  if(state.screen==="cover"){a.innerHTML='<div class="coverstage"><button class="coverback" aria-label="Back" onclick="home()">‹</button><img src="'+BIG_COVERS[state.book.id]+'" alt="'+esc(state.book.title)+' cover" onclick="openContents()"></div>';return}
  if(state.screen==="contents"){a.innerHTML='<div class="top"><button onclick="home()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="contents"><h1>Contents</h1>'+state.book.chapters.map((c,i)=>'<button class="chapter" onclick="openChapter('+i+')">'+esc(c.title||("Chapter "+(i+1)))+'</button>').join("")+'</div>';return}
  const p=current(), ps=visible(p);
