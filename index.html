@@ -1,12 +1,23 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.23-cloudflare-pull-seam">
+<meta name="guts-build" content="v0.24-real-assets">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Helvetica,sans-serif;color:#222;background:#fff}
 #app{max-width:430px;margin:auto;min-height:100vh}.head{padding:16px;border-bottom:1px solid #ddd}.brand{font:700 24px Georgia,serif}.brand small{font:400 11px Helvetica,sans-serif;display:block;letter-spacing:.08em}
-.home{padding:16px}
+.home{padding:0}
+.artpage{position:relative;width:100%;overflow:hidden;background:#fff}.artpage>.base{display:block;width:100%;height:auto}
+.gateway-art .hot{position:absolute;left:8%;width:48%;height:4.2%;border:0;background:transparent;padding:0;cursor:pointer}
+.gateway-art .h1{top:35.3%}.gateway-art .h2{top:39.5%}.gateway-art .h3{top:43.8%}.gateway-art .h4{top:48.0%}
+.landing-art{overflow:hidden}.carousel-window{position:absolute;left:5.5%;right:5.5%;top:30.5%;height:18.2%;overflow:hidden;border-radius:0 0 14px 14px}
+.carousel-track{position:absolute;left:0;top:0;height:100%;width:max-content;animation:gutsCarousel 24s ease-in-out infinite alternate}
+.carousel-track img{display:block;height:100%;width:auto;max-width:none}
+.carousel-links{position:absolute;inset:0;display:grid;grid-template-columns:repeat(9,1fr)}
+.carousel-links button{border:0;background:transparent;padding:0;cursor:pointer}
+.suggestions-overlay{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:3}
+@keyframes gutsCarousel{from{transform:translateX(0)}to{transform:translateX(calc(-100% + 94vw))}}
+@media (prefers-reduced-motion:reduce){.carousel-track{animation:none}}
 .gateway{padding:24px 20px;font-family:Georgia,"Times New Roman",serif}
 .gateway .crest{width:54px;height:54px;border:2px solid #9a7b2f;border-radius:50%;margin:4px auto 18px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#9a7b2f}
 .gateway .resources{font:700 18px Helvetica,sans-serif;color:#9a7b2f;text-align:center;letter-spacing:.04em}
@@ -104,8 +115,8 @@ function openChapter(i){state.ci=i;state.pi=0;if(magic.phase==="ARMED")magic.sel
 function turn(d){depart();let n=state.pi+d;if(n<0){if(state.ci>0){state.ci--;state.pi=state.book.chapters[state.ci].pages.length-1}}else if(n>=state.book.chapters[state.ci].pages.length){if(state.ci<state.book.chapters.length-1){state.ci++;state.pi=0}}else state.pi=n;render();dwell()}
 function render(){
  const a=document.getElementById("app");
- if(state.screen==="gateway"){a.innerHTML='<div class="gateway"><div class="crest">✦</div><div class="resources">Resources</div><h1>From Project Gutenberg,<br>free books in the public domain</h1><p>The world’s great literature available<br>to everyone at no cost or subscription.</p><h2>Make a start here:</h2><button onclick="gatewayChoice()">Recent additions</button><button onclick="gatewayChoice()">Popular titles</button><button onclick="gatewayChoice()">Reader recommendations</button><button onclick="gatewayChoice()">Staff picks</button></div>';return}
- if(state.screen==="home"){a.innerHTML='<div class="head"><div class="brand">Project Gutenberg<small>FREE eBOOKS</small></div></div><div class="home"><h1>Books from Project Gutenberg, a library of over 78,000 free eBooks</h1><p>Choose among free epub and Kindle eBooks, download them or read them online.</p><div class="suggest"><h2>Our suggestions</h2>'+DISPLAY.map(id=>{const m=meta(id);return '<button class="book" onclick="openBook(\''+id+'\')"><span class="cover">'+esc(m.author.split(" ").pop())+'</span><span><span class="bt">'+esc(m.title)+'</span><span class="ba">'+esc(m.author)+'</span></span></button>'}).join("")+'</div></div>';return}
+ if(state.screen==="gateway"){a.innerHTML='<div class="artpage gateway-art"><img class="base" src="Pre-Page.jpg" alt=""><button class="hot h1" aria-label="Recent additions" onclick="gatewayChoice()"></button><button class="hot h2" aria-label="Popular titles" onclick="gatewayChoice()"></button><button class="hot h3" aria-label="Reader recommendations" onclick="gatewayChoice()"></button><button class="hot h4" aria-label="Staff picks" onclick="gatewayChoice()"></button></div>';return}
+ if(state.screen==="home"){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg" alt=""><div class="carousel-window"><div class="carousel-track"><img src="Carousel.jpg" alt=""><div class="carousel-links">'+DISPLAY.map(id=>'<button aria-label="'+esc(meta(id).title)+'" onclick="openBook(\''+id+'\')"></button>').join("")+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png" alt=""></div>';return}
  if(state.screen==="contents"){a.innerHTML='<div class="top"><button onclick="home()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="contents"><h1>Contents</h1>'+state.book.chapters.map((c,i)=>'<button class="chapter" onclick="openChapter('+i+')">'+esc(c.title||("Chapter "+(i+1)))+'</button>').join("")+'</div>';return}
  const p=current(), ps=visible(p);
   if(ps.some(x=>String(x).includes("$$"))){
