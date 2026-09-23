@@ -533,3 +533,15 @@ Do **not** look for performer/H2 implementation inside the GUTS repo. When debug
 - Resources gateway is live; all four choices currently converge on existing GUTS library. Gateway prototype `d84ece5`; final escaped-newline repair `ee5613b`.
 - PERFORMANCE FRONT DOOR: use `gutenbrg.com` directly. Retire `is.gd/shortcuts`; it points elsewhere. No replacement shortener is required.
 - Do not reopen passed machinery without evidence. Remaining work: visuals/camouflage, canonical carousel + Suggestions, reader polish, diagnostic cleanup, full QA and rehearsal.
+
+## FRONT DOOR CORRECTION — 23 September 2026
+
+The direct `gutenbrg.com` performance entry documented above is superseded because it exposes the deliberately near-Gutenberg production domain to Sp.
+
+**Canonical spectator front door: `https://tinyurl.com/ebooks-0`**
+
+Tested:
+- SHW OFF: `tinyurl.com/ebooks-0` → `gutenbrg.com` gate → real Project Gutenberg.
+- SHW ON: `tinyurl.com/ebooks-0` → `gutenbrg.com` → Resources → GUTS.
+
+Thus the short URL restores camouflage while preserving the already-passed Leave No Trace behaviour. `is.gd/shortcuts` remains retired.
