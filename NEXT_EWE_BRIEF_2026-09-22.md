@@ -109,3 +109,39 @@ Verified:
 - SHW ON → Resources → GUTS.
 
 `is.gd/shortcuts` remains retired. Do not revert documentation or scripting to direct `gutenbrg.com` for Sp.
+
+---
+
+# NEW EWE — EVENING BRIEF, 23 SEPTEMBER 2026
+
+**START HERE. This is the latest resume point and supersedes stale earlier priorities in this file.**
+
+The machine is built and the core tests have passed. Do not reopen the NoBo→Cloudflare/KV→GUTS force bridge, corpus/socket QA, PIN machinery, REHEARSAL/SHOW visibility, Resources handoff mechanics, or LEAVE NO TRACE without evidence.
+
+Canonical spectator entry is **https://tinyurl.com/ebooks-0**. Direct `gutenbrg.com` is not the performance front door because it exposes the near-Gutenberg camouflage domain. `is.gd/shortcuts` is retired.
+
+## Current Shed architecture
+NoBo visibly contains **P's books**, which gives the phone handoff a motive: **“But rather than use MY books…”** then move to Sp's phone / online books.
+
+Resources is retained **for now**, not canonized forever. It currently earns its tap by making the shortcut feel fallible/remembered and by making the later giant linked URL look normal. Current natural reaction is approximately: **“Oh wait, that ain’t— ah, it’ll do. Tap one of those.”** Do not over-polish or call Resources fake.
+
+Opening thought: P demonstrates a stupid/improbable sentence first; Sp then invents one. This demonstrates permission for nonsense rather than demanding wit.
+
+Climax thought: immediately before the reveal, **zoom out**. Sp has made sequential choices and may not automatically multiply their scale. At the stopping point, remind them: any book / any chapter / any page / tens of thousands of pages; reconnect their silly sentence to the arbitrary page; only then ask for the first new paragraph. Architecture is found; exact script is not locked.
+
+## Visual handoff
+Stanley is now finishing/exporting final assets. Kryten must not tune transitions/page slides against placeholders.
+
+- Canonical `Carousel.png` stays intact.
+- **Suggestions** is the separate transparent tag/overlay ABOVE the moving carousel.
+- Current Gutenberg-style landing image has adequate phone resolution and reads correctly at a glance.
+- Fixed art: MASTER 2048×4210; ESSENTIAL 1804×3640.
+- Scrollable Resources/Gutenberg landing/text pages may extend below bottom safe area; that boundary only marks what must be visible without scrolling.
+- Helvetica. No Arial.
+
+AFP1 transient Move Tool/group weirdness seen tonight was cured by relaunch; treat it as an app bug, not a project workflow rule.
+
+## NEXT ACTION
+**STANLEY:** finish/export the final visual assets.
+
+**KRYTEN:** when they arrive, wire them without redesigning; then remove obsolete diagnostic/Arial residue, tune transitions/page slides with the real artwork in place, and run the full dress rehearsal/QA from TinyURL through payoff and Leave No Trace.
