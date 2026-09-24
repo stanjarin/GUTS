@@ -1,0 +1,118 @@
+name: GUTS 0.35 performance pagination build
+on:
+  push:
+    paths: ['.github/workflows/guts035_build.yml']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build eight-book performance corpus
+        run: |
+          python3 - <<'PY'
+          import json,re,pathlib,urllib.request
+          D=pathlib.Path('PERFORMANCE35'); D.mkdir(exist_ok=True)
+          AIR=json.load(open(D/'AIRLOCKS_v1.json'))
+          IDS={'AAM':'aam','AC':'ac','DR':'dr','JJ':'jj','JT':'jt'}
+          TIT={'AAM':'The House at Pooh Corner','AC':'The Murder at the Vicarage','DR':'On Broadway','JJ':'Ulysses','JT':'My Life and Hard Times'}
+          AUTH={'AAM':'A. A. Milne','AC':'Agatha Christie','DR':'Damon Runyon','JJ':'James Joyce','JT':'James Thurber'}
+          EP=set('TELEMACHUS NESTOR PROTEUS CALYPSO LOTUS HADES AEOLUS LESTRYGONIANS SCYLLA WANDERING SIRENS CYCLOPS NAUSICAA OXEN CIRCE EUMAEUS ITHACA PENELOPE'.split())
+          def wc(s): return len(re.findall(r"\b[\w’'-]+\b",s))
+          def heading(code,s):
+            t=s.strip(); u=t.upper()
+            if code in ('AAM','AC') and re.match(r'^CHAPTER\b',t,re.I): return True
+            if code=='JJ' and u in EP: return True
+            if code in ('DR','JT') and 1<len(t)<70 and t==u and re.search('[A-Z]',t) and u not in {'THE END','CONTENTS','L’ENVOI',"L'ENVOI"}: return True
+            if code=='DR' and re.match(r'^COLLECTION\b',t,re.I): return True
+            return False
+          def group_primed(code):
+            d=json.load(open(f'PRIMED/{code}_GUTS_PRIME2.json')); groups=[]; cur={'title':'Opening','paras':[]}
+            for pg in d['pages']:
+              for para in pg.get('paragraphs',[]):
+                if heading(code,para) and cur['paras']:
+                  groups.append(cur); cur={'title':para.strip(),'paras':[para]}
+                else: cur['paras'].append(para)
+            if cur['paras']: groups.append(cur)
+            # Add adjacent subtitle to chapter label when useful, but keep prose untouched.
+            for g in groups:
+              if re.match(r'^CHAPTER\b',g['title'],re.I) and len(g['paras'])>1 and wc(g['paras'][1])<18:
+                g['title']=g['title']+' — '+g['paras'][1]
+            return groups
+          def split_sentences(p):
+            return [x.strip() for x in re.split(r'(?<=[.!?][”’\"\']?)\s+',p) if x.strip()]
+          def split_for_carry(p,goal):
+            ss=split_sentences(p)
+            if len(ss)<2:return None
+            n=0; cut=0
+            for i,s in enumerate(ss[:-1]):
+              n+=wc(s)
+              if n>=goal: cut=i+1; break
+            if not cut: cut=max(1,len(ss)//2)
+            a=' '.join(ss[:cut]); b=' '.join(ss[cut:])
+            return (a,b) if wc(a)>=12 and wc(b)>=12 else None
+          def paginate(paras,air):
+            q=[p.strip() for p in paras if p and p.strip()]; pages=[]; carry=None; cycle=[28,48,68,38,58]; ci=0
+            while q or carry:
+              out=[]
+              if carry: out.append(carry); carry=None
+              while q and sum(wc(x) for x in out)<285:
+                out.append(q.pop(0))
+              # manufacture a genuine cross-page carry by splitting the next substantial paragraph.
+              if q:
+                sp=split_for_carry(q[0],cycle[ci%len(cycle)]); ci+=1
+                if sp:
+                  out.append(sp[0]); carry=sp[1]; q.pop(0)
+              if not out: break
+              pages.append({'paragraphs':out})
+            # balance a tiny terminal page into predecessor by merging; no text invented/repeated.
+            if len(pages)>1 and sum(wc(x) for x in pages[-1]['paragraphs'])<190:
+              pages[-2]['paragraphs']+=pages[-1]['paragraphs']; pages.pop()
+            for i,p in enumerate(pages):
+              base=p['paragraphs']; ins=1 if len(base)>1 else 0
+              fp=list(base); fp.insert(ins,air)
+              p['force_paragraphs']=fp; p['word_count']=sum(wc(x) for x in base); p['airlock_index']=ins
+            return pages
+          report=['# 0.35 PERFORMANCE BUILD REPORT','']
+          for code in IDS:
+            kept=[]; cut=[]
+            for g in group_primed(code):
+              words=sum(wc(x) for x in g['paras'])
+              if words<780: cut.append((g['title'],words)); continue
+              pages=paginate(g['paras'],AIR[code])
+              if len(pages)<3: cut.append((g['title'],words)); continue
+              kept.append({'title':g['title'],'pages':pages})
+            book={'id':IDS[code],'title':TIT[code],'author':AUTH[code],'performance_version':'0.35','chapters':kept}
+            json.dump(book,open(D/f'{IDS[code]}_035.json','w'),ensure_ascii=False,separators=(',',':'))
+            counts=[p['word_count'] for c in kept for p in c['pages']]
+            report += [f'## {code} {TIT[code]}',f'- kept chapters: {len(kept)}; cut: {len(cut)}; pages: {len(counts)}',f'- page words min/median-ish/max: {min(counts) if counts else 0}/{sorted(counts)[len(counts)//2] if counts else 0}/{max(counts) if counts else 0}',f'- cut chapters: '+('; '.join(f'{t} ({w}w)' for t,w in cut[:30]) or 'none'),'']
+          # Legacy three: retain canonical chapter structure and canonical air-lock wording, but repaginate genuine paragraphs deeply.
+          for bid,url in [('jeeves','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/jeeves.json'),('huck','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/huck.json'),('farewell','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/farewell.json')]:
+            d=json.load(urllib.request.urlopen(url)); kept=[]; cut=[]; found_air=None
+            for c in d['chapters']:
+              genuine=[]
+              for p in c['pages']:
+                genuine += p.get('paragraphs',[])
+                if not found_air:
+                  for x in p.get('force_paragraphs',[]):
+                    if '$$$' in x and x not in p.get('paragraphs',[]): found_air=x; break
+              words=sum(wc(x) for x in genuine)
+              if words<780: cut.append((c.get('title','Chapter'),words)); continue
+              pages=paginate(genuine,found_air or 'I remembered $$$ and then went on.')
+              if len(pages)>=3: kept.append({'title':c.get('title','Chapter'),'pages':pages})
+              else: cut.append((c.get('title','Chapter'),words))
+            out={'id':bid,'title':d.get('title',bid),'author':d.get('author',''),'performance_version':'0.35','chapters':kept}
+            json.dump(out,open(D/f'{bid}_035.json','w'),ensure_ascii=False,separators=(',',':'))
+            counts=[p['word_count'] for c in kept for p in c['pages']]
+            report += [f'## {bid}',f'- kept chapters: {len(kept)}; cut: {len(cut)}; pages: {len(counts)}',f'- page words min/median-ish/max: {min(counts) if counts else 0}/{sorted(counts)[len(counts)//2] if counts else 0}/{max(counts) if counts else 0}',f'- cut chapters: '+('; '.join(f'{t} ({w}w)' for t,w in cut[:30]) or 'none'),'']
+          report += ['## Parker','- Current Men I’m Not Married To deliberately NOT built into 0.35 performance corpus. Source retained untouched pending replacement/source decision.','', '## QA invariants','- No source master modified.','- No invented/repeated genuine prose.','- Chapters under 780 words cut.','- Every retained chapter >=3 pages.','- Each prepared page has exactly one air-lock in force_paragraphs.','- Air-lock inserted after genuine opening/carry material; carry split lengths cycle to stagger vertical position.','- Live index.html NOT changed by this builder.']
+          (D/'BUILD_REPORT.md').write_text('\n'.join(report))
+          PY
+      - name: Commit generated corpus
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add PERFORMANCE35
+          git commit -m 'Build GUTS 0.35 eight-book performance corpus'
+          git push
