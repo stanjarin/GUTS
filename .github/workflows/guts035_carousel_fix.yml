@@ -1,0 +1,34 @@
+name: GUTS 0.35 carousel hit-map repair
+on:
+  push:
+    paths: ['.github/workflows/guts035_carousel_fix.yml']
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Align hit map to actual carousel strip
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          # The artwork strip is one image with 9 covers, but its natural width is not constrained by the viewport.
+          # Grid percentages were being calculated across the overlay's rendered viewport width, making most buttons miss.
+          old='.carousel-links{position:absolute;inset:0;display:grid;grid-template-columns:repeat(9,1fr)}'
+          new='.carousel-links{position:absolute;left:0;top:0;height:100%;width:100%;display:grid;grid-template-columns:repeat(9,1fr)}'
+          if old not in s: raise SystemExit('expected 9-column rule not found')
+          # Make overlay inherit the full scrolling track width rather than the visible carousel window.
+          s=s.replace(old,new)
+          s=s.replace('.carousel-track{position:relative;height:100%;width:max-content}', '.carousel-track{position:relative;height:100%;width:max-content}.carousel-links{width:100%}')
+          # More robust fix: links belong to the track and must span the track. CSS width:100% now resolves against track.
+          p.write_text(s)
+          PY
+      - name: Commit repair
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Fix 0.35 carousel hit map across nine covers'
+          git push
