@@ -1,0 +1,50 @@
+name: GUTS 0.35 Joyce Runyon structure repair
+on:
+  push:
+    paths: ['.github/workflows/guts035_structure_fix.yml']
+permissions:
+  contents: write
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Repair oversized Contents structures
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          D=pathlib.Path('PERFORMANCE35')
+          def split_book(path, mode, target=8):
+              d=json.load(open(path))
+              new=[]
+              seq=1
+              for c in d['chapters']:
+                  pages=c['pages']
+                  if len(pages) <= 12:
+                      new.append(c); continue
+                  chunks=[pages[i:i+target] for i in range(0,len(pages),target)]
+                  if len(chunks)>1 and len(chunks[-1])<3:
+                      chunks[-2].extend(chunks[-1]); chunks.pop()
+                  for chunk in chunks:
+                      if mode=='joyce':
+                          title=f'Section {seq}'
+                      else:
+                          base=c.get('title','Collection').strip()
+                          title=f'{base.title()} — Part {seq}'
+                      new.append({'title':title,'pages':chunk})
+                      seq+=1
+              d['chapters']=new
+              json.dump(d,open(path,'w'),ensure_ascii=False,separators=(',',':'))
+              return [(c['title'],len(c['pages'])) for c in new]
+          jj=split_book(D/'jj_035.json','joyce',8)
+          dr=split_book(D/'dr_035.json','runyon',8)
+          lines=['# 0.35 STRUCTURE REPAIR','',f'Joyce: {len(jj)} Contents entries; page range {min(n for _,n in jj)}–{max(n for _,n in jj)}.',f'Runyon: {len(dr)} Contents entries; page range {min(n for _,n in dr)}–{max(n for _,n in dr)}.','','Rule: oversized source divisions are subdivided at existing 0.35 page boundaries only. No prose, page content, air-locks, sockets or pagination changed. Joyce uses neutral invented Section labels; Runyon preserves the detected source division label plus Part numbering.']
+          (D/'STRUCTURE_REPORT.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit repair
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add PERFORMANCE35/jj_035.json PERFORMANCE35/dr_035.json PERFORMANCE35/STRUCTURE_REPORT.md
+          git commit -m 'Repair Joyce and Runyon 0.35 Contents structure'
+          git push
