@@ -18,25 +18,16 @@ jobs:
           python3 - <<'PY'
           import json,re,glob,statistics,pathlib
           out=['# GUTS 0.35 PERFORMANCE PAGINATION AUDIT','', 'Machine audit only: no live reader data changed.','']
-          air={
-          'JT':"For some reason I thought then of $$$, although it had nothing whatever to do with what was happening. This was probably why I remembered it.",
-          'AAM':"Pooh stopped for a moment, because $$$ had come into his head. He wasn’t quite sure why it had, but there it was, so he thought he had better remember it.",
-          'DP':"For no good reason I suddenly remembered $$$. There are thoughts which know perfectly well when they are not wanted, and come anyway.",
-          'DR':"It comes to me at this point that $$$ is something worth remembering, although I cannot say why. So I remember it, and let the matter go at that.",
-          'JJ':"Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.",
-          'AC':"It was only then that $$$ occurred to me. At the time it seemed quite unimportant, and I thought no more about it."
-          }
+          air={'JT':"For some reason I thought then of $$$, although it had nothing whatever to do with what was happening. This was probably why I remembered it.",'AAM':"Pooh stopped for a moment, because $$$ had come into his head. He wasn’t quite sure why it had, but there it was, so he thought he had better remember it.",'DP':"For no good reason I suddenly remembered $$$. There are thoughts which know perfectly well when they are not wanted, and come anyway.",'DR':"It comes to me at this point that $$$ is something worth remembering, although I cannot say why. So I remember it, and let the matter go at that.",'JJ':"Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.",'AC':"It was only then that $$$ occurred to me. At the time it seemed quite unimportant, and I thought no more about it."}
           def wc(s): return len(re.findall(r"\b[\w’'-]+\b",str(s)))
           for fn in sorted(glob.glob('PRIMED/*_GUTS_PRIME2.json')):
-            code=pathlib.Path(fn).name.split('_')[0]; d=json.load(open(fn)); pages=d.get('pages',[])
-            counts=[sum(wc(x) for x in p.get('paragraphs',[])) for p in pages]
+            code=pathlib.Path(fn).name.split('_')[0]; d=json.load(open(fn)); pages=d.get('pages',[]); counts=[sum(wc(x) for x in p.get('paragraphs',[])) for p in pages]
             out += [f'## {code}',f'- source pages: {len(pages)}',f'- source words/page: min {min(counts) if counts else 0}; median {int(statistics.median(counts)) if counts else 0}; max {max(counts) if counts else 0}',f'- pages under 220 words: {sum(c<220 for c in counts)}',f'- proposed air-lock ({wc(air.get(code,""))} words): {air.get(code,"MISSING")}','']
           for fn in ['PERFORMANCE35/jeeves.json','PERFORMANCE35/huck.json','PERFORMANCE35/farewell.json']:
             d=json.load(open(fn)); pages=[p for c in d.get('chapters',[]) for p in c.get('pages',[])]; counts=[p.get('word_count',sum(wc(x) for x in p.get('paragraphs',[]))) for p in pages]
             out += [f'## {d.get("title",fn)}',f'- chapters: {len(d.get("chapters",[]))}; pages: {len(pages)}',f'- words/page: min {min(counts)}; median {int(statistics.median(counts))}; max {max(counts)}',f'- pages under 220 words: {sum(c<220 for c in counts)}','']
           out += ['## 0.35 geometry to build','- Keep 15px / 1.45 reader typography.','- Retain genuine text only; cut unusably short chapters rather than pad/repeat.','- Target ~260–330 genuine words per displayed page before air-lock, with terminal-page balancing.','- Every prepared page: variable genuine carry-over -> one self-contained air-lock containing $$$ -> fresh genuine paragraph -> remaining genuine text.','- Vary carry-over length/paragraph position to stagger air-lock vertically.','- No selectable chapter survives unless it can support at least 3 performance-depth pages after balancing.','- Rebuild Contents and force coordinates only after pagination is frozen.']
-          pathlib.Path('PERFORMANCE35/AUDIT.md').write_text('\n'.join(out))
-          pathlib.Path('PERFORMANCE35/AIRLOCKS_v1.json').write_text(json.dumps(air,ensure_ascii=False,indent=2))
+          pathlib.Path('PERFORMANCE35/AUDIT.md').write_text('\n'.join(out)); pathlib.Path('PERFORMANCE35/AIRLOCKS_v1.json').write_text(json.dumps(air,ensure_ascii=False,indent=2))
           PY
       - name: Commit audit
         run: |
@@ -45,3 +36,4 @@ jobs:
           git add PERFORMANCE35
           git commit -m 'GUTS 0.35 nine-book performance pagination audit'
           git push
+# trigger 1
