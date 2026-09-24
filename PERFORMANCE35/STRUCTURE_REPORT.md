@@ -1,6 +1,7 @@
-# 0.35 STRUCTURE REPAIR
+# 0.35 STRUCTURE REPAIR — FINAL CONTENTS SHAPE
 
-Joyce: 91 Contents entries; page range 6–8.
-Runyon: 93 Contents entries; page range 4–10.
+Joyce: 18 Contents entries; 40–41 Reader pages each.
+Runyon: 18 Contents entries; 41–42 Reader pages each.
 
-Rule: oversized source divisions are subdivided at existing 0.35 page boundaries only. No prose, page content, air-locks, sockets or pagination changed. Joyce uses neutral invented Section labels; Runyon preserves the detected source division label plus Part numbering.
+These are performance Contents groupings over already-built 0.35 pages. No prose, page content, air-locks, sockets, stagger or pagination changed.
+Joyce labels are neutral Episode 1–18; Runyon labels are neutral Story 1–18 pending any later editorial title pass.
