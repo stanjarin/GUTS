@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="guts-build" content="v0.26-carousel-motion">
+<meta name="guts-build" content="v0.27-touch-carousel">
 <title>Project Gutenberg — Books</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Helvetica,sans-serif;color:#222;background:#fff}
@@ -10,9 +10,9 @@
 .artpage{position:relative;width:100%;overflow:hidden;background:#fff}.artpage>.base{display:block;width:100%;height:auto}
 .gateway-art .hot{position:absolute;left:8%;width:48%;height:4.2%;border:0;background:transparent;padding:0;cursor:pointer}
 .gateway-art .h1{top:35.3%}.gateway-art .h2{top:39.5%}.gateway-art .h3{top:43.8%}.gateway-art .h4{top:48.0%}
-.landing-art{overflow:hidden}.carousel-window{position:absolute;left:5.5%;right:5.5%;top:30.5%;height:18.2%;overflow:hidden;border-radius:0 0 14px 14px}
-.carousel-track{position:absolute;left:0;top:0;height:100%;will-change:transform}
-.carousel-track img{display:block;height:100%;width:auto;max-width:none}
+.landing-art{overflow:hidden}.carousel-window{position:absolute;left:5.5%;right:5.5%;top:30.5%;height:18.2%;overflow-x:auto;overflow-y:hidden;border-radius:0 0 14px 14px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:auto;scrollbar-width:none}.carousel-window::-webkit-scrollbar{display:none}
+.carousel-track{position:relative;height:100%;width:max-content}
+.carousel-track img{display:block;height:100%;width:auto;max-width:none;-webkit-user-drag:none;user-select:none}
 .carousel-links{position:absolute;inset:0;display:grid;grid-template-columns:repeat(9,1fr)}
 .carousel-links button{border:0;background:transparent;padding:0;cursor:pointer}
 .suggestions-overlay{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:3}
@@ -92,7 +92,7 @@ function torture(){
  }catch(e){return {ok:false,error:String(e),report}}
  finally{magic=old;save()}
 }
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc=s=>String(s).replace(/[&<>\"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;"}[c]));
 function meta(id){return META.find(x=>x.id===id)}
 async function load(id){
  if(cache.has(id))return cache.get(id); const m=meta(id); let raw=await (await fetch(m.file,{cache:"no-store"})).json(), b;
@@ -116,31 +116,14 @@ async function openBook(id){state.book=await load(id);state.screen="cover";state
 function openContents(){state.screen="contents";render()}
 function openChapter(i){state.ci=i;state.pi=0;if(magic.phase==="ARMED")magic.selectedChapter={book:state.book.id,ci:i};save();state.screen="reader";render();dwell()}
 function turn(d){depart();let n=state.pi+d;if(n<0){if(state.ci>0){state.ci--;state.pi=state.book.chapters[state.ci].pages.length-1}}else if(n>=state.book.chapters[state.ci].pages.length){if(state.ci<state.book.chapters.length-1){state.ci++;state.pi=0}}else state.pi=n;render();dwell()}
-function startCarousel(){
- const track=document.getElementById("carouselTrack"), win=track?.parentElement, img=track?.querySelector("img");
- if(!track||!win||!img)return;
- const go=()=>{
-   const distance=Math.max(0,img.getBoundingClientRect().width-win.getBoundingClientRect().width);
-   if(distance<2)return;
-   track.getAnimations().forEach(a=>a.cancel());
-   track.animate([{transform:"translateX(0px)"},{transform:"translateX(-"+distance+"px)"}],{duration:24000,iterations:Infinity,direction:"alternate",easing:"ease-in-out"});
- };
- if(img.complete)go();else img.addEventListener("load",go,{once:true});
-}
 function render(){
  const a=document.getElementById("app");
  if(state.screen==="gateway"){a.innerHTML='<div class="artpage gateway-art"><img class="base" src="Pre-Page.jpg" alt=""><button class="hot h1" aria-label="Recent additions" onclick="gatewayChoice()"></button><button class="hot h2" aria-label="Popular titles" onclick="gatewayChoice()"></button><button class="hot h3" aria-label="Reader recommendations" onclick="gatewayChoice()"></button><button class="hot h4" aria-label="Staff picks" onclick="gatewayChoice()"></button></div>';return}
- if(state.screen==="home"){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg" alt=""><div class="carousel-window"><div class="carousel-track" id="carouselTrack"><img src="Carousel.jpg" alt=""><div class="carousel-links">'+DISPLAY.map(id=>'<button aria-label="'+esc(meta(id).title)+'" onclick="openBook(\''+id+'\')"></button>').join("")+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png" alt=""></div>';requestAnimationFrame(startCarousel);return}
+ if(state.screen==="home"){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg" alt=""><div class="carousel-window"><div class="carousel-track" id="carouselTrack"><img src="Carousel.jpg" alt=""><div class="carousel-links">'+DISPLAY.map(id=>'<button aria-label="'+esc(meta(id).title)+'" onclick="openBook(\''+id+'\')"></button>').join("")+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png" alt=""></div>';return}
  if(state.screen==="cover"){a.innerHTML='<div class="coverstage"><button class="coverback" aria-label="Back" onclick="home()">‹</button><img src="'+BIG_COVERS[state.book.id]+'" alt="'+esc(state.book.title)+' cover" onclick="openContents()"></div>';return}
  if(state.screen==="contents"){a.innerHTML='<div class="top"><button onclick="home()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="contents"><h1>Contents</h1>'+state.book.chapters.map((c,i)=>'<button class="chapter" onclick="openChapter('+i+')">'+esc(c.title||("Chapter "+(i+1)))+'</button>').join("")+'</div>';return}
- const p=current(), ps=visible(p);
-  if(ps.some(x=>String(x).includes("$$"))){
-    a.innerHTML='<div class="reader"><h2>GUTS DIAGNOSTIC</h2><p>phase: '+esc(magic.phase)+'</p><p>force: '+esc(JSON.stringify(magic.force))+'</p><p>revision: '+esc(sessionStorage.getItem(REMOTE_KEY)||"none")+'</p><p>page: '+esc(key())+'</p><p>has force_paragraphs: '+esc(String(!!p.force_paragraphs))+'</p></div>';return;
-  }
-  a.innerHTML='<div class="top"><button onclick="state.screen=\'contents\';render()">‹</button><b>'+esc(state.book.title)+'</b></div><div class="reader"><div class="hit left" onclick="turn(-1)"></div><div class="hit right" onclick="turn(1)"></div><div class="page">'+ps.map((x,i)=>'<p'+(i===0&&/^CHAPTER\b|^COLLECTION\b/i.test(x)?' class="chapter"':'')+'>'+esc(x)+'</p>').join("")+'</div><div class="pageno">'+(state.pi+1)+'</div></div>';
+ const ch=state.book.chapters[state.ci],p=current(),paras=visible(p);a.innerHTML='<div class="top"><button onclick="state.screen=\'contents\';render()">☰</button><b>'+esc(state.book.title)+'</b></div><div class="reader"><div class="page">'+paras.map(x=>'<p>'+esc(x)+'</p>').join("")+'</div><div class="hit left" onclick="turn(-1)"></div><div class="hit right" onclick="turn(1)"></div><div class="pageno">'+(state.pi+1)+'</div></div>';
 }
-document.getElementById("admin").onclick=()=>showAdmin();
-function showAdmin(){let p=document.getElementById("panel");if(p){p.remove();return}p=document.createElement("div");p.id="panel";p.className="panel";p.innerHTML='<input id="force" placeholder="force word"><button id="arm">ARM</button><button id="clean">CLEAN</button><button id="reset">RESET</button><button id="test">TEST</button>';document.body.appendChild(p);document.getElementById("force").value=magic.force;document.getElementById("arm").onclick=()=>{let w=document.getElementById("force").value.trim();if(w){magic={phase:"ARMED",force:w,paid:null,dwell:null,selectedChapter:null};save();p.remove()}};document.getElementById("clean").onclick=()=>{if(magic.phase==="PAID"){magic.phase="CLEAN";magic.force="";save();render()}p.remove()};document.getElementById("reset").onclick=()=>{magic={phase:"READY",force:"",paid:null,dwell:null,selectedChapter:null};save();home();p.remove()};document.getElementById("test").onclick=()=>alert(JSON.stringify(torture(),null,2))}
-render();
-pullRemoteState().then(changed=>{if(changed)render()});
+pullRemoteState().finally(render);
+setInterval(pullRemoteState,2500);
 </script></body></html>
