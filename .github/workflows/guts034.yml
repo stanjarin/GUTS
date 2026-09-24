@@ -1,0 +1,35 @@
+name: GUTS 0.34 patch
+on:
+  push:
+    paths: ['.github/workflows/guts034.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch reader density and safe Contents maps
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          assert 'v0.33-poet-editorial' in s and '>0.33</span>' in s
+          s=s.replace('v0.33-poet-editorial','v0.34-reader-toc',1).replace('>0.33</span>','>0.34</span>',1)
+          # NoBo-like reader density; later rule wins over 0.33 rule.
+          s=s.replace('.page{padding:28px 25px 62px;font:18.5px/1.55 Georgia,serif;color:#29261f}.page p{margin:0 0 .92em}', '.page{padding:25px 23px 58px;font:15px/1.45 Georgia,serif;color:#29261f}.page p{margin:0 0 .72em}',1)
+          # Presentation-only TOC map: split Parker/Runyon on short all-caps story headings without changing physical page arrays.
+          old="""else{const groups=[];let current={title:'Book',pages:[]};raw.pages.forEach(p=>{const ch=p.paragraphs.find(x=>/^CHAPTER\\b|^COLLECTION\\b|^(TELEMACHUS|NESTOR|PROTEUS|CALYPSO|LOTUS|HADES|AEOLUS|LESTRYGONIANS|SCYLLA|WANDERING|SIRENS|CYCLOPS|NAUSICAA|OXEN|CIRCE|EUMAEUS|ITHACA|PENELOPE)/i.test(x));if(ch&&current.pages.length){groups.push(current);current={title:ch,pages:[]}}current.pages.push({paragraphs:p.paragraphs,force_paragraphs:p.force_paragraphs})});if(current.pages.length)groups.push(current);b={id:m.id,title:m.title,author:m.author,chapters:groups}}"""
+          new="""else{const groups=[];let current={title:'Book',pages:[]};raw.pages.forEach(p=>{let ch=p.paragraphs.find(x=>/^CHAPTER\\b|^COLLECTION\\b|^(TELEMACHUS|NESTOR|PROTEUS|CALYPSO|LOTUS|HADES|AEOLUS|LESTRYGONIANS|SCYLLA|WANDERING|SIRENS|CYCLOPS|NAUSICAA|OXEN|CIRCE|EUMAEUS|ITHACA|PENELOPE)/i.test(x));if(!ch&&(m.id==='dp'||m.id==='dr'))ch=p.paragraphs.find(x=>{x=String(x).trim();return x.length>1&&x.length<70&&x===x.toUpperCase()&&/[A-Z]/.test(x)&&!/^(L[’']ENVOI|THE END|CONTENTS?)$/.test(x)});if(ch&&current.pages.length){groups.push(current);current={title:ch,pages:[]}}current.pages.push({paragraphs:p.paragraphs,force_paragraphs:p.force_paragraphs})});if(current.pages.length)groups.push(current);b={id:m.id,title:m.title,author:m.author,chapters:groups}}"""
+          assert old in s
+          s=s.replace(old,new,1)
+          p.write_text(s)
+          st=Path('CURRENT_STATE.md'); x=st.read_text(); x += '''\n\n## 14. BUILD 0.34 — AWAITING PHONE TEST\n- Reader density restored toward old NoBo: 15px / 1.45 with tighter paragraph spacing.\n- Parker and Runyon Contents now additionally recognise short all-caps story headings already present at existing page starts. No text repagination or force arrays changed.\n- 0.33 visual pass otherwise preserved.\nPhone test: Parker/Runyon Contents destinations; reader density; quick page-drag regression.\n'''; st.write_text(x)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html CURRENT_STATE.md
+          git commit -m 'GUTS 0.34 reader density and Parker Runyon Contents'
+          git push
