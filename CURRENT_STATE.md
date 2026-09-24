@@ -192,3 +192,10 @@ Changes:
 Important: Runyon's deeper story-level Contents problem is **not solved by inventing new `ci` boundaries** in this build. The current primed runtime data does not safely expose enough story-boundary metadata to do that without risking protected force coordinates. 0.33 cleans the labels it can prove while preserving magic identity. A future Runyon editorial restructuring must carry stable destination IDs or an explicit presentation-to-engine map.
 
 Phone test requested: Landing mask; Contents appearance/labels across several books (especially Thurber, Parker, Runyon); Reader appearance; Cover→Contents slide; Contents→Reader slide; reader horizontal drag + vertical scroll.
+
+
+## 14. BUILD 0.34 — AWAITING PHONE TEST
+- Reader density restored toward old NoBo: 15px / 1.45 with tighter paragraph spacing.
+- Parker and Runyon Contents now additionally recognise short all-caps story headings already present at existing page starts. No text repagination or force arrays changed.
+- 0.33 visual pass otherwise preserved.
+Phone test: Parker/Runyon Contents destinations; reader density; quick page-drag regression.
