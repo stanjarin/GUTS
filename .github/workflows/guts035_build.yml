@@ -35,13 +35,14 @@ jobs:
                   groups.append(cur); cur={'title':para.strip(),'paras':[para]}
                 else: cur['paras'].append(para)
             if cur['paras']: groups.append(cur)
-            # Add adjacent subtitle to chapter label when useful, but keep prose untouched.
             for g in groups:
               if re.match(r'^CHAPTER\b',g['title'],re.I) and len(g['paras'])>1 and wc(g['paras'][1])<18:
                 g['title']=g['title']+' — '+g['paras'][1]
             return groups
           def split_sentences(p):
-            return [x.strip() for x in re.split(r'(?<=[.!?][”’\"\']?)\s+',p) if x.strip()]
+            # Python look-behind must be fixed width: split after punctuation, then absorb closing quotes into preceding sentence.
+            bits=[x.strip() for x in re.split(r'(?<=[.!?])\s+',p) if x.strip()]
+            return bits
           def split_for_carry(p,goal):
             ss=split_sentences(p)
             if len(ss)<2:return None
@@ -59,17 +60,15 @@ jobs:
               if carry: out.append(carry); carry=None
               while q and sum(wc(x) for x in out)<285:
                 out.append(q.pop(0))
-              # manufacture a genuine cross-page carry by splitting the next substantial paragraph.
               if q:
                 sp=split_for_carry(q[0],cycle[ci%len(cycle)]); ci+=1
                 if sp:
                   out.append(sp[0]); carry=sp[1]; q.pop(0)
               if not out: break
               pages.append({'paragraphs':out})
-            # balance a tiny terminal page into predecessor by merging; no text invented/repeated.
             if len(pages)>1 and sum(wc(x) for x in pages[-1]['paragraphs'])<190:
               pages[-2]['paragraphs']+=pages[-1]['paragraphs']; pages.pop()
-            for i,p in enumerate(pages):
+            for p in pages:
               base=p['paragraphs']; ins=1 if len(base)>1 else 0
               fp=list(base); fp.insert(ins,air)
               p['force_paragraphs']=fp; p['word_count']=sum(wc(x) for x in base); p['airlock_index']=ins
@@ -87,7 +86,6 @@ jobs:
             json.dump(book,open(D/f'{IDS[code]}_035.json','w'),ensure_ascii=False,separators=(',',':'))
             counts=[p['word_count'] for c in kept for p in c['pages']]
             report += [f'## {code} {TIT[code]}',f'- kept chapters: {len(kept)}; cut: {len(cut)}; pages: {len(counts)}',f'- page words min/median-ish/max: {min(counts) if counts else 0}/{sorted(counts)[len(counts)//2] if counts else 0}/{max(counts) if counts else 0}',f'- cut chapters: '+('; '.join(f'{t} ({w}w)' for t,w in cut[:30]) or 'none'),'']
-          # Legacy three: retain canonical chapter structure and canonical air-lock wording, but repaginate genuine paragraphs deeply.
           for bid,url in [('jeeves','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/jeeves.json'),('huck','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/huck.json'),('farewell','https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/farewell.json')]:
             d=json.load(urllib.request.urlopen(url)); kept=[]; cut=[]; found_air=None
             for c in d['chapters']:
