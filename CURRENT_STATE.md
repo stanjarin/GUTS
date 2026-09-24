@@ -1,5 +1,5 @@
 # GUTS — AUTHORITATIVE HANDOVER
-## Known-good baseline: 0.32
+## Known-good baseline: 0.32 — 0.33 awaiting phone test
 
 **READ THIS FILE BEFORE PROPOSING OR CHANGING ANYTHING.**
 
@@ -177,3 +177,18 @@ Before suggesting code or asking Stanley to repeat project history:
 4. Then continue with **Contents + Reader visual pass**, unless Stanley gives a different instruction.
 
 Do not make Stanley reconstruct this state from memory.
+
+## 13. BUILD 0.33 — AWAITING STANLEY PHONE TEST
+
+0.33 is a deliberately presentation-layer pass over the known-good 0.32 runtime. It does **not** alter READY/ARMED/PAID/CLEAN logic, dwell/payoff, selected-chapter protection, page-drag mechanics, Pre-Page hotspots, carousel mechanics, Suggestions placement, or book page arrays.
+
+Changes:
+- Contents given a visibly book/Gutenberg-like warm-paper treatment, clearer hierarchy and chapter rows.
+- Reader given matching warm-paper typography, spacing and restrained navigation furniture.
+- Contents labels cleaned at display time only: collection boilerplate removed; CHAPTER labels can include the adjacent genuine all-caps chapter title; generic first group gets a meaningful opening label where safely inferable. Underlying `ci`/`pi` identities remain unchanged.
+- Landing carousel mask shortened from 3.8% to 2.35% height, preserving its top edge, to stop covering legitimate faux-text below.
+- Landing build stamp changed to 0.33.
+
+Important: Runyon's deeper story-level Contents problem is **not solved by inventing new `ci` boundaries** in this build. The current primed runtime data does not safely expose enough story-boundary metadata to do that without risking protected force coordinates. 0.33 cleans the labels it can prove while preserving magic identity. A future Runyon editorial restructuring must carry stable destination IDs or an explicit presentation-to-engine map.
+
+Phone test requested: Landing mask; Contents appearance/labels across several books (especially Thurber, Parker, Runyon); Reader appearance; Cover→Contents slide; Contents→Reader slide; reader horizontal drag + vertical scroll.
