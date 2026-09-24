@@ -1,0 +1,43 @@
+name: GUTS 0.33 build
+on:
+  push:
+    paths: ['.github/workflows/guts033.yml']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply 0.33 pass
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          assert 'v0.32-drag-pages' in s and '>0.32</span>' in s
+          s=s.replace('v0.32-drag-pages','v0.33-poet-editorial',1).replace('>0.32</span>','>0.33</span>',1)
+          s=s.replace('.carousel-mask{position:absolute;left:5.5%;right:5.5%;top:46.6%;height:3.8%;background:#fff;z-index:2;pointer-events:none}', '.carousel-mask{position:absolute;left:5.5%;right:5.5%;top:46.6%;height:2.35%;background:#fff;z-index:2;pointer-events:none}',1)
+          extra='''.contents-wrap{background:#f7f3e8}.contents{padding:26px 22px 52px;background:#f7f3e8;color:#26231d;min-height:calc(100vh - 44px)}.contents h1{font:small-caps 29px/1.1 Georgia,serif;letter-spacing:.035em;text-align:center;margin:8px 0 22px;padding:0 0 13px;border-bottom:1px solid #9c927d}.chapter{position:relative;padding:13px 30px 13px 4px;border:0;border-bottom:1px dotted #b8ae99;background:transparent;font:17px/1.3 Georgia,serif;color:#2f5f86;text-decoration:none}.chapter:after{content:'›';position:absolute;right:6px;top:10px;color:#857b69;font:22px Georgia,serif}.reader-wrap,.reader,.page{background:#fbf8ef}.top{background:#f3efe4;border-bottom:1px solid #b8ae99;color:#363126}.top b{font-family:Georgia,serif;font-weight:normal;font-size:14px}.top button{color:#315f83}.page{padding:28px 25px 62px;font:18.5px/1.55 Georgia,serif;color:#29261f}.page p{margin:0 0 .92em}.page p:first-child{margin-top:2px}.pageno{bottom:11px;font:11px Georgia,serif;color:#827968}'''
+          s=s.replace('</style>',extra+'</style>',1)
+          anchor='function meta(id){return META.find(x=>x.id===id)}'
+          editorial="""function tocTitle(c,i){let t=String(c.title||'').trim();const ps=c.pages&&c.pages[0]&&c.pages[0].paragraphs||[];if(/^COLLECTION\\b/i.test(t))t=t.replace(/^COLLECTION\\s*[—-]\\s*/i,'').replace(/^(MORE THAN SOMEWHAT|FURTHERMORE)\\s+/i,'');if(/^CHAPTER\\b/i.test(t)&&ps[1]&&ps[1].length<90&&ps[1]===ps[1].toUpperCase())t=t+' — '+ps[1].replace(/^THE\\s+/,'The ');if(t==='Book'){if(state.book&&state.book.id==='dp')return 'The Men I’m Not Married To';if(ps[0]&&ps[0].length<90)return ps[0];return 'Opening';}return t||('Chapter '+(i+1))}function meta(id){return META.find(x=>x.id===id)}"""
+          assert anchor in s
+          s=s.replace(anchor,editorial,1)
+          old="esc(c.title||('Chapter '+(i+1)))"
+          assert old in s
+          s=s.replace(old,'esc(tocTitle(c,i))',1)
+          p.write_text(s)
+          st=Path('CURRENT_STATE.md')
+          x=st.read_text()
+          x=x.replace('## Known-good baseline: 0.32','## Known-good baseline: 0.32 — 0.33 awaiting phone test',1)
+          x += '''\n\n## 13. BUILD 0.33 — AWAITING STANLEY PHONE TEST\n\n0.33 is a deliberately presentation-layer pass over the known-good 0.32 runtime. It does **not** alter READY/ARMED/PAID/CLEAN logic, dwell/payoff, selected-chapter protection, page-drag mechanics, Pre-Page hotspots, carousel mechanics, Suggestions placement, or book page arrays.\n\nChanges:\n- Contents given a visibly book/Gutenberg-like warm-paper treatment, clearer hierarchy and chapter rows.\n- Reader given matching warm-paper typography, spacing and restrained navigation furniture.\n- Contents labels cleaned at display time only: collection boilerplate removed; CHAPTER labels can include the adjacent genuine all-caps chapter title; generic first group gets a meaningful opening label where safely inferable. Underlying `ci`/`pi` identities remain unchanged.\n- Landing carousel mask shortened from 3.8% to 2.35% height, preserving its top edge, to stop covering legitimate faux-text below.\n- Landing build stamp changed to 0.33.\n\nImportant: Runyon's deeper story-level Contents problem is **not solved by inventing new `ci` boundaries** in this build. The current primed runtime data does not safely expose enough story-boundary metadata to do that without risking protected force coordinates. 0.33 cleans the labels it can prove while preserving magic identity. A future Runyon editorial restructuring must carry stable destination IDs or an explicit presentation-to-engine map.\n\nPhone test requested: Landing mask; Contents appearance/labels across several books (especially Thurber, Parker, Runyon); Reader appearance; Cover→Contents slide; Contents→Reader slide; reader horizontal drag + vertical scroll.\n'''
+          st.write_text(x)
+          PY
+      - name: Commit 0.33
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html CURRENT_STATE.md
+          git commit -m 'GUTS 0.33 Contents Reader editorial visual pass'
+          git push
