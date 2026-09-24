@@ -1,0 +1,34 @@
+name: GUTS 0.35 restore and Parker placeholder
+on:
+  push:
+    paths: ['.github/workflows/guts035_restore_parker.yml']
+permissions:
+  contents: write
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Restore known-good 0.35 and add Parker placeholder
+        run: |
+          git show 8a0afafb3e1312ef146f72f3666d06eaa623e56f:index.html > index.html
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          s=s.replace('grid-template-columns:repeat(8,1fr)','grid-template-columns:repeat(9,1fr)')
+          needle='{id:"huck",title:"Adventures of Huckleberry Finn",author:"Mark Twain",file:"PERFORMANCE35/huck_035.json",legacy:true},'
+          parker='{id:"dp",title:"Men I’m Not Married To",author:"Dorothy Parker",file:"PRIMED/DP_GUTS_PRIME2.json"},'
+          if needle not in s: raise SystemExit('Huck META anchor missing')
+          s=s.replace(needle,needle+parker,1)
+          s=s.replace('const DISPLAY=["jt","jeeves","farewell","aam","huck","dr","ac","jj"]','const DISPLAY=["jt","jeeves","farewell","aam","huck","dp","dr","ac","jj"]',1)
+          p.write_text(s)
+          PY
+      - name: Commit repaired live 0.35
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Restore live 0.35 with Parker placeholder'
+          git push
