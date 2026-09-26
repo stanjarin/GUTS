@@ -2,7 +2,9 @@
 
 **Authoritative checkpoint: 27 September 2026**
 
-Start here. This file supersedes stale TODO/current-state material in older README sections and chat history.
+**For a fresh developer/AI or disaster recovery, read `GUTS_HANDOVER_2026-09-27.md` first, then this file.** The handover contains the full architecture, production paths, Worker routes, corpus/library rules, recovery procedure, stale-document warnings and account dependencies.
+
+This file supersedes stale TODO/current-state material in older README sections and chat history.
 
 ## Current production state
 
@@ -104,7 +106,7 @@ Functional/state machinery was not deliberately changed during the final visible
 
 Before doing new GUTS work:
 
-1. Read this file first.
+1. Read `GUTS_HANDOVER_2026-09-27.md`, then this file.
 2. Treat `GUTS-035-KNOWN-GOOD` as the rollback baseline.
 3. Determine the actual next outstanding item from current code/project notes; do not resurrect old TODO items from chat.
 4. Use multi-pass changes for risky work, with internal inspection between passes and Stanley brought in only for the compact final visible test unless his phone is genuinely required earlier.
