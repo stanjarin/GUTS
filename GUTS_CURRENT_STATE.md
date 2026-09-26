@@ -76,11 +76,17 @@ When checking a deployment, use **View all deployments** as the authoritative tr
 
 When asking Stanley to inspect Cloudflare, always give him the **exact human-readable Cloudflare/Git commit description/name tag to look for**, not merely a SHA, version ID, or “latest deployment.”
 
-## Current Reader/library caution
+## Parker placeholder / library expansion
 
-The current Reader still contains Dorothy Parker / `dp` (*Men I’m Not Married To*) in its source/library data. This was noticed during the cleanup audit and deliberately left untouched because it is real project functionality/data, not diagnostic rubbish.
+Dorothy Parker / `dp` (*Men I’m Not Married To*) is **intentionally a placeholder** in the current 0.35 library. Do not spend development time repairing or PERFORMANCE35-building Parker.
 
-Do not remove or alter Parker merely as housekeeping. Investigate current intended library composition before changing it.
+Reason: the title contains unsuitable extremely short / one-line chapter structures, which do not fit the plausible GUTS book/page performance model. Parker is therefore a marked seat awaiting a different Gutenberg title.
+
+The eventual task is to **replace Parker with a structurally suitable title**, not to fix Parker.
+
+The library is also intentionally allowed to grow rather than remaining locked at nine books. Stanley may broaden spectator choice to **up to about 12 books**, which is considered ample. New books should use the established PERFORMANCE35 production treatment and common GUTS state/transport architecture; they do not require a new magic/state system merely because the library grows.
+
+Practical expansion work per title includes suitable source selection, chapter/Contents structure, PERFORMANCE35 pagination and socket/force-paragraph preparation, cover/carousel entry and hit target, and mechanical QA. If library growth creates a limit, expect the first constraint to be landing/carousel presentation rather than the core ARMED/CLEAN/PAID or Cloudflare/KV architecture.
 
 ## Signed-off / do not reopen casually
 
