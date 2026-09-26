@@ -1,7 +1,6 @@
 name: GUTS 0.35 Reader deployment
 on:
-  push:
-    paths: ['.github/workflows/guts035_deploy.yml']
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -9,24 +8,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Wire 0.35 corpus into Reader
+      - name: Wire 0.35 corpus into Reader safely
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p=Path('index.html'); s=p.read_text()
-          s=s.replace('v0.34-reader-toc','v0.35-performance-reader')
-          old='const META=[{id:"aam",title:"The House at Pooh Corner",author:"A. A. Milne",file:"PRIMED/AAM_GUTS_PRIME2.json"},{id:"jeeves",title:"Right Ho, Jeeves!",author:"P. G. Wodehouse",file:"https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/jeeves.json",legacy:true},{id:"farewell",title:"A Farewell to Arms",author:"Ernest Hemingway",file:"https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/farewell.json",legacy:true},{id:"huck",title:"Adventures of Huckleberry Finn",author:"Mark Twain",file:"https://raw.githubusercontent.com/stanjarin/NoBoNoFo/main/books/huck.json",legacy:true},{id:"dp",title:"Men I’m Not Married To",author:"Dorothy Parker",file:"PRIMED/DP_GUTS_PRIME2.json"},{id:"dr",title:"On Broadway",author:"Damon Runyon",file:"PRIMED/DR_GUTS_PRIME2.json"},{id:"ac",title:"The Murder at the Vicarage",author:"Agatha Christie",file:"PRIMED/AC_GUTS_PRIME2.json"},{id:"jj",title:"Ulysses",author:"James Joyce",file:"PRIMED/JJ_GUTS_PRIME2.json"},{id:"jt",title:"My Life and Hard Times",author:"James Thurber",file:"PRIMED/JT_GUTS_PRIME2.json"}];const DISPLAY=["jt","jeeves","farewell","aam","huck","dp","dr","ac","jj"];'
-          new='const META=[{id:"aam",title:"The House at Pooh Corner",author:"A. A. Milne",file:"PERFORMANCE35/aam_035.json",legacy:true},{id:"jeeves",title:"Right Ho, Jeeves!",author:"P. G. Wodehouse",file:"PERFORMANCE35/jeeves_035.json",legacy:true},{id:"farewell",title:"A Farewell to Arms",author:"Ernest Hemingway",file:"PERFORMANCE35/farewell_035.json",legacy:true},{id:"huck",title:"Adventures of Huckleberry Finn",author:"Mark Twain",file:"PERFORMANCE35/huck_035.json",legacy:true},{id:"dr",title:"On Broadway",author:"Damon Runyon",file:"PERFORMANCE35/dr_035.json",legacy:true},{id:"ac",title:"The Murder at the Vicarage",author:"Agatha Christie",file:"PERFORMANCE35/ac_035.json",legacy:true},{id:"jj",title:"Ulysses",author:"James Joyce",file:"PERFORMANCE35/jj_035.json",legacy:true},{id:"jt",title:"My Life and Hard Times",author:"James Thurber",file:"PERFORMANCE35/jt_035.json",legacy:true}];const DISPLAY=["jt","jeeves","farewell","aam","huck","dr","ac","jj"];'
-          if old not in s: raise SystemExit('META signature not found; refusing unsafe deploy')
-          s=s.replace(old,new)
-          s=s.replace('grid-template-columns:repeat(9,1fr)','grid-template-columns:repeat(8,1fr)')
-          # Parker has no live 0.35 slot; keep source/assets untouched in repo.
+          # This workflow is retained as a manual/recovery tool. It accepts an
+          # already-live 0.35 Reader and refuses to manufacture an unknown state.
+          if 'v0.35-performance-reader' not in s:
+              raise SystemExit('Expected 0.35 Reader marker not found; refusing unsafe deploy')
+          # Keep the visible build stamp truthful.
+          s=s.replace('<span class="buildstamp">0.34</span>', '<span class="buildstamp">0.35</span>')
+          if '<span class="buildstamp">0.35</span>' not in s:
+              raise SystemExit('0.35 build stamp not found; refusing unsafe deploy')
           p.write_text(s)
+          # Cloudflare serves ./public, so the served Reader must be the same file.
+          Path('public/index.html').write_text(s)
           PY
-      - name: Commit live 0.35
+      - name: Commit synchronised 0.35 Reader
         run: |
           git config user.name 'GUTS builder'
           git config user.email 'actions@users.noreply.github.com'
-          git add index.html
-          git commit -m 'Deploy GUTS 0.35 performance Reader'
-          git push
+          git add index.html public/index.html
+          if git diff --cached --quiet; then
+            echo 'Reader already synchronised; nothing to commit.'
+          else
+            git commit -m 'Synchronise GUTS 0.35 Reader and served copy'
+            git push
+          fi
