@@ -43,9 +43,6 @@ async function writeSession(env, id, phase, word = "") {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === "/__guts_version") {
-      return new Response("GUTS-035-PUBLIC", { status: 200, headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } });
-    }
     if (url.pathname === "/api/alias/bootstrap") {
       if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
       let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400); }
