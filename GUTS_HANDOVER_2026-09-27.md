@@ -15,7 +15,7 @@ Read in this order before changing code:
 5. Current `index.html` and `public/index.html`.
 6. Current `src/worker.js` and root `wrangler.jsonc`.
 7. `PERFORMANCE35/BUILD_REPORT.md`, `PERFORMANCE35/AUDIT.md`, `PERFORMANCE35/STRUCTURE_REPORT.md`.
-8. Historical engineering references as needed: `README.md`, `ENGINE_v0.1.md`, `CLOUDFLARE_BRIDGE_v0.1.md`, `H2_PUSH_SEAM_v0.1.md`, `cloudflare/README.md`.
+8. Historical engineering references as needed: `README.md`, `ENGINE_v0.1.md`, `CLOUDFLARE_BRIDGE_v0.1.md`, `H2_PUSH_SEAM_v0.1.md`, and `LEGACY_DO_NOT_DEPLOY/cloudflare/README.md`.
 
 Older files are history, not automatically current truth. In particular `IF_CHATGPT_DIES_READ_THIS.md` is a valuable 24 September handover but its v0.26 resume point is obsolete. `CURRENT_STATE.md` and old README checkpoints may likewise describe earlier builds.
 
@@ -116,13 +116,17 @@ Root config uses:
 - `run_worker_first: true`
 - KV binding `GUTS_STATE`
 
-### Legacy/alternate Cloudflare directory
+### Legacy Cloudflare material — quarantined
 
-`cloudflare/` also contains older/reference Worker deployment material including `cloudflare/wrangler.toml` and `cloudflare/src/`.
+The former root `cloudflare/` directory has been moved intact to `LEGACY_DO_NOT_DEPLOY/cloudflare/`.
 
-Important: that config serves `..`, not `./public`, and explicitly contains `keep_vars = true` plus required-secret documentation. Do not confuse it with the root `wrangler.jsonc` production path established on 24 September. Treat `cloudflare/` as historical/reference unless current deployment evidence says otherwise.
+It contains older/reference Worker deployment material including `LEGACY_DO_NOT_DEPLOY/cloudflare/wrangler.toml` and `LEGACY_DO_NOT_DEPLOY/cloudflare/src/`.
 
-The old `cloudflare/README.md` also describes an earlier single-global-state contract and says PAID is local. Current root Worker has since grown session/alias/rehearsal routes; inspect `src/worker.js` rather than treating the old README as exhaustive.
+Important: that legacy config serves `..`, not `./public`, and explicitly contains `keep_vars = true` plus required-secret documentation. It is **not the current production deployment path and must not be deployed accidentally**. Current production uses root `wrangler.jsonc` and root `src/worker.js`.
+
+The old `LEGACY_DO_NOT_DEPLOY/cloudflare/README.md` describes an earlier single-global-state contract and says PAID is local. Current root Worker has since grown session/alias/rehearsal routes; inspect `src/worker.js` rather than treating the old README as exhaustive.
+
+Completed one-shot 0.34/0.35 repair workflows have likewise been moved under `LEGACY_DO_NOT_DEPLOY/.github/workflows/`. See `LEGACY_DO_NOT_DEPLOY/README.md` before using anything in the quarantine directory.
 
 ## 5. Runtime bindings / secrets
 
@@ -300,18 +304,13 @@ Whenever Stanley is asked to inspect Cloudflare, give him the **exact human-read
 
 ## 12. GitHub workflows — caution
 
-`.github/workflows/` contains both useful current/recovery tooling and historical one-shot repair/build workflows from the 0.34/0.35 development episode.
+Active `.github/workflows/` contains the workflows retained as current/recovery/build/audit tooling. Completed one-shot repair workflows removed from the active workflow directory are preserved under `LEGACY_DO_NOT_DEPLOY/.github/workflows/` for provenance only.
 
-Do not assume every workflow is safe to run merely because it exists. Read it first and determine whether it is:
-
-- current production/recovery tooling
-- a builder/auditor
-- a historical one-shot repair
-- obsolete for the current served path
+Do not assume any workflow is safe to run merely because it exists. Read it first and determine whether it is current production/recovery tooling or a builder/auditor.
 
 The retained `guts035_deploy.yml` was deliberately converted to manual/recovery-only after the stamp incident.
 
-Do not delete old workflows as “cleanup” without first establishing whether they are useful provenance/recovery material.
+Anything under `LEGACY_DO_NOT_DEPLOY/` is quarantined historical material and must not be deployed or restored to an active path without deliberate review.
 
 ## 13. Known stale documentation / contradictions
 
@@ -319,8 +318,8 @@ A replacement developer must know these exist:
 
 - `IF_CHATGPT_DIES_READ_THIS.md` says current build v0.26 and lists UI defects that have since been fixed. Historical only after this handover.
 - Older `CURRENT_STATE.md`/README sections contain earlier checkpoints. Later authority wins.
-- `cloudflare/README.md` describes an earlier simpler backend contract; current root Worker has additional session/alias/rehearsal machinery.
-- `cloudflare/wrangler.toml` and root `wrangler.jsonc` describe different asset roots. Current production was deliberately moved to the clean `public` bundle; root `wrangler.jsonc` is the relevant current deployment config unless Cloudflare evidence proves otherwise.
+- `LEGACY_DO_NOT_DEPLOY/cloudflare/README.md` describes an earlier simpler backend contract; current root Worker has additional session/alias/rehearsal machinery.
+- `LEGACY_DO_NOT_DEPLOY/cloudflare/wrangler.toml` and root `wrangler.jsonc` describe different asset roots. The former is quarantined historical configuration; current production uses the clean `public` bundle via root `wrangler.jsonc`.
 
 Do not “resolve” these contradictions by deleting history. Use this handover/current-state pair to disambiguate them.
 
@@ -362,29 +361,30 @@ If a new change breaks production, rollback to known-good history. Do not rebuil
 - H2 PUSH / GUT PULL architecture
 - signed-off READY/ARMED/PAID/CLEAN behaviour
 - chapter-opener/payoff protection
-- corpus wording/order merely to fix presentation
-- secret handling
-- fake→real Gutenberg camouflage
-- deliberate Gutenberg visual brutality
-- phone-first design by adding unnecessary tablet/desktop complexity
-- working weirdness solely for code elegance
+- corpus wording/pagination/socket machinery
+- deliberate Gutenberg camouflage/ugliness
+- production artwork
+- rollback branch
 
-## 17. Current next development direction
+## 17. Immediate future work
 
-There is **no outstanding 0.35 housekeeping job**.
+There is no outstanding emergency repair after 0.35.
 
-The next substantive content direction, when Stanley chooses to proceed, is library development:
+Likely future work is deliberate product development, especially:
 
-- find a suitable replacement for Parker
-- optionally add further suitable titles
-- likely target: up to about **12 total books**
+- replace Parker with a suitable title
+- possibly expand the library toward roughly 12 books
+- create corresponding covers/carousel art and mappings
+- continue editorial/visual refinement only where Stanley identifies an actual need
 
-Do not start that work automatically. Title choice is editorial/performance work and should be agreed with Stanley before corpus generation.
+Do not manufacture work from stale TODO lists.
 
-## 18. Handover status
+## 18. Legacy quarantine
 
-At this checkpoint:
+`LEGACY_DO_NOT_DEPLOY/` is the repository junk drawer for material deliberately removed from active production paths while preserving provenance/recovery history.
 
-**GUTS 0.35 = WORKING / CLEANUP COMPLETE / VISIBLE PHONE QA PASSED / KNOWN-GOOD ROLLBACK PRESERVED.**
+Its contents are not current instructions. Read `LEGACY_DO_NOT_DEPLOY/README.md` before touching them. Nothing inside that directory should be deployed, copied back into an active path, or treated as production authority merely because it once was.
 
-The next person should preserve the machine first, understand it second, and change it third.
+---
+
+**Current recovery sentence:** GUTS 0.35 is the verified phone-tested production baseline; root `wrangler.jsonc` + root `src/worker.js` + `public/` are the active Cloudflare deployment path; `GUTS-035-KNOWN-GOOD` is the frozen rollback branch; obsolete alternate Cloudflare material and completed one-shot repair workflows live under `LEGACY_DO_NOT_DEPLOY/`; preserve signed-off magic/state/corpus behaviour and make future changes narrowly.
