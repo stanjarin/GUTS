@@ -121,3 +121,25 @@ Primary evidence used:
 - Git comparison from the initial PERFORMANCE35 build to current `contents-repair`, confirming only Runyon and Joyce performance JSONs were subsequently structurally modified.
 
 **AUDIT RESULT: two genuine mapping repairs (Runyon, Joyce); one editorial decision (Christie); five structurally sound books (Pooh, Thurber, Jeeves, Huck, Farewell).**
+
+
+## Post-audit repair result
+
+The first audit concluded that Runyon/Joyce might be repairable by regrouping existing prepared pages. A deeper boundary scan disproved that: genuine story/episode starts often occur mid-page in the prepared stream.
+
+That new evidence forced a narrow rebuild of **Runyon and Joyce only** from the untouched PRIME sources, using the established 0.35 pagination and air-lock/socket algorithm.
+
+Result:
+- Runyon: 47 genuine stories, 742 pages.
+- Joyce: 18 genuine episodes, 725 pages.
+- genuine source openings restored;
+- genuine token order preserved;
+- one canonical `$$$` socket per prepared page;
+- no `$$$` in genuine paragraph text;
+- root and `public/PERFORMANCE35` copies kept synchronised on `contents-repair`.
+
+Mechanical QA is recorded in `RUNYON_JOYCE_REBUILD_QA.md`.
+
+This supersedes the earlier “mapping-only unless necessary” assumption for these two books. The rebuild was necessary because the genuine starts did not coincide with the existing prepared-page boundaries.
+
+**Production `main` remains untouched.**
