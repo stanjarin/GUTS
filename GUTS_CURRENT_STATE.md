@@ -2,7 +2,7 @@
 
 **Authoritative checkpoint: 27 September 2026 — emergency handover**
 
-Read `GUTS_HANDOVER_2026-09-27.md` first and `GUTS_OHS_RECOVERY.md` before any write/deploy action.
+Read `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` first, then this file, and `GUTS_OHS_RECOVERY.md` before any write/deploy action. `GUTS_HANDOVER_2026-09-27.md` remains the detailed architecture manual beneath the later emergency overlay.
 
 ## Branch / production truth
 
