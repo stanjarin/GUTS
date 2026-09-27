@@ -86,4 +86,4 @@ jobs:
           git commit -m 'Record post-hardening QA'
           git push origin HEAD:contents-repair
 
-# trigger
+# trigger after clean restore
