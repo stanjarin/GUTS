@@ -1,4 +1,4 @@
-name: One-shot authoritative Contents tables
+name: Apply authoritative Contents tables
 on:
   push:
     branches: [main]
@@ -10,31 +10,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install authoritative Contents metadata
+      - name: Install authoritative Contents tables
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          old_start='function chapterWords(ps){'
-          old_end='function displayParas(paras)'
-          tables="""const AUTH_TOC={
-aam:[\"In Which a House Is Built at Pooh Corner for Eeyore\",\"In Which Tigger Comes to the Forest and Has Breakfast\",\"In Which a Search Is Organdized, and Piglet Nearly Meets the Heffalump Again\",\"In Which It Is Shown That Tiggers Don't Climb Trees\",\"In Which Rabbit Has a Busy Day, and We Learn What Christopher Robin Does in the Mornings\",\"In Which Pooh Invents a New Game and Eeyore Joins In\",\"In Which Tigger Is Unbounced\",\"In Which Piglet Does a Very Grand Thing\",\"In Which Eeyore Finds the Wolery and Owl Moves Into It\",\"In Which Christopher Robin and Pooh Come to an Enchanted Place, and We Leave Them There\"],
-ac:Array.from({length:32},(_,i)=>\"Chapter \"+(i+1)),
-dp:[\"Freddie\",\"Mortimer\",\"Raymond\",\"Charlie\",\"Lloyd\",\"Henry\",\"Joe\",\"Oliver\",\"Albert\"],
-dr:[\"Breach of Promise\",\"Romance in the Roaring Forties\",\"Dream Street Rose\",\"The Old Doll's House\",\"Blood Pressure\",\"The Bloodhounds of Broadway\",\"Tobias the Terrible\",\"The Snatching of Bookie Bob\",\"The Lily of St. Pierre\",\"Hold 'em, Yale!\",\"Earthquake\",\"'Gentlemen, the King!'\",\"A Nice Price\",\"Broadway Financier\",\"The Brain Goes Home\",\"Madame La Gimp\",\"Dancing Dan's Christmas\",\"Sense of Humour\",\"Lillian\",\"Little Miss Marker\",\"Pick the Winner\",\"Undertaker Song\",\"Butch Minds the Baby\",\"The Hottest Guy in the World\",\"The Lemon Drop Kid\",\"What, No Butler?\",\"The Three Wise Guys\",\"A Very Honourable Guy\",\"Princess O'Hara\",\"Social Error\",\"Tight Shoes\",\"Lonely Heart\",\"The Brakeman's Daughter\",\"Cemetery Bait\",\"It Comes Up Mud\",\"The Big Umbrella\",\"For a Pal\",\"Big Shoulders\",\"That Ever-Loving Wife of Hymie's\",\"Neat Strip\",\"Bred for Battle\",\"Too Much Pep\",\"Baseball Hattie\",\"Situation Wanted\",\"A Piece of Pie\",\"A Job for the Macarone\",\"All Horse Players Die Broke\"],
-jj:[\"Telemachus\",\"Nestor\",\"Proteus\",\"Calypso\",\"Lotus Eaters\",\"Hades\",\"Aeolus\",\"Lestrygonians\",\"Scylla and Charybdis\",\"Wandering Rocks\",\"Sirens\",\"Cyclops\",\"Nausicaa\",\"Oxen of the Sun\",\"Circe\",\"Eumaeus\",\"Ithaca\",\"Penelope\"],
-jt:[\"Preface to a Life\",\"The Night the Bed Fell\",\"The Car We Had to Push\",\"The Day the Dam Broke\",\"The Night the Ghost Got In\",\"More Alarms at Night\",\"A Sequence of Servants\",\"The Dog That Bit People\",\"University Days\",\"Draft Board Nights\",\"A Note at the End\"]};
-function tocTitle(c,i){const id=state.book&&state.book.id,a=AUTH_TOC[id];if(a&&a[i]){if(id==='aam')return 'Chapter '+(i+1)+' — '+a[i];return a[i]}let t=String(c.title||'').trim(),ps=c.pages&&c.pages[0]&&c.pages[0].paragraphs||[],n=i+1;if(['jeeves','farewell'].includes(id))return 'Chapter '+n;if(/^COLLECTION\\b/i.test(t))t=t.replace(/^COLLECTION\\s*[—-]\\s*/i,'').replace(/^(MORE THAN SOMEWHAT|FURTHERMORE)\\s+/i,'');if(/^CHAPTER\\b/i.test(t)&&ps[1]&&ps[1].length<90&&ps[1]===ps[1].toUpperCase())t=t+' — '+ps[1].replace(/^THE\\s+/,'The ');if(t==='Book'){if(ps[0]&&ps[0].length<90)return ps[0];return 'Opening'}return t||('Chapter '+n)}
-"""
+          import re, json
+          T={
+          'aam':["Chapter I — In Which a House Is Built at Pooh Corner for Eeyore","Chapter II — In Which Tigger Comes to the Forest and Has Breakfast","Chapter III — In Which a Search Is Organdized, and Piglet Nearly Meets the Heffalump Again","Chapter IV — In Which It Is Shown That Tiggers Don't Climb Trees","Chapter V — In Which Rabbit Has a Busy Day, and We Learn What Christopher Robin Does in the Mornings","Chapter VI — In Which Pooh Invents a New Game and Eeyore Joins In","Chapter VII — In Which Tigger Is Unbounced","Chapter VIII — In Which Piglet Does a Very Grand Thing","Chapter IX — In Which Eeyore Finds the Wolery and Owl Moves Into It","Chapter X — In Which Christopher Robin and Pooh Come to an Enchanted Place, and We Leave Them There"],
+          'ac':[f'Chapter {i}' for i in range(1,33)],
+          'jt':["Preface to a Life","The Night the Bed Fell","The Car We Had to Push","The Day the Dam Broke","The Night the Ghost Got In","More Alarms at Night","A Sequence of Servants","The Dog That Bit People","University Days","Draft Board Nights","A Note at the End"],
+          'dp':["Freddie","Mortimer","Raymond","Charlie","Lloyd","Henry","Joe","Oliver","Albert"],
+          'dr':["Breach of Promise","Romance in the Roaring Forties","Dream Street Rose","The Old Doll's House","Blood Pressure","The Bloodhounds of Broadway","Tobias the Terrible","The Snatching of Bookie Bob","The Lily of St. Pierre","Hold 'em, Yale!","Earthquake","'Gentlemen, the King!'","A Nice Price","Broadway Financier","The Brain Goes Home","Madame La Gimp","Dancing Dan's Christmas","Sense of Humour","Lillian","Little Miss Marker","Pick the Winner","Undertaker Song","Butch Minds the Baby","The Hottest Guy in the World","The Lemon Drop Kid","What, No Butler?","The Three Wise Guys","A Very Honourable Guy","Princess O'Hara","Social Error","Tight Shoes","Lonely Heart","The Brakeman's Daughter","Cemetery Bait","It Comes Up Mud","The Big Umbrella","For a Pal","Big Shoulders","That Ever-Loving Wife of Hymie's","Neat Strip","Bred for Battle","Too Much Pep","Baseball Hattie","Situation Wanted","A Piece of Pie","A Job for the Macarone","All Horse Players Die Broke"],
+          'jj':["Telemachus","Nestor","Proteus","Calypso","Lotus Eaters","Hades","Aeolus","Lestrygonians","Scylla and Charybdis","Wandering Rocks","Sirens","Cyclops","Nausicaa","Oxen of the Sun","Circe","Eumaeus","Ithaca","Penelope"]}
+          js='const AUTH_TOC='+json.dumps(T,ensure_ascii=False,separators=(',',':'))+';function tocTitle(c,i){const id=state.book&&state.book.id,a=AUTH_TOC[id];if(a&&a[i])return a[i];let t=String(c.title||\"\").trim();if(/^COLLECTION\\b/i.test(t))t=t.replace(/^COLLECTION\\s*[—-]\\s*/i,\"\").replace(/^(MORE THAN SOMEWHAT|FURTHERMORE)\\s+/i,\"\");return t||(\"Chapter \"+(i+1))}'
+          pat=r'function chapterWords\(ps\)\{.*?\}function tocTitle\(c,i\)\{.*?\}(?=function displayParas)'
           for fn in ('index.html','public/index.html'):
               p=Path(fn); s=p.read_text()
-              a=s.find(old_start); b=s.find(old_end)
-              if a<0 or b<0 or b<=a: raise SystemExit(f'Contents block not found in {fn}')
-              p.write_text(s[:a]+tables+s[b:])
+              s2,n=re.subn(pat,js,s,count=1,flags=re.S)
+              if n!=1: raise SystemExit(f'Contents function not found exactly once in {fn}: {n}')
+              p.write_text(s2)
           PY
       - name: Commit patch
         run: |
           git config user.name 'GUTS builder'
           git config user.email 'actions@users.noreply.github.com'
           git add index.html public/index.html
-          git commit -m 'Use authoritative Contents tables'
+          git diff --cached --quiet && exit 0
+          git commit -m 'Install authoritative Contents tables'
           git push
