@@ -1,0 +1,77 @@
+name: NoBo socket anomaly forensic
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/nobo_socket_forensic.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: stanjarin/NoBoNoFo
+          ref: main
+          path: nobo
+      - uses: actions/checkout@v4
+        with:
+          ref: contents-repair
+          path: guts
+      - name: Inspect HST and Sot-Weed socket anomalies
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,collections,re
+          N=pathlib.Path('nobo')
+          out=['# NoBo socket anomaly forensic','']
+          total_pages=total_sockets=0
+          for name in ['bloomfield','farewell','h2g2','hst','huck','jeeves','jobs','keef','sotweed']:
+              d=json.load(open(N/'books'/f'{name}.json'))
+              pages=[(ci,pi,c,p) for ci,c in enumerate(d['chapters']) for pi,p in enumerate(c.get('pages',[]))]
+              sc=[]
+              for ci,pi,c,p in pages:
+                  n='\n'.join(map(str,p.get('force_paragraphs',[]))).count('$$$')
+                  sc.append(n)
+              total_pages+=len(pages);total_sockets+=sum(sc)
+              out.append(f'- {name}: pages={len(pages)} sockets={sum(sc)} distribution={dict(sorted(collections.Counter(sc).items()))}')
+          out += ['',f'**TOTAL current book pages: {total_pages}**',f'**TOTAL current $$$ tokens in force_paragraphs: {total_sockets}**','']
+          d=json.load(open(N/'books/hst.json'))
+          out.append('## HST abnormal pages')
+          for ci,c in enumerate(d['chapters']):
+              for pi,p in enumerate(c.get('pages',[])):
+                  fp=p.get('force_paragraphs',[])
+                  n='\n'.join(map(str,fp)).count('$$$')
+                  if n!=1:
+                      out += [f'### chapter {ci+1} / page {pi+1} — {c.get("title","")}',f'- marker count: {n}',f'- genuine paragraphs: {p.get("paragraphs",[])}',f'- force paragraphs: {fp}','']
+          d=json.load(open(N/'books/sotweed.json'))
+          out.append('## Sot-Weed marker pattern')
+          dist=collections.Counter()
+          samples={}
+          multi_positions=collections.Counter()
+          for ci,c in enumerate(d['chapters']):
+              for pi,p in enumerate(c.get('pages',[])):
+                  fp=p.get('force_paragraphs',[])
+                  counts=[str(x).count('$$$') for x in fp]
+                  n=sum(counts);dist[n]+=1
+                  multi_positions[tuple(i for i,x in enumerate(counts) if x)] += 1
+                  if n not in samples: samples[n]=(ci+1,pi+1,c.get('title',''),p.get('paragraphs',[]),fp,counts)
+          out.append(f'- total marker-count distribution: {dict(sorted(dist.items()))}')
+          out.append(f'- marker paragraph-index patterns: {dict(multi_positions.most_common(20))}')
+          for n,(ci,pi,title,genuine,fp,counts) in sorted(samples.items()):
+              out += [f'### sample with {n} markers — chapter {ci} page {pi} — {title}',f'- per-force-paragraph marker counts: {counts}',f'- genuine: {genuine}',f'- force: {fp}','']
+          # Compare README claims to current corpus.
+          readme=(N/'README.md').read_text()
+          out += ['## README-vs-current-corpus check',f'- README text: {readme.strip()}',
+                  f'- current corpus pages counted directly: {total_pages}',
+                  f'- current force-paragraph $$$ tokens counted directly: {total_sockets}']
+          pathlib.Path('guts/NOBO_SOCKET_FORENSIC_2026-09-27.md').write_text('\n'.join(out))
+          PY
+      - name: Commit report
+        working-directory: guts
+        run: |
+          git config user.name 'GUTS audit'
+          git config user.email 'actions@users.noreply.github.com'
+          git add NOBO_SOCKET_FORENSIC_2026-09-27.md
+          git commit -m 'Forensic audit NoBo socket anomalies'
+          git push origin HEAD:contents-repair
