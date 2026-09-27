@@ -1,144 +1,93 @@
 # GUTS — CURRENT STATE
 
-**Authoritative checkpoint: 27 September 2026 — emergency handover**
+**Authoritative checkpoint: 27 September 2026 — post exhaustive GUTS + NoBo audit**
 
-Read `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` first, then this file, and `GUTS_OHS_RECOVERY.md` before any write/deploy action. `GUTS_HANDOVER_2026-09-27.md` remains the detailed architecture manual beneath the later emergency overlay.
-
-## Branch / production truth
-
-- Production branch: `main` — **DO NOT MODIFY during this audit**.
-- Verified `main` head at handover: `b662978d1de67304cc96ad78e3c224f2d2b75533` — `Install authoritative Contents tables`.
-- Working branch: `contents-repair`.
-- `contents-repair` was created from that current main.
-- First branch checkpoint commit: `c7b75c6f365cf5a7723256aa8ad84c05976e6a5a` — `Checkpoint GUTS at thread wall`.
-- Frozen rollback baseline also exists: `GUTS-035-KNOWN-GOOD`.
-- **Eight-book corpus provenance/integrity audit COMPLETED.** See `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`.
-- **No production corpus repair has been made since the branch was created.**
-
-## Production baseline
-
-- Spectator Reader: GUTS 0.35.
-- Domain: `gutenbrg.com`.
-- Reader metadata: `v0.35-performance-reader`.
-- Cloudflare serves `./public` via root `wrangler.jsonc`; Worker source is root `src/worker.js`.
-- Compact actual-phone QA of the 0.35 visible Reader previously passed: Landing, carousel/bounce, book → Contents → chapter, page movement both ways, return to Landing.
-- Landing overscroll material, cover → Contents slide, and page-flick slide are already implemented.
-
-## What triggered the stop
-
-The intended Contents cleanup ceased when inspection showed the problem is deeper than display labels.
-
-`PERFORMANCE35/ac_035.json` (Agatha Christie, *The Murder at the Vicarage*) itself begins with a `Chapter 5` chapter object and is discontinuous. This means the transformed performance corpus is suspect; the originals are not thereby presumed damaged or lost.
-
-Observed state at stop point:
-
-- **Pooh:** Contents clean.
-- **Thurber:** Contents clean.
-- **Runyon:** Contents titles correct, but selections can open on non-story-start pages; opening alignment needs audit.
-- **Joyce:** Contents titles correct, but selections can open on non-episode-start pages; opening alignment needs audit.
-- **Christie:** broken/discontinuous Contents and suspect transformed corpus.
-- **Parker:** parked/non-runner; do not spend repair time on it now.
-
-## Forensic audit result
-
-The eight active performance titles are now separated into three classes:
-
-- **Structurally sound:** Pooh, Thurber, Jeeves.
-- **Structurally sound with deliberate source-chapter cuts:** Huck, Farewell, Christie.
-- **Broken opening/group mapping from later equal-chunk regrouping:** Runyon, Joyce.
-
-Christie's discontinuity is now explained: the 0.35 builder deliberately retained source Chapters 5, 6, 11, 12, 22, 23, 24, 25, 26, 30 and 32 under its performance-depth rules. The retained destinations still begin at genuine chapter openings. Christie therefore needs an editorial/product decision, not forensic reconstruction.
-
-A deeper prepared-page scan then proved that many genuine Runyon story titles and Joyce episode markers sit inside the existing prepared pages. Therefore a grouping-only repair could not produce true opening pages without splitting prepared pages and disturbing socket geometry.
-
-Runyon and Joyce were consequently rebuilt **from the untouched PRIME sources only**, using the established 0.35 pagination/air-lock algorithm and the genuine source boundaries:
-- Runyon: **47 genuine stories / 742 pages**.
-- Joyce: **18 genuine episodes / 725 pages**. Episode XI (Sirens) is recovered at its genuine opening text because the PRIME extraction lacks an explicit "EPISODE XI" label there.
-- every rebuilt chapter/episode opens at its genuine source opening;
-- genuine token order is preserved;
-- every rebuilt page has exactly one `$# GUTS — CURRENT STATE
-
-**Authoritative checkpoint: 27 September 2026 — emergency handover**
-
-Read `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` first, then this file, and `GUTS_OHS_RECOVERY.md` before any write/deploy action. `GUTS_HANDOVER_2026-09-27.md` remains the detailed architecture manual beneath the later emergency overlay.
+Read this file first, then:
+1. `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
+2. `GUTS_OHS_RECOVERY.md`
+3. `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`
+4. `RUNYON_JOYCE_REBUILD_QA.md`
+5. `GUTS_HANDOVER_2026-09-27.md` for detailed architectural history
 
 ## Branch / production truth
 
-- Production branch: `main` — **DO NOT MODIFY during this audit**.
-- Verified `main` head at handover: `b662978d1de67304cc96ad78e3c224f2d2b75533` — `Install authoritative Contents tables`.
+- Production `main`: **DO NOT MODIFY casually**.
+- Verified production head: `b662978d1de67304cc96ad78e3c224f2d2b75533` — `Install authoritative Contents tables`.
 - Working branch: `contents-repair`.
-- `contents-repair` was created from that current main.
-- First branch checkpoint commit: `c7b75c6f365cf5a7723256aa8ad84c05976e6a5a` — `Checkpoint GUTS at thread wall`.
-- Frozen rollback baseline also exists: `GUTS-035-KNOWN-GOOD`.
-- **Eight-book corpus provenance/integrity audit COMPLETED.** See `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`.
-- **No production corpus repair has been made since the branch was created.**
+- Frozen rollback branch: `GUTS-035-KNOWN-GOOD`.
+- Production Reader: GUTS 0.35 / `v0.35-performance-reader`.
+- Cloudflare serves `./public`; Worker is root `src/worker.js`.
+- Root/public Reader and active corpus copies are currently synchronised on the branch.
 
-## Production baseline
+## Exhaustive audit complete
 
-- Spectator Reader: GUTS 0.35.
-- Domain: `gutenbrg.com`.
-- Reader metadata: `v0.35-performance-reader`.
-- Cloudflare serves `./public` via root `wrangler.jsonc`; Worker source is root `src/worker.js`.
-- Compact actual-phone QA of the 0.35 visible Reader previously passed: Landing, carousel/bounce, book → Contents → chapter, page movement both ways, return to Landing.
-- Landing overscroll material, cover → Contents slide, and page-flick slide are already implemented.
+Both repositories were read in full at the text/code/data level:
+- GUTS: 101 text/code/data files / 236,902 logical lines.
+- NoBo: 25 text/code/data files / 130,227 logical lines.
+- all JSON/webmanifest parsed;
+- all JavaScript/inline HTML scripts syntax-checked successfully.
 
-## What triggered the stop
+See `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`.
 
-The intended Contents cleanup ceased when inspection showed the problem is deeper than display labels.
+## Corpus state
 
-`PERFORMANCE35/ac_035.json` (Agatha Christie, *The Murder at the Vicarage*) itself begins with a `Chapter 5` chapter object and is discontinuous. This means the transformed performance corpus is suspect; the originals are not thereby presumed damaged or lost.
+- Pooh: sound.
+- Thurber: structurally sound; Contents table has one stale/unreachable extra terminal label.
+- Jeeves: sound.
+- Huck: sound; source Ch43 deliberately omitted.
+- Farewell: structurally sound; seven source chapters deliberately omitted; visible numbering presentation still needs truthing.
+- Christie: structurally sound reduced edition retaining source chapters 5, 6, 11, 12, 22–26, 30, 32; visible numbering presentation still needs a deliberate editorial decision.
+- Runyon: **repaired on this branch** — 47 genuine stories / 742 pages.
+- Joyce: **repaired on this branch** — 18 genuine episodes / 725 pages.
+- Parker: parked/non-runner.
 
-Observed state at stop point:
+Runyon/Joyce rebuild QA:
+- genuine token order PASS;
+- genuine opening alignment PASS;
+- exactly one canonical `$$$` marker per prepared page PASS.
 
-- **Pooh:** Contents clean.
-- **Thurber:** Contents clean.
-- **Runyon:** Contents titles correct, but selections can open on non-story-start pages; opening alignment needs audit.
-- **Joyce:** Contents titles correct, but selections can open on non-episode-start pages; opening alignment needs audit.
-- **Christie:** broken/discontinuous Contents and suspect transformed corpus.
-- **Parker:** parked/non-runner; do not spend repair time on it now.
+## Critical newly found Reader defect
 
-## Forensic audit result
+GUTS currently substitutes:
 
-The eight active performance titles are now separated into three classes:
+`split('$$')`
 
-- **Structurally sound:** Pooh, Thurber, Jeeves.
-- **Structurally sound with deliberate source-chapter cuts:** Huck, Farewell, Christie.
-- **Broken opening/group mapping from later equal-chunk regrouping:** Runyon, Joyce.
+but the canonical corpus marker is:
 
-Christie's discontinuity is now explained: the 0.35 builder deliberately retained source Chapters 5, 6, 11, 12, 22, 23, 24, 25, 26, 30 and 32 under its performance-depth rules. The retained destinations still begin at genuine chapter openings. Christie therefore needs an editorial/product decision, not forensic reconstruction.
+`$$$`
 
- in `force_paragraphs` and none in genuine `paragraphs`.
+NoBo correctly replaces `$$$` exactly. GUTS must be corrected on `contents-repair` before release.
 
-See `RUNYON_JOYCE_REBUILD_QA.md`.
+This defect exists in frozen production `main` too; **do not patch main directly**.
 
-**Next work:** visible branch QA of Runyon and Joyce Contents → opening pages, then resolve Christie's deliberate 11-chapter edited-edition presentation. Parker remains parked.
+## Workflow hazards
 
-## Live metadata mapping
+Before any merge/release, review/quarantine:
+- `.github/workflows/contents_fix_v2.yml`
+- `.github/workflows/one_shot_contents_words.yml`
+- `.github/workflows/guts035_build.yml`
 
-- `aam` — *The House at Pooh Corner* — `PERFORMANCE35/aam_035.json`
-- `jeeves` — *Right Ho, Jeeves!* — `PERFORMANCE35/jeeves_035.json`
-- `farewell` — *A Farewell to Arms* — `PERFORMANCE35/farewell_035.json`
-- `huck` — *Huckleberry Finn* — `PERFORMANCE35/huck_035.json`
-- `dp` — *Men I’m Not Married To* — `PRIMED/DP_GUTS_PRIME2.json`
-- `dr` — *On Broadway* — `PERFORMANCE35/dr_035.json`
-- `ac` — *Murder at the Vicarage* — `PERFORMANCE35/ac_035.json`
-- `jj` — *Ulysses* — `PERFORMANCE35/jj_035.json`
-- `jt` — *My Life and Hard Times* — `PERFORMANCE35/jt_035.json`
-
-Display order: `jt, jeeves, farewell, aam, huck, dp, dr, ac, jj`.
+The first two can write on pushes to `main`; the builder can recreate the old Runyon/Joyce structural problem.
 
 ## Signed-off machinery — do not reopen casually
 
 - H2 PUSH / GUT PULL architecture.
-- Cloudflare Worker/KV production seam.
-- READY / ARMED / CLEAN remote transport.
-- local payoff/PAID, dwell and persistence behaviour.
-- Reader 0.35 visible baseline and existing transitions.
+- Worker/KV transport.
+- READY / ARMED / CLEAN remote state.
+- local PAID/dwell persistence.
+- selected-chapter opener protection.
+- current visible Reader navigation/transitions baseline.
 
-A corpus/Contents problem is not evidence that the state engine is broken.
+A corpus/Contents defect is not evidence that those systems are broken.
 
-## Release discipline
+## Next action
 
-Nothing from `contents-repair` goes to `main` until the full replacement is audited and compactly phone-tested. At release, preserve the old known-good material as rollback history; never destroy the known-good bird while testing the new one.
+Perform a **branch-only hardening pass**:
 
-**Status: MAIN SAFE / CONTENTS-REPAIR ISOLATED / RUNYON + JOYCE STRUCTURAL REBUILD COMPLETE + MECHANICALLY QA'D / NOT RELEASED.**
+1. fix GUTS exact `$$$` substitution;
+2. truth Christie, Farewell and Thurber Contents/visible headings;
+3. quarantine stale active write workflows;
+4. run full mechanical QA again;
+5. then actual-phone QA.
+
+**Status: MAIN SAFE / EXHAUSTIVE AUDIT COMPLETE / RUNYON + JOYCE REPAIRED ON BRANCH / RELEASE BLOCKED BY KNOWN HARDENING ITEMS.**
