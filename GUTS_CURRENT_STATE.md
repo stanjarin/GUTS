@@ -21,11 +21,12 @@ Read this file first, then:
 
 ## Exhaustive audit complete
 
-Both repositories were read in full at the text/code/data level:
-- GUTS: 101 text/code/data files / 236,902 logical lines.
-- NoBo: 25 text/code/data files / 130,227 logical lines.
+GUTS was read in full at the text/code/data level:
+- 101 text/code/data files / 236,902 logical lines;
 - all JSON/webmanifest parsed;
 - all JavaScript/inline HTML scripts syntax-checked successfully.
+
+NoBo was cross-checked comprehensively, but for GUTS **only the H2G2 covert arming route is relevant**. Other NoBo books/corpus issues are out of GUTS scope.
 
 See `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`.
 
