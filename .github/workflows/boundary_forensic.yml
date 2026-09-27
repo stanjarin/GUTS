@@ -1,0 +1,52 @@
+name: Branch-only boundary forensic
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/boundary_forensic.yml']
+permissions:
+  contents: write
+jobs:
+  scan:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair}
+      - name: Scan Runyon and Joyce boundaries
+        run: |
+          python3 - <<'PY'
+          import json,re,pathlib
+          OUT=[]
+          def norm(s):
+              s=str(s).upper().replace('’',"'").replace('“','"').replace('”','"')
+              s=re.sub(r'[^A-Z0-9]+',' ',s)
+              return re.sub(r'\s+',' ',s).strip()
+          # authoritative display titles already installed in current reader
+          text=pathlib.Path('index.html').read_text()
+          m=re.search(r'const AUTH_TOC=(\{.*?\});function tocTitle',text,re.S)
+          toc=json.loads(m.group(1))
+          for bid,src in [('dr','PRIMED/DR_GUTS_PRIME2.json'),('jj','PRIMED/JJ_GUTS_PRIME2.json')]:
+              d=json.load(open(src))
+              OUT.append(f'## {bid.upper()} PRIME candidates')
+              titles=toc.get(bid,[])
+              nt={norm(t):t for t in titles}
+              for pi,p in enumerate(d['pages']):
+                  for qi,x in enumerate(p.get('paragraphs',[])):
+                      nx=norm(x)
+                      hits=[]
+                      for k,t in nt.items():
+                          if nx==k or (len(k)>=5 and (nx.startswith(k) or k in nx[:120])):
+                              hits.append(t)
+                      upper=(str(x).strip()==str(x).strip().upper() and 1<len(str(x).strip())<100 and re.search('[A-Z]',str(x)))
+                      if hits or upper:
+                          OUT.append(f'p{pi+1} ¶{qi+1}: {x[:180]}'+(f'  ==> {hits}' if hits else ''))
+              OUT.append('')
+          pathlib.Path('BOUNDARY_FORENSIC_RAW.md').write_text('\n'.join(OUT))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS forensic'
+          git config user.email 'actions@users.noreply.github.com'
+          git add BOUNDARY_FORENSIC_RAW.md
+          git commit -m 'Report raw Runyon Joyce boundary candidates'
+          git push origin HEAD:contents-repair
