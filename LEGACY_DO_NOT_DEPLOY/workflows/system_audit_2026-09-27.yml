@@ -1,0 +1,230 @@
+name: Exhaustive GUTS NoBo system audit
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/system_audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: contents-repair
+          path: guts
+      - uses: actions/checkout@v4
+        with:
+          repository: stanjarin/NoBoNoFo
+          ref: main
+          path: nobo
+      - name: Exhaustive read and structural audit
+        run: |
+          python3 - <<'PY'
+          import os,re,json,hashlib,pathlib,subprocess,html
+          ROOT=pathlib.Path('.')
+          G=ROOT/'guts'; N=ROOT/'nobo'
+          report=[]
+          def sha(p):
+              h=hashlib.sha256()
+              with open(p,'rb') as f:
+                  for b in iter(lambda:f.read(1024*1024),b''): h.update(b)
+              return h.hexdigest()
+          def read_bytes(p):
+              # Deliberately read entire file, not samples.
+              return p.read_bytes()
+          def text_files(root):
+              exts={'.md','.txt','.rtf','.html','.js','.yml','.yaml','.json','.jsonc','.webmanifest','.toml','.gitignore'}
+              for p in sorted(root.rglob('*')):
+                  if p.is_file() and (p.suffix.lower() in exts or p.name in {'.assetsignore'}):
+                      yield p
+          def audit_tree(label,root):
+              files=list(root.rglob('*')); files=[p for p in files if p.is_file() and '/.git/' not in str(p)]
+              tf=list(text_files(root))
+              total_bytes=0; total_lines=0; bad_utf=[]; nul=[]; json_ok=[]; json_bad=[]
+              for p in tf:
+                  b=read_bytes(p); total_bytes+=len(b)
+                  if b'\x00' in b: nul.append(str(p.relative_to(root)))
+                  try: s=b.decode('utf-8')
+                  except UnicodeDecodeError:
+                      if p.suffix.lower()=='.rtf': s=b.decode('latin-1')
+                      else: bad_utf.append(str(p.relative_to(root))); continue
+                  total_lines += s.count('\n')+1
+                  if p.suffix.lower() in {'.json','.webmanifest'}:
+                      try: json.loads(s); json_ok.append(str(p.relative_to(root)))
+                      except Exception as e: json_bad.append((str(p.relative_to(root)),str(e)))
+              report.extend([
+                f'## {label} whole-tree read',
+                f'- repository files read/inventoried: {len(files)}',
+                f'- text/code/data files read in full: {len(tf)}',
+                f'- text/code/data bytes read: {total_bytes}',
+                f'- text/code/data logical lines read: {total_lines}',
+                f'- invalid UTF-8 (excluding RTF fallback): {bad_utf or "none"}',
+                f'- NUL-bearing text files: {nul or "none"}',
+                f'- JSON/webmanifest parsed: {len(json_ok)}; parse failures: {json_bad or "none"}',''
+              ])
+          audit_tree('GUTS contents-repair',G)
+          audit_tree('NoBoNoFo main',N)
+
+          # Every documentation/code file inventory.
+          def inventory(label,root):
+              report.append(f'## {label} documentation/code inventory')
+              for p in text_files(root):
+                  rel=str(p.relative_to(root))
+                  b=read_bytes(p)
+                  try:s=b.decode('utf-8')
+                  except:s=b.decode('latin-1','replace')
+                  if p.suffix.lower() in {'.md','.txt','.rtf'} or rel.endswith('README'):
+                      heads=' | '.join(x.strip() for x in s.splitlines() if re.match(r'^#{1,3}\s',x))[:500]
+                      report.append(f'- {rel} — {len(b)} bytes / {s.count(chr(10))+1} lines'+(f' — headings: {heads}' if heads else ''))
+              report.append('')
+          inventory('GUTS',G); inventory('NoBo',N)
+
+          # JS syntax checks: standalone JS and every inline script block in HTML.
+          report.append('## JavaScript syntax audit')
+          def nodecheck(name,code):
+              q=pathlib.Path('/tmp')/(hashlib.md5(name.encode()).hexdigest()+'.mjs')
+              q.write_text(code)
+              r=subprocess.run(['node','--check',str(q)],capture_output=True,text=True)
+              report.append(f'- {name}: '+('PASS' if r.returncode==0 else 'FAIL — '+(r.stderr.strip().replace('\n',' ')[:500])))
+          for root,label in [(G,'GUTS'),(N,'NoBo')]:
+              for p in sorted(root.rglob('*.js')):
+                  if '/.git/' not in str(p): nodecheck(f'{label}/{p.relative_to(root)}',p.read_text(errors='replace'))
+              for p in sorted(root.rglob('*.html')):
+                  if '/.git/' in str(p): continue
+                  s=p.read_text(errors='replace')
+                  blocks=re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',s,re.I)
+                  for i,code in enumerate(blocks,1): nodecheck(f'{label}/{p.relative_to(root)} inline-script-{i}',code)
+          report.append('')
+
+          # Full JSON book structural audit.
+          report.append('## NoBo full book-payload audit')
+          for p in sorted((N/'books').glob('*.json')):
+              if p.name=='index.json': continue
+              d=json.load(open(p)); ch=d.get('chapters',[])
+              pages=force=sockets=bad=marker_genuine=0
+              for c in ch:
+                  for pg in c.get('pages',[]):
+                      pages+=1
+                      fp=pg.get('force_paragraphs')
+                      if fp is not None:
+                          force+=1; n='\n'.join(map(str,fp)).count('$$$'); sockets+=n; bad+=(n!=1)
+                      marker_genuine += ('$$$' in '\n'.join(map(str,pg.get('paragraphs',[]))))
+              report.append(f'- {p.name}: chapters={len(ch)} pages={pages} force_pages={force} sockets={sockets} bad_force_socket_pages={bad} genuine_marker_pages={marker_genuine} sha256={sha(p)[:16]}')
+          report.append('')
+
+          report.append('## GUTS active/served corpus audit')
+          for base in ['PERFORMANCE35','PRIMED']:
+              for p in sorted((G/base).glob('*.json')):
+                  d=json.load(open(p))
+                  if 'chapters' in d:
+                      ch=d['chapters']; pages=[pg for c in ch for pg in c.get('pages',[])]
+                  else: ch=[]; pages=d.get('pages',[])
+                  force=sum('force_paragraphs' in pg for pg in pages)
+                  bad=sum(('force_paragraphs' in pg and '\n'.join(map(str,pg.get('force_paragraphs',[]))).count('$$$')!=1) for pg in pages)
+                  genuine=sum('$$$' in '\n'.join(map(str,pg.get('paragraphs',[]))) for pg in pages)
+                  report.append(f'- {base}/{p.name}: chapters={len(ch)} pages={len(pages)} force_pages={force} bad_force_socket_pages={bad} genuine_marker_pages={genuine} sha256={sha(p)[:16]}')
+          report.append('')
+
+          # Root/public served equality.
+          report.append('## GUTS root/public identity')
+          pairs=['index.html','PERFORMANCE35/dr_035.json','PERFORMANCE35/jj_035.json','PERFORMANCE35/aam_035.json','PERFORMANCE35/ac_035.json','PERFORMANCE35/farewell_035.json','PERFORMANCE35/huck_035.json','PERFORMANCE35/jeeves_035.json','PERFORMANCE35/jt_035.json',
+                 'PRIMED/AAM_GUTS_PRIME2.json','PRIMED/AC_GUTS_PRIME2.json','PRIMED/DP_GUTS_PRIME2.json','PRIMED/DR_GUTS_PRIME2.json','PRIMED/JJ_GUTS_PRIME2.json','PRIMED/JT_GUTS_PRIME2.json']
+          for rel in pairs:
+              a=G/rel; b=G/'public'/rel
+              report.append(f'- {rel}: '+('IDENTICAL' if a.exists() and b.exists() and sha(a)==sha(b) else 'DIFFERENT/MISSING'))
+          report.append('')
+
+          # Inherited master byte identity.
+          report.append('## NoBo inherited-master identity inside GUTS')
+          for name in ['jeeves.json','huck.json','farewell.json']:
+              a=N/'books'/name; b=G/'PERFORMANCE35'/name
+              report.append(f'- {name}: '+('BYTE-IDENTICAL' if a.exists() and b.exists() and sha(a)==sha(b) else 'DIFFERENT/MISSING'))
+          report.append('')
+
+          # Runtime socket substitution checks.
+          report.append('## Socket substitution code')
+          for root,label,paths in [(G,'GUTS',['index.html','public/index.html']),(N,'NoBo',['index.html','index_v6_13J.html','assets/index.html'])]:
+              for rel in paths:
+                  s=(root/rel).read_text(errors='replace')
+                  snippets=re.findall(r'(?:function\s+(?:inject|firstSentenceInject)[\s\S]{0,300}?\})',s)
+                  report.append(f'- {label}/{rel}: '+(' || '.join(x.replace('\n',' ') for x in snippets) if snippets else 'NO INJECT FUNCTION FOUND'))
+          report.append('')
+
+          # Contents/display consistency for active GUTS books.
+          report.append('## GUTS Contents/opening consistency')
+          idx=(G/'index.html').read_text()
+          mt=re.search(r'const AUTH_TOC=(\{.*?\});function tocTitle',idx,re.S)
+          auth=json.loads(mt.group(1)) if mt else {}
+          meta_block=re.search(r'const META=(\[.*?\]);const DISPLAY=',idx,re.S).group(1)
+          meta=[]
+          for ent in re.findall(r'\{([^{}]+)\}',meta_block):
+              def val(k):
+                  mm=re.search(r'\b'+re.escape(k)+r':"([^"]*)"',ent)
+                  return mm.group(1) if mm else None
+              meta.append({'id':val('id'),'file':val('file'),'legacy':bool(re.search(r'\blegacy:true',ent))})
+          for m in meta:
+              fp=G/m['file']
+              d=json.load(open(fp))
+              if m.get('legacy'): chapters=d.get('chapters',[])
+              else:
+                  report.append(f'- {m["id"]}: non-legacy runtime grouping — requires live grouping logic; source pages={len(d.get("pages",[]))}')
+                  continue
+              labels=auth.get(m['id'])
+              firsts=[next((str(x).strip() for x in ch.get('pages',[{}])[0].get('paragraphs',[]) if str(x).strip()),'') for ch in chapters]
+              titles=[str(ch.get('title','')).strip() for ch in chapters]
+              report.append(f'- {m["id"]}: chapters={len(chapters)} AUTH_TOC={len(labels) if labels else 0}; source_titles_first3={titles[:3]}; first_paras_first3={firsts[:3]}')
+          report.append('')
+
+          # Workflow danger scan — read every active workflow line and report triggers/writes.
+          report.append('## Active workflow trigger/write audit')
+          for p in sorted((G/'.github/workflows').glob('*')):
+              s=p.read_text(errors='replace')
+              pushes=[x.strip() for x in s.splitlines() if 'git push' in x]
+              trigger='; '.join(x.strip() for x in s.splitlines()[:12])
+              report.append(f'- {p.name}: {trigger} | git-push-lines={pushes or "none"}')
+          report.append('')
+
+          # Documentation contradictions/staleness and accidental duplication.
+          report.append('## Documentation integrity flags')
+          for p in sorted(G.glob('*.md')):
+              s=p.read_text(errors='replace')
+              h=[x for x in s.splitlines() if re.match(r'^##\s+',x)]
+              dup=sorted({x for x in h if h.count(x)>1})
+              flags=[]
+              if 'NOT STARTED' in s.upper() and ('COMPLETE' in s.upper() or 'COMPLETED' in s.upper()): flags.append('contains both NOT STARTED and COMPLETE/COMPLETED')
+              if 'Runyon' in s and '18' in s and '47' not in s and p.name not in {'GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md'}: flags.append('may predate 47-story Runyon repair')
+              if dup: flags.append('duplicate headings: '+', '.join(dup))
+              if flags: report.append(f'- {p.name}: '+'; '.join(flags))
+          report.append('')
+
+          # Cross-repo state-engine comparison by key literals.
+          report.append('## GUTS vs NoBo engine comparison')
+          gi=(G/'index.html').read_text(); ni=(N/'index.html').read_text()
+          checks=[
+            ('selected chapter opener protection','selectedChapter'),
+            ('6-second dwell','6000'),
+            ('PAID state','PAID'),
+            ('CLEAN state','CLEAN'),
+            ('force_paragraphs','force_paragraphs'),
+            ('exact $$$ replacement','replaceAll("$$$"'),
+            ('remote performer endpoint','/api/performer/state')
+          ]
+          for label,needle in checks:
+              report.append(f'- {label}: GUTS={"YES" if needle in gi else "NO"}; NoBo={"YES" if needle in ni else "NO"}')
+          report.append('')
+
+          out=G/'SYSTEM_AUDIT_RAW_2026-09-27.md'
+          out.write_text('# GUTS + NoBo exhaustive machine audit — RAW\n\n'+'\n'.join(report)+'\n')
+          PY
+      - name: Commit raw audit
+        working-directory: guts
+        run: |
+          git config user.name 'GUTS audit'
+          git config user.email 'actions@users.noreply.github.com'
+          git add SYSTEM_AUDIT_RAW_2026-09-27.md
+          git commit -m 'Add exhaustive GUTS NoBo raw system audit'
+          git push origin HEAD:contents-repair
+
+# audit rerun 3
