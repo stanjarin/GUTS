@@ -10,7 +10,7 @@ All investigation and repair work is confined to branch:
 
 `contents-repair`
 
-That branch was created from current `main`. The only work performed after branching was documentation/checkpoint work. **The corpus provenance/integrity audit has not begun and no production corpus repair has been made on this branch.**
+That branch was created from current `main`. The only work performed after branching was checkpoint/documentation work. **The corpus provenance/integrity audit has not begun and no production corpus repair has been made on this branch.**
 
 ### Why work stopped
 
@@ -35,16 +35,17 @@ Do **not** resume cosmetic renumbering until that mapping is understood.
 
 ## Canonical reading order
 
-1. `GUTS_HANDOVER_2026-09-27.md`
-2. `GUTS_CURRENT_STATE.md`
-3. `GUTS_OHS_RECOVERY.md`
-4. `GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md`
-5. `CONTENTS_EDITORIAL_PLAN.md`
-6. `BABYS_FIRST_GUTS.md`
-7. `GUTS_PERFORMANCE_FLOW_POV_v1.md`
-8. current code/data only after the above
+1. `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` — latest overlay / first read.
+2. `GUTS_CURRENT_STATE.md` — authoritative current branch/project truth.
+3. `GUTS_OHS_RECOVERY.md` — safety and rollback rails.
+4. `GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md` — exact wall-hit observations.
+5. `CONTENTS_EDITORIAL_PLAN.md` — now audit-first.
+6. `GUTS_HANDOVER_2026-09-27.md` — detailed architecture/manual; earlier same-day layer.
+7. `BABYS_FIRST_GUTS.md` — Stanley-level map.
+8. `GUTS_PERFORMANCE_FLOW_POV_v1.md` — performance/state doctrine.
+9. current code/data only after the above.
 
-`CURRENT_STATE.md` is retained as a compatibility pointer to the authoritative current-state file. `IF_CHATGPT_DIES_READ_THIS.md` is the recovery entry point and points back to this canonical set.
+`CURRENT_STATE.md` is retained as a compatibility pointer. `IF_CHATGPT_DIES_READ_THIS.md` is the disaster-recovery entry point and points back to this canonical set.
 
 Older README/checkpoint material, legacy Cloudflare files, and one-shot workflows are history unless the canonical docs explicitly call them current.
 
