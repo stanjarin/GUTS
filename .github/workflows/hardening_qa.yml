@@ -85,3 +85,5 @@ jobs:
           git add HARDENING_QA_2026-09-27.md
           git commit -m 'Record post-hardening QA'
           git push origin HEAD:contents-repair
+
+# trigger
