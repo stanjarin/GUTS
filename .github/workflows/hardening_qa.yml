@@ -31,7 +31,9 @@ jobs:
           toc=json.loads(m.group(1))
           assert len(toc['jt'])==10, f"Thurber TOC count {len(toc['jt'])}"
           assert 'A Note at the End' not in toc['jt'], 'stale Thurber terminal label remains'
-          out.append('- Thurber Contents: 10 labels / stale terminal label removed')
+          assert toc['ac']==['Chapter 5','Chapter 6','Chapter 11','Chapter 12','Chapter 22','Chapter 23','Chapter 24','Chapter 25','Chapter 26','Chapter 30','Chapter 32'], toc['ac']
+          assert len(toc['farewell'])==34 and toc['farewell'][0]=='Chapter 2' and toc['farewell'][-1]=='Chapter 41', toc['farewell']
+          out.append('- Thurber/Christie/Farewell authoritative Contents: PASS')
 
           dp=re.search(r"function displayParas\(paras\)\{.*?return out\}",a,re.S).group(0)
           assert "'ac'" not in dp, 'Christie still sequentially Roman-rewritten'
@@ -53,8 +55,8 @@ jobs:
               out.append(f'- {bid}: chapters={len(d["chapters"])} pages={len(pages)} sockets=PASS root/public=PASS')
 
           ac=json.load(open(root/'PERFORMANCE35/ac_035.json'))
-          act=[c['title'] for c in ac['chapters']]
-          assert act==['Chapter 5','Chapter 6','Chapter 11','Chapter 12','Chapter 22','Chapter 23','Chapter 24','Chapter 25','Chapter 26','Chapter 30','Chapter 32'], act
+          act=[int(re.match(r'Chapter\\s+(\\d+)',c['title']).group(1)) for c in ac['chapters']]
+          assert act==[5,6,11,12,22,23,24,25,26,30,32], act
           out.append('- Christie retained source chapter identities: PASS')
 
           fa=json.load(open(root/'PERFORMANCE35/farewell_035.json'))
@@ -86,4 +88,4 @@ jobs:
           git commit -m 'Record post-hardening QA'
           git push origin HEAD:contents-repair
 
-# trigger after clean restore
+# trigger after Contents truthing
