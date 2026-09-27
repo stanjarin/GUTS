@@ -1,7 +1,18 @@
-# 0.35 STRUCTURE REPAIR — FINAL CONTENTS SHAPE
+# 0.35 STRUCTURE REPORT — SUPERSEDED / CURRENT BRANCH RESULT
 
-Joyce: 18 Contents entries; 40–41 Reader pages each.
-Runyon: 18 Contents entries; 41–42 Reader pages each.
+The earlier equal-chunk Runyon/Joyce structure documented here was found to be wrong and is retained only in Git history.
 
-These are performance Contents groupings over already-built 0.35 pages. No prose, page content, air-locks, sockets, stagger or pagination changed.
-Joyce labels are neutral Episode 1–18; Runyon labels are neutral Story 1–18 pending any later editorial title pass.
+Current `contents-repair` result:
+
+- **Runyon:** 47 genuine story divisions / 742 pages.
+- **Joyce:** 18 genuine episode divisions / 725 pages.
+- genuine token order preserved;
+- each division starts at its genuine source opening;
+- exactly one canonical `$$$` marker per prepared page.
+
+See:
+- `../RUNYON_JOYCE_REBUILD_QA.md`
+- `../CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`
+- `../GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
+
+Do not use the historical 18-equal-chunk Runyon layout or the old equal-sized Joyce grouping as a source of truth.
