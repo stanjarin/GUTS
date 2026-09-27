@@ -42,3 +42,7 @@ Start here:
 Do not touch production `main` until the release gate in `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md` has passed.
 
 **H2 PUSHES — GUT PULLS.**
+
+## NoBo boundary
+
+For GUTS, NoBo is used only for the **H2G2 performer-side arming mechanism**. Other NoBo books/corpus material is not part of the GUTS system and is not a GUTS release dependency.
