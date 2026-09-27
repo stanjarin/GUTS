@@ -9,6 +9,10 @@
 - Clean pre-hardening snapshot: `contents-repair-backup-2026-09-27` at `9e6a3f713c1343e4bfb361a447fe70a884b9a55b`.
 - Frozen known-good rollback: `GUTS-035-KNOWN-GOOD`.
 
+## Governing workflow
+
+Read `GUTS_WORKFLOW_CONSTITUTION.md` **before all other project documents**. It governs sequencing, freeze rules, rollback discipline and QA.
+
 ## Mandatory handover rule
 
 **READ EVERYTHING before acting.**
