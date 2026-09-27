@@ -157,8 +157,13 @@ jobs:
           idx=(G/'index.html').read_text()
           mt=re.search(r'const AUTH_TOC=(\{.*?\});function tocTitle',idx,re.S)
           auth=json.loads(mt.group(1)) if mt else {}
-          meta_m=re.search(r'const META=(\[.*?\]);const DISPLAY=',idx,re.S)
-          meta=json.loads(meta_m.group(1)) if meta_m else []
+          meta_block=re.search(r'const META=(\[.*?\]);const DISPLAY=',idx,re.S).group(1)
+          meta=[]
+          for ent in re.findall(r'\{([^{}]+)\}',meta_block):
+              def val(k):
+                  mm=re.search(r'\b'+re.escape(k)+r':"([^"]*)"',ent)
+                  return mm.group(1) if mm else None
+              meta.append({'id':val('id'),'file':val('file'),'legacy':bool(re.search(r'\blegacy:true',ent))})
           for m in meta:
               fp=G/m['file']
               d=json.load(open(fp))
@@ -167,8 +172,8 @@ jobs:
                   report.append(f'- {m["id"]}: non-legacy runtime grouping — requires live grouping logic; source pages={len(d.get("pages",[]))}')
                   continue
               labels=auth.get(m['id'])
-              firsts=[next((str(x).strip() for x in c.get('pages',[{}])[0].get('paragraphs',[]) if str(x).strip()),'') for c in chapters]
-              titles=[str(c.get('title','')).strip() for c in chapters]
+              firsts=[next((str(x).strip() for x in ch.get('pages',[{}])[0].get('paragraphs',[]) if str(x).strip()),'') for ch in chapters]
+              titles=[str(ch.get('title','')).strip() for ch in chapters]
               report.append(f'- {m["id"]}: chapters={len(chapters)} AUTH_TOC={len(labels) if labels else 0}; source_titles_first3={titles[:3]}; first_paras_first3={firsts[:3]}')
           report.append('')
 
@@ -222,4 +227,4 @@ jobs:
           git commit -m 'Add exhaustive GUTS NoBo raw system audit'
           git push origin HEAD:contents-repair
 
-# audit rerun 2
+# audit rerun 3
