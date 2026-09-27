@@ -1,119 +1,87 @@
 # GUTS — CURRENT STATE
 
-**Authoritative checkpoint: 27 September 2026**
+**Authoritative checkpoint: 27 September 2026 — emergency handover**
 
-**For a fresh developer/AI or disaster recovery, read `GUTS_HANDOVER_2026-09-27.md` first, then this file.** The handover contains the full architecture, production paths, Worker routes, corpus/library rules, recovery procedure, stale-document warnings and account dependencies.
+Read `GUTS_HANDOVER_2026-09-27.md` first and `GUTS_OHS_RECOVERY.md` before any write/deploy action.
 
-This file supersedes stale TODO/current-state material in older README sections and chat history.
+## Branch / production truth
 
-## Current production state
+- Production branch: `main` — **DO NOT MODIFY during this audit**.
+- Verified `main` head at handover: `b662978d1de67304cc96ad78e3c224f2d2b75533` — `Install authoritative Contents tables`.
+- Working branch: `contents-repair`.
+- `contents-repair` was created from that current main.
+- First branch checkpoint commit: `c7b75c6f365cf5a7723256aa8ad84c05976e6a5a` — `Checkpoint GUTS at thread wall`.
+- Frozen rollback baseline also exists: `GUTS-035-KNOWN-GOOD`.
+- **Corpus provenance/integrity audit has NOT begun.**
+- **No production corpus repair has been made since the branch was created.**
 
-- Current spectator Reader: **GUTS 0.35**.
-- Production domain: `gutenbrg.com`.
-- GUTS 0.35 is working in production and has passed Stanley's compact visible phone QA.
-- Visible build stamp correctly reads **0.35**.
-- Landing page, carousel/bounce, book → Contents → chapter, page movement in both directions, and return to Landing all passed.
-- The previously planned cosmetic work (landing-page overscroll material, cover → Contents slide, page-flick slide behaviour) is **already implemented and working**. Do not put it back on the TODO list.
+## Production baseline
 
-## Frozen safety baseline
+- Spectator Reader: GUTS 0.35.
+- Domain: `gutenbrg.com`.
+- Reader metadata: `v0.35-performance-reader`.
+- Cloudflare serves `./public` via root `wrangler.jsonc`; Worker source is root `src/worker.js`.
+- Compact actual-phone QA of the 0.35 visible Reader previously passed: Landing, carousel/bounce, book → Contents → chapter, page movement both ways, return to Landing.
+- Landing overscroll material, cover → Contents slide, and page-flick slide are already implemented.
 
-GitHub branch:
+## What triggered the stop
 
-`GUTS-035-KNOWN-GOOD`
+The intended Contents cleanup ceased when inspection showed the problem is deeper than display labels.
 
-This is the safety/rollback marker made before final cleanup. Preserve it.
+`PERFORMANCE35/ac_035.json` (Agatha Christie, *The Murder at the Vicarage*) itself begins with a `Chapter 5` chapter object and is discontinuous. This means the transformed performance corpus is suspect; the originals are not thereby presumed damaged or lost.
 
-Normal Git history and Cloudflare deployment/version history provide additional rollback paths.
+Observed state at stop point:
 
-## 26–27 September deployment/stamp incident — resolved
+- **Pooh:** Contents clean.
+- **Thurber:** Contents clean.
+- **Runyon:** Contents titles correct, but selections can open on non-story-start pages; opening alignment needs audit.
+- **Joyce:** Contents titles correct, but selections can open on non-episode-start pages; opening alignment needs audit.
+- **Christie:** broken/discontinuous Contents and suspect transformed corpus.
+- **Parker:** parked/non-runner; do not spend repair time on it now.
 
-The apparent failure to get 0.35 live was ultimately a display-label bug, not a stale Reader deployment.
+## Next action — audit first
 
-The live 0.35 HTML contained the correct metadata marker:
+Before any further Contents patching, map:
 
-`v0.35-performance-reader`
+`original/source -> PRIMED/PERFORMANCE35 -> chapters retained/omitted -> renumbering/mapping -> page/opening alignment -> $$$ sockets/force_paragraphs preserved`
 
-but its visible footer/build stamp was hard-coded as:
+Priority order:
 
-`0.34`
+1. Christie.
+2. Runyon.
+3. Joyce.
+4. Verify Pooh and Thurber.
+5. Jeeves / Farewell / Huck.
+6. Parker last / special case.
 
-Therefore 0.35 was live while presenting a false 0.34 name badge.
+The previous cosmetic Contents plan is now subordinate to this provenance audit. Do not renumber/hide/relabel around unknown structural damage.
 
-### Durable lesson
+## Live metadata mapping
 
-When a visible version/build number disagrees with the expected deployment, first establish **what code generates that visible number** before diagnosing DNS, caching, Worker routing, assets, or deployment propagation.
+- `aam` — *The House at Pooh Corner* — `PERFORMANCE35/aam_035.json`
+- `jeeves` — *Right Ho, Jeeves!* — `PERFORMANCE35/jeeves_035.json`
+- `farewell` — *A Farewell to Arms* — `PERFORMANCE35/farewell_035.json`
+- `huck` — *Huckleberry Finn* — `PERFORMANCE35/huck_035.json`
+- `dp` — *Men I’m Not Married To* — `PRIMED/DP_GUTS_PRIME2.json`
+- `dr` — *On Broadway* — `PERFORMANCE35/dr_035.json`
+- `ac` — *Murder at the Vicarage* — `PERFORMANCE35/ac_035.json`
+- `jj` — *Ulysses* — `PERFORMANCE35/jj_035.json`
+- `jt` — *My Life and Hard Times* — `PERFORMANCE35/jt_035.json`
 
-Do not use the visible stamp alone as proof of which corpus/Reader is live.
+Display order: `jt, jeeves, farewell, aam, huck, dp, dr, ac, jj`.
 
-## Cleanup completed
+## Signed-off machinery — do not reopen casually
 
-Temporary diagnostics used during the investigation were removed after 0.35 was proven:
+- H2 PUSH / GUT PULL architecture.
+- Cloudflare Worker/KV production seam.
+- READY / ARMED / CLEAN remote transport.
+- local payoff/PAID, dwell and persistence behaviour.
+- Reader 0.35 visible baseline and existing transitions.
 
-- static `GUTS-ASSET-035` diagnostic removed
-- temporary `/__guts_version` Worker diagnostic removed
-- one-shot 0.35 stamp-repair workflow removed
-- repository audit found no remaining `__guts_version`, `GUTS-ASSET-035`, or lying `buildstamp">0.34` occurrences
+A corpus/Contents problem is not evidence that the state engine is broken.
 
-Stanley then performed the compact phone QA and reported all tests passed.
+## Release discipline
 
-## Deployment workflow lesson/fix
+Nothing from `contents-repair` goes to `main` until the full replacement is audited and compactly phone-tested. At release, preserve the old known-good material as rollback history; never destroy the known-good bird while testing the new one.
 
-The earlier 0.35 deployment workflow modified root `index.html`, while Cloudflare serves the `public` tree. That separation made it possible for source and served Reader copies/version labels to drift.
-
-The retained 0.35 workflow was converted to a **manual/recovery-only** workflow. It now:
-
-- requires an existing `v0.35-performance-reader` marker
-- refuses an unknown Reader state rather than manufacturing one
-- enforces the visible 0.35 build stamp
-- synchronises root `index.html` to `public/index.html`
-- commits only if a synchronisation change is actually required
-
-Do not reintroduce a workflow that updates only root `index.html` while production serves `public/index.html`.
-
-## Cloudflare deployment-reading rule
-
-Cloudflare Overview can show stale/misleading traffic percentages. During the stamp repair, Overview showed a new version at 0% while **View all deployments** showed that same version at 100% and active.
-
-When checking a deployment, use **View all deployments** as the authoritative traffic view if Overview disagrees.
-
-When asking Stanley to inspect Cloudflare, always give him the **exact human-readable Cloudflare/Git commit description/name tag to look for**, not merely a SHA, version ID, or “latest deployment.”
-
-## Parker placeholder / library expansion
-
-Dorothy Parker / `dp` (*Men I’m Not Married To*) is **intentionally a placeholder** in the current 0.35 library. Do not spend development time repairing or PERFORMANCE35-building Parker.
-
-Reason: the title contains unsuitable extremely short / one-line chapter structures, which do not fit the plausible GUTS book/page performance model. Parker is therefore a marked seat awaiting a different Gutenberg title.
-
-The eventual task is to **replace Parker with a structurally suitable title**, not to fix Parker.
-
-The library is also intentionally allowed to grow rather than remaining locked at nine books. Stanley may broaden spectator choice to **up to about 12 books**, which is considered ample. New books should use the established PERFORMANCE35 production treatment and common GUTS state/transport architecture; they do not require a new magic/state system merely because the library grows.
-
-Practical expansion work per title includes suitable source selection, chapter/Contents structure, PERFORMANCE35 pagination and socket/force-paragraph preparation, cover/carousel entry and hit target, and mechanical QA. If library growth creates a limit, expect the first constraint to be landing/carousel presentation rather than the core ARMED/CLEAN/PAID or Cloudflare/KV architecture.
-
-## Signed-off / do not reopen casually
-
-- 0.35 visible Reader baseline
-- landing/carousel presentation
-- cover → Contents transition
-- page-flick transition
-- Cloudflare production domain/Worker/static hosting path
-- established GUTS transport/state architecture
-- corpus merely because a UI/deployment issue appears
-
-Functional/state machinery was not deliberately changed during the final visible cleanup. Do not demand a full ARMED → PAID state-chain retest solely because cosmetic/diagnostic files were removed.
-
-## Resume discipline
-
-Before doing new GUTS work:
-
-1. Read `GUTS_HANDOVER_2026-09-27.md`, then this file.
-2. Treat `GUTS-035-KNOWN-GOOD` as the rollback baseline.
-3. Determine the actual next outstanding item from current code/project notes; do not resurrect old TODO items from chat.
-4. Use multi-pass changes for risky work, with internal inspection between passes and Stanley brought in only for the compact final visible test unless his phone is genuinely required earlier.
-5. Preserve exact deployment name tags in handoff/testing instructions.
-
-## Status at checkpoint
-
-**GUTS 0.35: WORKING / CLEANUP COMPLETE / USER VISIBLE QA PASSED.**
-
-No further housekeeping is required merely to finish the 0.35 cleanup episode.
+**Status: MAIN SAFE / CONTENTS-REPAIR ISOLATED / DOCUMENTATION FIRST / CORPUS AUDIT NOT STARTED.**
