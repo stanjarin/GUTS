@@ -1,0 +1,30 @@
+name: One-shot Contents descriptive headings
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add words to numeric-only Contents entries
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          old="function tocTitle(c,i){let t=String(c.title||'').trim();const ps=c.pages&&c.pages[0]&&c.pages[0].paragraphs||[],id=state.book&&state.book.id,n=i+1;if(['jeeves','farewell','ac'].includes(id))return 'Chapter '+n;if(['aam','huck','jt'].includes(id)){let sub=ps[1]&&String(ps[1]).trim();if(sub&&sub.length<100&&!/^CHAPTER\\b/i.test(sub))return 'Chapter '+n+' — '+sub;return 'Chapter '+n}"
+          new="function chapterWords(ps){for(let j=1;j<Math.min(ps.length,8);j++){let x=String(ps[j]||'').trim().replace(/^[“\\\"'‘]+|[”\\\"'’]+$/g,'');if(!x||/^CHAPTER\\b/i.test(x)||x.length<16)continue;let y=x.split(/(?<=[.!?])\\s|[;:]/)[0].trim();if(y.length>54)y=y.slice(0,54).replace(/\\s+\\S*$/,'')+'…';return y.replace(/[.!?]+$/,'')}return ''}function tocTitle(c,i){let t=String(c.title||'').trim();const ps=c.pages&&c.pages[0]&&c.pages[0].paragraphs||[],id=state.book&&state.book.id,n=i+1,w=chapterWords(ps);if(['jeeves','farewell','ac'].includes(id))return 'Chapter '+n+(w?' — '+w:'');if(['aam','huck','jt'].includes(id)){let sub=ps[1]&&String(ps[1]).trim();if(sub&&sub.length<100&&!/^CHAPTER\\b/i.test(sub))return 'Chapter '+n+' — '+sub;return 'Chapter '+n+(w?' — '+w:'')}"
+          for fn in ('index.html','public/index.html'):
+              p=Path(fn); s=p.read_text()
+              if old not in s: raise SystemExit(f'Expected Contents code not found in {fn}')
+              p.write_text(s.replace(old,new,1))
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html public/index.html
+          git commit -m 'Add descriptive words to numeric-only Contents chapters'
+          git push
