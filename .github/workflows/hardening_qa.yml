@@ -55,7 +55,7 @@ jobs:
               out.append(f'- {bid}: chapters={len(d["chapters"])} pages={len(pages)} sockets=PASS root/public=PASS')
 
           ac=json.load(open(root/'PERFORMANCE35/ac_035.json'))
-          act=[int(re.match(r'Chapter\\s+(\\d+)',c['title']).group(1)) for c in ac['chapters']]
+          act=[int(re.match(r'Chapter\s+(\d+)',c['title']).group(1)) for c in ac['chapters']]
           assert act==[5,6,11,12,22,23,24,25,26,30,32], act
           out.append('- Christie retained source chapter identities: PASS')
 
@@ -88,4 +88,4 @@ jobs:
           git commit -m 'Record post-hardening QA'
           git push origin HEAD:contents-repair
 
-# trigger corrected QA regex
+# trigger corrected QA regex literal
