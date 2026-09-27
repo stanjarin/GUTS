@@ -1,4 +1,4 @@
-name: Branch-only prepared boundary scan
+name: Branch-only rebuild feasibility
 on:
   push:
     branches: [contents-repair]
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {ref: contents-repair}
-      - name: Scan prepared pages
+      - name: Measure genuine Runyon stories and Joyce episodes
         run: |
           python3 - <<'PY'
           import json,re,pathlib
@@ -20,36 +20,56 @@ jobs:
               s=str(s).upper().replace('’',"'").replace('“','"').replace('”','"')
               s=re.sub(r'[^A-Z0-9]+',' ',s)
               return re.sub(r'\s+',' ',s).strip()
+          def wc(s): return len(re.findall(r"\b[\w’'-]+\b",str(s)))
           text=pathlib.Path('index.html').read_text()
           toc=json.loads(re.search(r'const AUTH_TOC=(\{.*?\});function tocTitle',text,re.S).group(1))
           out=[]
-          for bid in ('dr','jj'):
-              d=json.load(open(f'PERFORMANCE35/{bid}_035.json'))
-              pages=[p for c in d['chapters'] for p in c['pages']]
-              out.append(f'## {bid.upper()} PREPARED LANDMARKS')
-              for ti,title in enumerate(toc[bid],1):
-                  key=norm(title); hits=[]
-                  for pi,p in enumerate(pages):
-                      for qi,x in enumerate(p.get('paragraphs',[])):
-                          nx=norm(x)
-                          # title-like exact/prefix only; avoid prose mentions
-                          if nx==key or nx.startswith(key+' '):
-                              hits.append((pi+1,qi+1,str(x)[:160]))
-                  out.append(f'{ti:02d}. {title} :: '+(' | '.join(f'page {a} para {b}: {x}' for a,b,x in hits) if hits else 'NOT FOUND'))
-              # Also catch explicit Joyce episode markers that title matching may miss.
-              if bid=='jj':
-                  out.append('### explicit EPISODE markers')
-                  for pi,p in enumerate(pages):
-                      for qi,x in enumerate(p.get('paragraphs',[])):
-                          if re.search(r'\bEPISODE\s+(?:I|V|X)',str(x),re.I):
-                              out.append(f'page {pi+1} para {qi+1}: {str(x)[:180]}')
-              out.append('')
-          pathlib.Path('PREPARED_BOUNDARY_SCAN.md').write_text('\n'.join(out))
+          # Runyon: locate the 47 authoritative titles in strict order.
+          d=json.load(open('PRIMED/DR_GUTS_PRIME2.json'))
+          paras=[x for p in d['pages'] for x in p.get('paragraphs',[])]
+          starts=[]; pos=0
+          for title in toc['dr']:
+              k=norm(title); hit=None
+              for j in range(pos,len(paras)):
+                  n=norm(paras[j])
+                  if n==k or n.startswith(k+' ') or n.endswith(' '+k) or ('COLLECTION' in n and k in n):
+                      hit=j; break
+              if hit is None: raise SystemExit('Runyon title not found in order: '+title)
+              starts.append((title,hit)); pos=hit+1
+          out.append('# REBUILD FEASIBILITY\n\n## Runyon')
+          for i,(title,a) in enumerate(starts):
+              b=starts[i+1][1] if i+1<len(starts) else len(paras)
+              words=sum(wc(x) for x in paras[a:b])
+              out.append(f'{i+1:02d}. {title} — {words} words')
+          # Joyce: explicit markers plus Sirens opening.
+          j=json.load(open('PRIMED/JJ_GUTS_PRIME2.json'))
+          jp=[x for p in j['pages'] for x in p.get('paragraphs',[])]
+          specs=[
+            ('Telemachus',r'EPISODE\s+I\b'),('Nestor',r'EPISODE\s+II\b'),('Proteus',r'EPISODE\s+III\b'),
+            ('Calypso',r'EPISODE\s+IV\b'),('Lotus Eaters',r'EPISODE\s+V\b'),('Hades',r'EPISODE\s+VI\b'),
+            ('Aeolus',r'EPISODE\s+VII\b'),('Lestrygonians',r'EPISODE\s+VIII\b'),('Scylla and Charybdis',r'EPISODE\s+IX\b'),
+            ('Wandering Rocks',r'EPISODE\s+X\b'),('Sirens',r'^Bronze by gold heard the hoofirons'),('Cyclops',r'EPISODE\s+XII\b'),
+            ('Nausicaa',r'EPISODE\s+XIII\b'),('Oxen of the Sun',r'EPISODE\s+XIV\b'),('Circe',r'EPISODE\s+XV\b'),
+            ('Eumaeus',r'EPISODE\s+XVI\b'),('Ithaca',r'EPISODE\s+XVII\b'),('Penelope',r'EPISODE\s+XVIII\b')]
+          js=[]; pos=0
+          for title,pat in specs:
+              hit=None
+              rg=re.compile(pat,re.I)
+              for q in range(pos,len(jp)):
+                  if rg.search(str(jp[q]).strip()): hit=q; break
+              if hit is None: raise SystemExit('Joyce start not found: '+title)
+              js.append((title,hit,jp[hit][:140])); pos=hit+1
+          out.append('\n## Joyce')
+          for i,(title,a,opening) in enumerate(js):
+              b=js[i+1][1] if i+1<len(js) else len(jp)
+              words=sum(wc(x) for x in jp[a:b])
+              out.append(f'{i+1:02d}. {title} — {words} words — OPEN: {opening}')
+          pathlib.Path('REBUILD_FEASIBILITY.md').write_text('\n'.join(out))
           PY
       - name: Commit report
         run: |
           git config user.name 'GUTS forensic'
           git config user.email 'actions@users.noreply.github.com'
-          git add PREPARED_BOUNDARY_SCAN.md
-          git commit -m 'Map genuine landmarks in prepared Runyon Joyce pages'
+          git add REBUILD_FEASIBILITY.md
+          git commit -m 'Measure genuine Runyon Joyce rebuild divisions'
           git push origin HEAD:contents-repair
