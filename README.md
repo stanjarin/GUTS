@@ -1,62 +1,44 @@
 # GUTS
 
-**Gutenberg Utility Title System** — spectator-own-phone development descended from NoBo NoFo.
+## CURRENT AUTHORITY — 27 September 2026
 
-## EMERGENCY CURRENT STATE — 27 Sep 2026
+Production `main` remains untouched at:
 
-**DO NOT TOUCH `main`.** Production `main` is the known live baseline and currently points at commit `b662978d1de67304cc96ad78e3c224f2d2b75533` (`Install authoritative Contents tables`).
+`b662978d1de67304cc96ad78e3c224f2d2b75533` — **Install authoritative Contents tables**
 
-All investigation and repair work is confined to branch:
+All current work is isolated on:
 
 `contents-repair`
 
-That branch was created from current `main`. The only work performed after branching was checkpoint/documentation work. **The corpus provenance/integrity audit has not begun and no production corpus repair has been made on this branch.**
+Start here:
 
-### Why work stopped
+1. `GUTS_CURRENT_STATE.md`
+2. `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
+3. `GUTS_OHS_RECOVERY.md`
+4. `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`
+5. `RUNYON_JOYCE_REBUILD_QA.md`
+6. `GUTS_HANDOVER_2026-09-27.md` for detailed architectural history
 
-A Contents cleanup exposed a deeper problem. `PERFORMANCE35/ac_035.json` (Christie) itself begins with a `Chapter 5` chapter object and is discontinuous. Therefore the defect is not safely classifiable as a display-label problem. The transformed PERFORMANCE35 corpus must be audited against its upstream/source material before further editorial patching.
+## Current branch state
 
-Known bench observations at the stop point:
+- Eight-book corpus forensic audit complete.
+- Runyon rebuilt to 47 genuine story boundaries.
+- Joyce rebuilt to 18 genuine episode boundaries.
+- Root/public copies synchronised.
+- Full GUTS + NoBo repository audit complete.
+- Parker remains parked.
+- No release has occurred.
 
-- Pooh: Contents clean.
-- Thurber: Contents clean.
-- Runyon: titles correct; some selections can open on non-story-start pages.
-- Joyce: titles correct; some selections can open on non-episode-start pages.
-- Christie: broken/discontinuous Contents; corpus itself is suspect.
-- Parker: parked/non-runner for now.
+## Known release blockers
 
-### Next production action — NOT YET STARTED
+- GUTS Reader substitutes `$$` although the canonical marker is `$$$`.
+- Christie/Farewell visible chapter numbering must be made truthful.
+- Thurber has one unreachable stale Contents label.
+- obsolete active write workflows must be quarantined or rewritten before merge.
+- actual-phone QA remains required after those branch-only fixes.
 
-Audit provenance/integrity on `contents-repair`, beginning with Christie:
+## Safety
 
-`original/source -> PRIMED -> PERFORMANCE35 -> retained/omitted chapters -> numbering/mapping -> opening alignment -> $$$/force_paragraph preservation`
+Do not touch production `main` until the release gate in `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md` has passed.
 
-Do **not** resume cosmetic renumbering until that mapping is understood.
-
-## Canonical reading order
-
-1. `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` — latest overlay / first read.
-2. `GUTS_CURRENT_STATE.md` — authoritative current branch/project truth.
-3. `GUTS_OHS_RECOVERY.md` — safety and rollback rails.
-4. `GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md` — exact wall-hit observations.
-5. `CONTENTS_EDITORIAL_PLAN.md` — now audit-first.
-6. `GUTS_HANDOVER_2026-09-27.md` — detailed architecture/manual; earlier same-day layer.
-7. `BABYS_FIRST_GUTS.md` — Stanley-level map.
-8. `GUTS_PERFORMANCE_FLOW_POV_v1.md` — performance/state doctrine.
-9. current code/data only after the above.
-
-`CURRENT_STATE.md` is retained as a compatibility pointer. `IF_CHATGPT_DIES_READ_THIS.md` is the disaster-recovery entry point and points back to this canonical set.
-
-Older README/checkpoint material, legacy Cloudflare files, and one-shot workflows are history unless the canonical docs explicitly call them current.
-
-## Production architecture in one paragraph
-
-Performer NoBo/H2G2 pushes tiny state to Cloudflare; the spectator Reader on `gutenbrg.com` pulls it. **H2 PUSHES — GUT PULLS.** Current production Reader is 0.35; Cloudflare serves `./public` through root `wrangler.jsonc` and root `src/worker.js`. Remote READY/ARMED/CLEAN transport and local Reader payoff/PAID behaviour are established machinery and are not to be redesigned as part of the Contents/corpus repair.
-
-## Safety baseline
-
-Frozen rollback branch: `GUTS-035-KNOWN-GOOD`.
-
-Current live `main` must remain untouched while `contents-repair` is being investigated. No workflow, deploy, merge, branch-force, or corpus mutation may target `main` during the audit.
-
-For the full recovery/safety rules, read `GUTS_OHS_RECOVERY.md` before turning another screw.
+**H2 PUSHES — GUT PULLS.**
