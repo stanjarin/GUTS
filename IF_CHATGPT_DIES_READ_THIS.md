@@ -1,197 +1,69 @@
 # IF CHATGPT DIES, READ THIS
 
-**GUTS disaster-recovery / human handover — 24 September 2026**
+**Recovery entry point — refreshed 27 Sep 2026**
 
-This file exists so the project can continue without the ChatGPT conversation history. **Read this first, then README.md and the named project documents below before changing code.**
+Do not reconstruct GUTS from chat memory. The repository now contains the authority.
 
-## What GUTS is
+## FIRST: DO NO HARM
 
-GUTS is the spectator-phone descendant of NoBo NoFo. The spectator uses **their own phone** and apparently wanders through a Gutenberg/free-books route, chooses a book, chapter and page, then encounters an impossible word in the text. The engineering must disappear in performance.
+Production `main` is safe. During the current Contents/corpus investigation, **do not alter it**.
 
-Production spectator site: `https://gutenbrg.com`
+Working branch: `contents-repair`.
 
-Current short spectator route used in performance: `https://tinyurl.com/ebooks-0`
+At emergency handover:
 
-GitHub repository: `stanjarin/GUTS`
+- `main` head = `b662978d1de67304cc96ad78e3c224f2d2b75533` (`Install authoritative Contents tables`)
+- `contents-repair` existed and had been checkpointed
+- corpus provenance/integrity audit had **not begun**
+- no corpus repair had been made after branching
 
-Performer repository: `stanjarin/NoBoNoFo`
+Frozen rollback baseline: `GUTS-035-KNOWN-GOOD`.
 
-## Current build
+## READ IN THIS ORDER
 
-Current `index.html` identifies itself as:
+1. `GUTS_EMERGENCY_HANDOVER_2026-09-27.md`
+2. `GUTS_CURRENT_STATE.md`
+3. `GUTS_OHS_RECOVERY.md`
+4. `GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md`
+5. `CONTENTS_EDITORIAL_PLAN.md`
+6. `GUTS_HANDOVER_2026-09-27.md` — detailed architecture/manual
+7. `BABYS_FIRST_GUTS.md`
+8. `GUTS_PERFORMANCE_FLOW_POV_v1.md`
 
-**v0.26-carousel-motion**
+The former contents of this file described an older v0.26-era resume point and are obsolete.
 
-Latest carousel-motion commit at time of this handover:
+## CURRENT EMERGENCY
 
-`207e1849e85c4ba348b24ecb26cfacbde49e84cd`
+A Contents cleanup uncovered evidence that the transformed corpus itself may be discontinuous. `PERFORMANCE35/ac_035.json` (Christie) begins with a `Chapter 5` chapter object. Stop cosmetic patching until provenance is mapped.
 
-The production site was successfully serving the real visual-asset chain on an actual phone on 23 September 2026. The v0.26 carousel also moves, but too slowly and still needs finesse.
+Next production task after documentation:
 
-## Current spectator path
+**Audit Christie source/original -> PRIMED -> PERFORMANCE35 -> retained/omitted chapters -> mapping -> opening alignment -> `$$$`/force data.**
 
-Intended visible chain:
+Then Runyon and Joyce opening alignment; verify Pooh/Thurber; then Jeeves/Farewell/Huck. Parker is parked.
 
-**Resources Pre-Page → Gutenberg-style Landing → moving Carousel / Suggestions → selected full-size book cover → Contents → chapter → reader → force payoff**
+## MACHINE MAP
 
-The Resources page is intentionally a slightly wrong old institutional shortcut. The performer can apparently give the Resources URL by accident: “Oh wait, that ain’t— ah, it’ll do. Tap one of those.”
+- GUTS source/workshop: `stanjarin/GUTS`
+- performer NoBo/H2G2: `stanjarin/NoBoNoFo`
+- production domain: `gutenbrg.com`
+- Cloudflare Worker: `guts`
+- KV binding: `GUTS_STATE`
+- current static asset root: `./public`
+- current Worker source: `src/worker.js`
+- current deployment config: `wrangler.jsonc`
+- current Reader baseline: GUTS 0.35 / `v0.35-performance-reader`
 
-The fake/GUTS route is ephemeral camouflage. At the appropriate exit the spectator can end up at real Project Gutenberg, leaving no obvious fake site behind.
+Doctrine: **H2 PUSHES — GUT PULLS.**
 
-Performance target is **phones**. Tablet presentation is not a design requirement. Desktop is principally for development/QA.
+Do not copy secret/PIN values into GitHub. Do not replace runtime secrets during a routine redeploy/recovery.
 
-## Real visual assets now in repository root
+## IF PRODUCTION IS BROKEN
 
-Gateway / landing:
+Do not guess. Compare `main` to `GUTS-035-KNOWN-GOOD`, inspect Cloudflare **View all deployments**, verify what `public/index.html` contains, and preserve Worker/KV bindings. The full procedure is in `GUTS_OHS_RECOVERY.md` and `GUTS_HANDOVER_2026-09-27.md`.
 
-- `Pre-Page.jpg`
-- `LANDING PAGE.jpg`
-- `Carousel.jpg`
-- `Suggestions.png`
+## IF THE CONTENTS REPAIR IS BROKEN
 
-Full-size selected-book covers:
+Do not patch the patch. Record the bad branch commit, compare it with the previous `contents-repair` state and with `main`, restore only the affected branch material, and re-run mechanical checks. Production should remain untouched.
 
-- `THURBER.jpg`
-- `JEEVES.jpg`
-- `HEMINGWAY.jpg`
-- `POOH.jpg`
-- `HUCK.jpg`
-- `PARKER.jpg`
-- `RUNYON.jpg`
-- `CHRISTIE.jpg`
-- `JOYCE.jpg`
-
-**Do not reconstruct these from HTML/CSS if the artwork already exists.** They are Stanley’s production artwork. Revisions should normally be simple asset swaps while preserving filenames/geometry where practical.
-
-`.assetsignore` must explicitly admit any root visual asset that Cloudflare is expected to publish. Merely uploading a file to GitHub does not guarantee Cloudflare serves it.
-
-## Nine books / corpus
-
-The nine books are:
-
-1. James Thurber — *My Life and Hard Times*
-2. P. G. Wodehouse — *Right Ho, Jeeves!*
-3. Ernest Hemingway — *A Farewell to Arms*
-4. A. A. Milne — *The House at Pooh Corner*
-5. Mark Twain — *Adventures of Huckleberry Finn*
-6. Dorothy Parker — *Men I’m Not Married To*
-7. Damon Runyon — *On Broadway*
-8. Agatha Christie — *The Murder at the Vicarage*
-9. James Joyce — *Ulysses*
-
-Corpus data lives under `PRIMED/`. It has already undergone mechanical socket QA. **Do not rewrite or regenerate the corpus merely to fix UI/runtime bugs.**
-
-## Force architecture — preserve this
-
-Canonical socket marker: `$$$`.
-
-Doctrine:
-
-**H2 PUSHES — GUT PULLS.**
-
-- Performer uses the existing NoBo NoFo H2G2 covert word-entry surface.
-- Performer side securely pushes ARMED + word to Cloudflare.
-- Cloudflare KV remembers the tiny performance state.
-- Spectator GUTS browser pulls it.
-- Reader substitutes the force word into the selected canonical socket.
-- No performance-time HTML redeploy/mutation is required.
-
-Core local phases are READY / ARMED / PAID / CLEAN.
-
-The selected chapter-opening page is deliberately protected. Payoff/dwell/persistence machinery was proven before the current visual-asset work. **Do not reopen signed-off state machinery merely because a cosmetic/UI change is being made.**
-
-Cloudflare Worker/state details and security rules are documented in:
-
-- `README.md`
-- `ENGINE_v0.1.md`
-- `CLOUDFLARE_BRIDGE_v0.1.md`
-- `H2_PUSH_SEAM_v0.1.md`
-- `cloudflare/README.md`
-
-Never put actual PINs or `GUTS_PUSH_SECRET` into public source or documentation.
-
-## Cloudflare production pieces
-
-Production domain: `gutenbrg.com`
-
-Worker: `guts`
-
-KV binding: `GUTS_STATE`
-
-Expected runtime binding names include:
-
-- `GUTS_PUSH_SECRET`
-- `GUTS_ARM_PIN`
-- `GUTS_SITE_PIN`
-
-`keep_vars = true` was added previously because dashboard PIN bindings had disappeared after deployments. Preserve that protection unless there is a demonstrated reason to change it.
-
-Cloudflare’s job is deliberately narrow:
-
-**HOST WEBSITE + REMEMBER WORD.**
-
-Do not redesign the transport architecture for elegance.
-
-## Current known-good visual state
-
-As of the evening of 23 September 2026, actual-phone testing confirmed:
-
-- Resources/Pre-Page displays.
-- Landing artwork displays.
-- Carousel artwork displays.
-- Visible book hit zones select the corresponding books.
-- Selected book opens its correct large cover.
-- Tapping the large cover proceeds to Contents.
-- v0.26 carousel moves horizontally and reverses, but movement is **too slow**.
-
-The carousel currently measures its actual rendered strip width against the actual viewport/window before animating. This replaced an earlier CSS-only travel calculation that rendered correctly but did not visibly move.
-
-## Exact resume point — morning 24 September 2026
-
-Known UI defects / next work:
-
-1. **Resources Pre-Page:** only the **first** of the four apparent links currently works on the phone. Diagnose the hit-zone geometry/overlay for links 2–4. All four should be independent live touch targets even though they converge on the same landing destination.
-2. **Carousel speed:** v0.26 works but is S--L--O--W. Current motion duration is 24 seconds end-to-end. A first candidate is roughly **12 seconds**, but finesse this from the actual phone rather than treating 12 as sacred.
-3. **Full dress rehearsal:** after the two UI fixes, perform one complete real-phone run including H2 covert word entry → ARMED → `[WORD]`/`$$$` payoff → dwell → PAID persistence/cleanup. Do not repeatedly reopen the already-proven state chain before the UI is ready.
-4. Then finesse transitions, cover slide, spacing/crop and other cosmetics from actual-phone evidence.
-
-## Things not to “improve” casually
-
-- Do not replace the existing NoBo performer PWA.
-- Do not rebuild the H2 PUSH / GUT PULL architecture.
-- Do not touch corpus wording/order to solve presentation bugs.
-- Do not remove chapter-opener protection.
-- Do not expose secrets/PINs publicly.
-- Do not redesign the fake Gutenberg material into something polished. Some Gutenberg brutality/inconsistency is intentional camouflage.
-- Do not rebuild `Carousel.jpg` from individual covers. It is the canonical moving strip artwork.
-- `Suggestions.png` is a separate transparent full-format overlay and sits above the moving carousel.
-- Do not optimise for tablets. The performance object is a spectator’s phone.
-- Prefer a small targeted patch over a broad refactor. **Working weirdness beats elegant destruction.**
-
-## Essential reading order for a replacement developer / AI
-
-1. `IF_CHATGPT_DIES_READ_THIS.md` — this file
-2. `README.md` — canonical architecture/state history; note that older sections may be superseded by later continuation checkpoints
-3. `GUTS_PERFORMANCE_FLOW_POV_v1.md` — performance logic/POV
-4. `ENGINE_v0.1.md`
-5. `CLOUDFLARE_BRIDGE_v0.1.md`
-6. `H2_PUSH_SEAM_v0.1.md`
-7. `cloudflare/README.md`
-8. Current `index.html`
-
-Then inspect git history before changing anything.
-
-## Recovery procedure if ChatGPT is unavailable
-
-1. Download/clone `stanjarin/GUTS` to a Mac and keep an untouched backup.
-2. Preserve access to the Cloudflare account/domain/Worker/KV configuration. GitHub documents the architecture but does not itself contain the live secret values/state.
-3. Give the complete repo to a competent web developer or coding AI and require them to read the files above first.
-4. Establish that production `gutenbrg.com` still serves the known-good build before deploying changes.
-5. Make one targeted change at a time; commit it; let Cloudflare deploy; test on the actual spectator phone.
-6. If something breaks, return to the last known-good Git commit rather than reconstructing the project.
-
-## Philosophy
-
-The spectator should see almost none of the engineering. They invent a sentence/word context, use their own phone, wander through apparently ordinary free books, make free choices, stop somewhere, and encounter the impossibility.
-
-The thousands of pages, sockets, state machine, H2 input, Cloudflare Worker/KV, camouflage and deployment plumbing exist precisely so that **none of the hard work is visible**.
+**The repository is the memory. Read first; turn screws second.**
