@@ -88,4 +88,4 @@ jobs:
           git commit -m 'Record post-hardening QA'
           git push origin HEAD:contents-repair
 
-# trigger after Contents truthing
+# trigger corrected QA regex
