@@ -12,7 +12,7 @@ Read `GUTS_EMERGENCY_HANDOVER_2026-09-27.md` first, then this file, and `GUTS_OH
 - `contents-repair` was created from that current main.
 - First branch checkpoint commit: `c7b75c6f365cf5a7723256aa8ad84c05976e6a5a` — `Checkpoint GUTS at thread wall`.
 - Frozen rollback baseline also exists: `GUTS-035-KNOWN-GOOD`.
-- **Corpus provenance/integrity audit has NOT begun.**
+- **Eight-book corpus provenance/integrity audit COMPLETED.** See `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`.
 - **No production corpus repair has been made since the branch was created.**
 
 ## Production baseline
@@ -39,22 +39,19 @@ Observed state at stop point:
 - **Christie:** broken/discontinuous Contents and suspect transformed corpus.
 - **Parker:** parked/non-runner; do not spend repair time on it now.
 
-## Next action — audit first
+## Forensic audit result
 
-Before any further Contents patching, map:
+The eight active performance titles are now separated into three classes:
 
-`original/source -> PRIMED/PERFORMANCE35 -> chapters retained/omitted -> renumbering/mapping -> page/opening alignment -> $$$ sockets/force_paragraphs preserved`
+- **Structurally sound:** Pooh, Thurber, Jeeves.
+- **Structurally sound with deliberate source-chapter cuts:** Huck, Farewell, Christie.
+- **Broken opening/group mapping from later equal-chunk regrouping:** Runyon, Joyce.
 
-Priority order:
+Christie's discontinuity is now explained: the 0.35 builder deliberately retained source Chapters 5, 6, 11, 12, 22, 23, 24, 25, 26, 30 and 32 under its performance-depth rules. The retained destinations still begin at genuine chapter openings. Christie therefore needs an editorial/product decision, not forensic reconstruction.
 
-1. Christie.
-2. Runyon.
-3. Joyce.
-4. Verify Pooh and Thurber.
-5. Jeeves / Farewell / Huck.
-6. Parker last / special case.
+Runyon and Joyce require actual mapping repair. Their prepared pages/sockets remain intact; the later structure-repair step flattened those pages and re-divided them into 18 equal-sized groups without respecting story/episode openings.
 
-The previous cosmetic Contents plan is now subordinate to this provenance audit. Do not renumber/hide/relabel around unknown structural damage.
+**Next repair work:** restore genuine opening boundaries for Runyon and Joyce over the existing prepared pages. Do not repaginate or alter sockets unless a separate defect is proven. Parker remains parked.
 
 ## Live metadata mapping
 
@@ -84,4 +81,4 @@ A corpus/Contents problem is not evidence that the state engine is broken.
 
 Nothing from `contents-repair` goes to `main` until the full replacement is audited and compactly phone-tested. At release, preserve the old known-good material as rollback history; never destroy the known-good bird while testing the new one.
 
-**Status: MAIN SAFE / CONTENTS-REPAIR ISOLATED / DOCUMENTATION FIRST / CORPUS AUDIT NOT STARTED.**
+**Status: MAIN SAFE / CONTENTS-REPAIR ISOLATED / EIGHT-BOOK FORENSIC AUDIT COMPLETE / NO CORPUS REPAIR YET.**
