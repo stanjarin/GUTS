@@ -1,94 +1,74 @@
 # GUTS — CURRENT STATE
 
-**Authoritative checkpoint: 27 September 2026 — post exhaustive GUTS + NoBo audit**
+**Authoritative checkpoint: 27 September 2026 — post-hardening**
 
-Read this file first, then:
-1. `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
-2. `GUTS_OHS_RECOVERY.md`
-3. `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`
-4. `RUNYON_JOYCE_REBUILD_QA.md`
-5. `GUTS_HANDOVER_2026-09-27.md` for detailed architectural history
+## Safety anchors
 
-## Branch / production truth
-
-- Production `main`: **DO NOT MODIFY casually**.
-- Verified production head: `b662978d1de67304cc96ad78e3c224f2d2b75533` — `Install authoritative Contents tables`.
+- Production `main`: `b662978d1de67304cc96ad78e3c224f2d2b75533` — untouched.
 - Working branch: `contents-repair`.
-- Frozen rollback branch: `GUTS-035-KNOWN-GOOD`.
-- Production Reader: GUTS 0.35 / `v0.35-performance-reader`.
-- Cloudflare serves `./public`; Worker is root `src/worker.js`.
-- Root/public Reader and active corpus copies are currently synchronised on the branch.
+- Clean pre-hardening snapshot: `contents-repair-backup-2026-09-27` at `9e6a3f713c1343e4bfb361a447fe70a884b9a55b`.
+- Frozen known-good rollback: `GUTS-035-KNOWN-GOOD`.
 
-## Exhaustive audit complete
+## Mandatory handover rule
 
-GUTS was read in full at the text/code/data level:
-- 101 text/code/data files / 236,902 logical lines;
-- all JSON/webmanifest parsed;
-- all JavaScript/inline HTML scripts syntax-checked successfully.
+**READ EVERYTHING before acting.**
 
-NoBo was cross-checked comprehensively, but for GUTS **only the H2G2 covert arming route is relevant**. Other NoBo books/corpus issues are out of GUTS scope.
+Read all GUTS material and all NoBo material. After reading it, remember that for GUTS the only operational NoBo dependency is **H2G2 covert arming**.
 
-See `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`.
+## Current Reader/corpus state
 
-## Corpus state
+- Runyon repaired: 47 genuine stories / 742 pages.
+- Joyce repaired: 18 genuine episodes / 725 pages.
+- Pooh, Thurber, Jeeves, Huck and Farewell structurally sound.
+- Christie is a deliberate 11-source-chapter performance edition, not unexplained corruption.
+- Parker remains parked.
 
-- Pooh: sound.
-- Thurber: structurally sound; Contents table has one stale/unreachable extra terminal label.
-- Jeeves: sound.
-- Huck: sound; source Ch43 deliberately omitted.
-- Farewell: structurally sound; seven source chapters deliberately omitted; visible numbering presentation still needs truthing.
-- Christie: structurally sound reduced edition retaining source chapters 5, 6, 11, 12, 22–26, 30, 32; visible numbering presentation still needs a deliberate editorial decision.
-- Runyon: **repaired on this branch** — 47 genuine stories / 742 pages.
-- Joyce: **repaired on this branch** — 18 genuine episodes / 725 pages.
-- Parker: parked/non-runner.
+## Hardening completed on contents-repair
 
-Runyon/Joyce rebuild QA:
-- genuine token order PASS;
-- genuine opening alignment PASS;
-- exactly one canonical `$$$` marker per prepared page PASS.
+- exact canonical `$$$` substitution fixed;
+- Thurber stale unreachable Contents label removed;
+- Christie Contents/source numbering made truthful;
+- Farewell retained source numbering made explicit/truthful;
+- stale Contents/build writer workflows quarantined;
+- root/public Reader synchronised;
+- active performance corpus root/public copies synchronised.
 
-## Critical newly found Reader defect
+## Mechanical QA
 
-GUTS currently substitutes:
+`HARDENING_QA_2026-09-27.md`: **PASS**
 
-`split('$$')`
-
-but the canonical corpus marker is:
-
-`$$$`
-
-NoBo correctly replaces `$$$` exactly. GUTS must be corrected on `contents-repair` before release.
-
-This defect exists in frozen production `main` too; **do not patch main directly**.
-
-## Workflow hazards
-
-Before any merge/release, review/quarantine:
-- `.github/workflows/contents_fix_v2.yml`
-- `.github/workflows/one_shot_contents_words.yml`
-- `.github/workflows/guts035_build.yml`
-
-The first two can write on pushes to `main`; the builder can recreate the old Runyon/Joyce structural problem.
+It verifies:
+- exact `$$$` substitution;
+- Reader JavaScript syntax;
+- truthful Thurber/Christie/Farewell Contents;
+- chapter counts for all eight active books;
+- exactly one socket per active performance page;
+- no socket markers in genuine prose;
+- root/public identity;
+- stale writer workflows absent from active workflow directory.
 
 ## Signed-off machinery — do not reopen casually
 
-- H2 PUSH / GUT PULL architecture.
+- H2 PUSH / GUT PULL.
 - Worker/KV transport.
-- READY / ARMED / CLEAN remote state.
+- READY / ARMED / CLEAN.
 - local PAID/dwell persistence.
 - selected-chapter opener protection.
-- current visible Reader navigation/transitions baseline.
+- existing Reader navigation/transitions.
 
-A corpus/Contents defect is not evidence that those systems are broken.
+## Read next
+
+1. `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
+2. `GUTS_OHS_RECOVERY.md`
+3. `HARDENING_QA_2026-09-27.md`
+4. `CONTENTS_CORPUS_FORENSIC_AUDIT_2026-09-27.md`
+5. `RUNYON_JOYCE_REBUILD_QA.md`
+6. `GUTS_HANDOVER_2026-09-27.md`
 
 ## Next action
 
-Perform a **branch-only hardening pass**:
+**Actual-phone visible QA of the hardened candidate without altering production main.**
 
-1. fix GUTS exact `$$$` substitution;
-2. truth Christie, Farewell and Thurber Contents/visible headings;
-3. quarantine stale active write workflows;
-4. run full mechanical QA again;
-5. then actual-phone QA.
+After that, compare the release candidate against frozen `main` and decide whether it is fit to release.
 
-**Status: MAIN SAFE / EXHAUSTIVE AUDIT COMPLETE / RUNYON + JOYCE REPAIRED ON BRANCH / RELEASE BLOCKED BY KNOWN HARDENING ITEMS.**
+**Status: MAIN SAFE / CLEAN BACKUP FROZEN / HARDENING COMPLETE / MACHINE QA PASS / PHONE QA NEXT.**
