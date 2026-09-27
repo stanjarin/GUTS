@@ -1,0 +1,135 @@
+name: Rebuild four full chapter books
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/rebuild_four_full.yml']
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair, path: guts}
+      - uses: actions/checkout@v4
+        with: {repository: stanjarin/NoBoNoFo, ref: main, path: nobo}
+      - name: Rebuild Jeeves Huck Farewell Christie without chapter cuts
+        run: |
+          python3 - <<'PY'
+          import json,re,pathlib
+          G=pathlib.Path('guts'); N=pathlib.Path('nobo')
+          D=G/'PERFORMANCE35'
+          AIR=json.load(open(D/'AIRLOCKS_v1.json'))
+          def wc(s): return len(re.findall(r"\b[\w’'-]+\b",str(s)))
+          def toks(xs): return re.findall(r"\b[\w’'-]+\b",' '.join(map(str,xs)))
+          def split_sentences(p): return [x.strip() for x in re.split(r'(?<=[.!?])\s+',str(p)) if x.strip()]
+          def split_for_carry(p,goal):
+              ss=split_sentences(p)
+              if len(ss)<2:return None
+              n=0;cut=0
+              for i,s in enumerate(ss[:-1]):
+                  n+=wc(s)
+                  if n>=goal:cut=i+1;break
+              if not cut:cut=max(1,len(ss)//2)
+              a=' '.join(ss[:cut]); b=' '.join(ss[cut:])
+              return (a,b) if wc(a)>=12 and wc(b)>=12 else None
+          def paginate(paras,air):
+              q=[str(p).strip() for p in paras if str(p).strip()]
+              pages=[];carry=None;cycle=[28,48,68,38,58];ci=0
+              while q or carry:
+                  out=[]
+                  if carry:out.append(carry);carry=None
+                  while q and sum(wc(x) for x in out)<285: out.append(q.pop(0))
+                  if q:
+                      sp=split_for_carry(q[0],cycle[ci%len(cycle)]);ci+=1
+                      if sp:out.append(sp[0]);carry=sp[1];q.pop(0)
+                  if not out:break
+                  pages.append({'paragraphs':out})
+              if len(pages)>1 and sum(wc(x) for x in pages[-1]['paragraphs'])<190:
+                  pages[-2]['paragraphs']+=pages[-1]['paragraphs'];pages.pop()
+              for p in pages:
+                  base=p['paragraphs'];ins=1 if len(base)>1 else 0
+                  fp=list(base);fp.insert(ins,air)
+                  p['force_paragraphs']=fp;p['word_count']=sum(wc(x) for x in base);p['airlock_index']=ins
+              return pages
+
+          def inherited(bid):
+              d=json.load(open(N/'books'/f'{bid}.json'))
+              air=None
+              for c in d['chapters']:
+                  for pg in c.get('pages',[]):
+                      for x in pg.get('force_paragraphs',[]):
+                          if '$$$' in str(x) and str(x) not in pg.get('paragraphs',[]):
+                              air=str(x);break
+                      if air:break
+                  if air:break
+              if not air: raise SystemExit(f'No source airlock found for {bid}')
+              out=[]
+              for c in d['chapters']:
+                  genuine=[x for pg in c.get('pages',[]) for x in pg.get('paragraphs',[])]
+                  pages=paginate(genuine,air)
+                  if toks(genuine)!=toks([x for pg in pages for x in pg['paragraphs']]):
+                      raise SystemExit(f'token mismatch {bid} {c.get("title")}')
+                  out.append({'title':c.get('title','Chapter'),'pages':pages})
+              return {'id':bid,'title':d.get('title',bid),'author':d.get('author',''),
+                      'performance_version':'0.35-full-chapters','chapters':out}
+
+          # Christie: split untouched PRIME at every genuine Chapter heading, retain all 32.
+          src=json.load(open(G/'PRIMED/AC_GUTS_PRIME2.json'))
+          paras=[x for pg in src['pages'] for x in pg.get('paragraphs',[])]
+          groups=[];cur=None
+          for x in paras:
+              m=re.match(r'^Chapter\s+(\d+)\b',str(x).strip(),re.I)
+              if m:
+                  if cur:groups.append(cur)
+                  cur={'title':f'Chapter {int(m.group(1))}','paras':[x]}
+              elif cur:
+                  cur['paras'].append(x)
+          if cur:groups.append(cur)
+          if [g['title'] for g in groups] != [f'Chapter {i}' for i in range(1,33)]:
+              raise SystemExit('Christie did not resolve to Chapters 1-32')
+          acch=[]
+          for g in groups:
+              pages=paginate(g['paras'],AIR['AC'])
+              if toks(g['paras'])!=toks([x for pg in pages for x in pg['paragraphs']]):
+                  raise SystemExit('Christie token mismatch '+g['title'])
+              acch.append({'title':g['title'],'pages':pages})
+          books={
+              'jeeves':inherited('jeeves'),
+              'huck':inherited('huck'),
+              'farewell':inherited('farewell'),
+              'ac':{'id':'ac','title':'The Murder at the Vicarage','author':'Agatha Christie',
+                    'performance_version':'0.35-full-chapters','chapters':acch}
+          }
+          expected={'jeeves':23,'huck':43,'farewell':41,'ac':32}
+          report=['# FOUR-BOOK FULL-CHAPTER REBUILD QA','']
+          for bid,d in books.items():
+              assert len(d['chapters'])==expected[bid]
+              total=0
+              for i,c in enumerate(d['chapters'],1):
+                  assert c['pages'],f'{bid} chapter {i} zero pages'
+                  total+=len(c['pages'])
+                  for pg in c['pages']:
+                      assert '\n'.join(map(str,pg['force_paragraphs'])).count('$$$')==1
+                      assert '$$$' not in '\n'.join(map(str,pg['paragraphs']))
+              report += [f'## {bid}',f'- chapters: {len(d["chapters"])}',f'- pages: {total}',
+                         f'- first: {d["chapters"][0]["title"]} — {d["chapters"][0]["pages"][0]["paragraphs"][0][:140]}',
+                         f'- last: {d["chapters"][-1]["title"]} — {d["chapters"][-1]["pages"][0]["paragraphs"][0][:140]}',
+                         '- one socket per page: PASS','- genuine token order: PASS','']
+              raw=json.dumps(d,ensure_ascii=False,separators=(',',':'))
+              (D/f'{bid}_035.json').write_text(raw)
+              pd=G/'public/PERFORMANCE35';pd.mkdir(parents=True,exist_ok=True)
+              (pd/f'{bid}_035.json').write_text(raw)
+          (G/'FOUR_BOOK_FULL_REBUILD_QA_2026-09-27.md').write_text('\n'.join(report))
+          PY
+      - name: Commit rebuilt corpus
+        working-directory: guts
+        run: |
+          git config user.name 'GUTS repair'
+          git config user.email 'actions@users.noreply.github.com'
+          git add PERFORMANCE35/jeeves_035.json PERFORMANCE35/huck_035.json PERFORMANCE35/farewell_035.json PERFORMANCE35/ac_035.json
+          git add public/PERFORMANCE35/jeeves_035.json public/PERFORMANCE35/huck_035.json public/PERFORMANCE35/farewell_035.json public/PERFORMANCE35/ac_035.json
+          git add FOUR_BOOK_FULL_REBUILD_QA_2026-09-27.md
+          git commit -m 'Rebuild four books with all genuine chapters'
+          git push origin HEAD:contents-repair
