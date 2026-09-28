@@ -1,8 +1,0 @@
-# DEPLOYED THURBER ASSET CHECK
-
-Repo SHA256: `3bf3516f7c74d95125cb42258a163fea67098ea41ec40efe26267d61ff9fccce`
-Live SHA256: `3bf3516f7c74d95125cb42258a163fea67098ea41ec40efe26267d61ff9fccce`
-
-Identical full JSON: **YES**
-
-Dollar runs: `{"$$$": 55}`
