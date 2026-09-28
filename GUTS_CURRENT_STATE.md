@@ -92,3 +92,35 @@ Reader-only repair then applied on `contents-repair`:
 - exact `$$$` socket substitution remains intact.
 
 NEXT ACTION: phone-QA the real Reader presentation only. Do not touch corpus generation.
+
+
+## 2026-09-28 all-eight Reader phone QA PASS
+
+Stanley tested the uniquely named repaired Reader preview on iPhone Safari Private.
+
+Result: **ALL EIGHT ACTIVE BOOKS PASS** at Reader presentation level:
+- Pooh
+- Thurber
+- Runyon
+- Joyce
+- Jeeves
+- Huck
+- Farewell
+- Christie
+
+This confirms:
+- rebuilt four-book corpora remain sound in the real Reader;
+- Contents presentation is acceptable;
+- chapter-opening presentation is acceptable;
+- no visible regression observed in the previously frozen four.
+
+Known side issues remain separate:
+- Huck OCR defects are source-quality cleanup only;
+- TinyURL/live deployment is still serving the old production state;
+- landing-page grey-block defect remains logged separately.
+
+Current uniquely named Reader QA commit:
+- `63b97344612ff480b88e64015e7f84393ccbd342`
+- `public/READER_QA_2026-09-28.html`
+
+NEXT ACTION: freeze this Reader state, then test live H2G2 → GUTS arming/deployment against a controlled candidate without altering corpus or Reader presentation.
