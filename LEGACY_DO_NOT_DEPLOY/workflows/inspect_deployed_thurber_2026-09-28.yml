@@ -1,0 +1,41 @@
+name: Inspect deployed Thurber asset
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/inspect_deployed_thurber.yml']
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair}
+      - name: Compare deployed Thurber JSON
+        run: |
+          curl -fsS --max-time 20 https://contents-repair-guts.stanjarin.workers.dev/PERFORMANCE35/jt_035.json -o /tmp/live.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,re,json
+          repo=Path('public/PERFORMANCE35/jt_035.json').read_bytes()
+          live=Path('/tmp/live.json').read_bytes()
+          ls=live.decode()
+          runs=re.findall(r'\${2,6}',ls)
+          from collections import Counter
+          c=Counter(runs)
+          lines=[
+            '# DEPLOYED THURBER ASSET CHECK','',
+            'Repo SHA256: `'+hashlib.sha256(repo).hexdigest()+'`',
+            'Live SHA256: `'+hashlib.sha256(live).hexdigest()+'`','',
+            'Identical full JSON: **'+('YES' if repo==live else 'NO')+'**','',
+            'Dollar runs: `'+json.dumps(dict(c),sort_keys=True)+'`'
+          ]
+          Path('DEPLOYED_THURBER_CHECK_2026-09-28.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS inspector'
+          git config user.email 'actions@users.noreply.github.com'
+          git add DEPLOYED_THURBER_CHECK_2026-09-28.md
+          git commit -m 'Inspect deployed Thurber asset'
+          git push origin HEAD:contents-repair
