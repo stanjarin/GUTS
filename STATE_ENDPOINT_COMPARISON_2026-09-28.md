@@ -4,9 +4,9 @@
 ```json
 {
   "phase": "ARMED",
-  "word": "HHHHHHHHH",
-  "revision": 26,
-  "updatedAt": 1790486307647
+  "word": "GOPHERS",
+  "revision": 27,
+  "updatedAt": 1790567511642
 }
 ```
 
@@ -14,9 +14,9 @@
 ```json
 {
   "phase": "ARMED",
-  "word": "HHHHHHHHH",
-  "revision": 26,
-  "updatedAt": 1790486307647
+  "word": "GOPHERS",
+  "revision": 27,
+  "updatedAt": 1790567511642
 }
 ```
 
