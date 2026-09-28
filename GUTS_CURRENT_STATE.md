@@ -76,3 +76,19 @@ It verifies:
 After that, compare the release candidate against frozen `main` and decide whether it is fit to release.
 
 **Status: MAIN SAFE / CLEAN BACKUP FROZEN / HARDENING COMPLETE / MACHINE QA PASS / PHONE QA NEXT.**
+
+
+## 2026-09-28 corpus freeze / Reader repair
+
+Phone corpus QA passed for Jeeves, Huck, Farewell and Christie using the isolated four-book QA page. Huck OCR defects are logged as a separate source-quality issue; Christie's doubled heading on that stripped QA page was presentation-only.
+
+All eight active books are now **corpus-frozen**: Pooh, Thurber, Runyon, Joyce, Jeeves, Huck, Farewell, Christie.
+
+Reader-only repair then applied on `contents-repair`:
+- rebuilt-four Contents now derive descriptive labels from genuine opening prose instead of stale authoritative chapter arrays;
+- first reader page of Jeeves, Huck, Farewell and Christie now displays one canonical chapter heading;
+- an existing Christie source heading is replaced rather than duplicated;
+- root and public Reader copies verified identical;
+- exact `$$$` socket substitution remains intact.
+
+NEXT ACTION: phone-QA the real Reader presentation only. Do not touch corpus generation.
