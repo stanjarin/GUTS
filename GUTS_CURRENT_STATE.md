@@ -194,3 +194,36 @@ Conclusion:
 Arming layer is now **FROZEN**.
 
 NEXT ACTION: deliberately CLEAN remote state, then test the final READY / ARMED / PAID / CLEAN performance path on the fresh build URL before release/deployment decisions.
+
+
+## 2026-09-28 full performance state-chain PASS
+
+Stanley completed the controlled live test using a fresh Cloudflare version URL and a new arm word.
+
+Sequence tested:
+1. deliberately forced remote CLEAN by clearing stored ARM authorisation and re-entering the ARM PIN through NoBo H2G2;
+2. armed a new word through H2G2;
+3. spectator entered GUTS on the unique branch build;
+4. chose a book and chapter;
+5. selected chapter opener remained pristine;
+6. prepared page displayed the armed word;
+7. page was held for the required dwell interval;
+8. departure converted the local state to PAID;
+9. revisiting the paid page preserved the armed-word payoff only on that paid page;
+10. cleanup path remained functional.
+
+Stanley result: **PASS**.
+
+This confirms the complete live performance chain:
+**CLEAN → ARMED → protected opener → prepared payoff → 6s dwell → PAID persistence → CLEAN**
+
+Previously observed `GOPHERS$` was isolated to Safari caching an older Reader document at the stable preview alias. Unique Cloudflare version URL produced the correct clean result. For QA, prefer unique version URLs when verifying newly deployed Reader code.
+
+The following layers are now frozen:
+- corpus;
+- Reader presentation;
+- landing/carousel;
+- H2G2 → Worker/KV arming;
+- full READY/ARMED/PAID/CLEAN performance state chain.
+
+NEXT ACTION: compare the frozen release candidate against production `main`, remove/quarantine temporary diagnostic workflows and reports that are no longer needed, and prepare a release/deployment checklist without altering frozen runtime behavior.
