@@ -13,18 +13,21 @@ jobs:
         with: {ref: contents-repair}
       - name: Compare assets
         run: |
+          UA='Mozilla/5.0'
+          curl -fsS -A "$UA" --max-time 20 'https://gutenbrg.com/LANDING%20PAGE.jpg' -o /tmp/domain_landing
+          curl -fsS -A "$UA" --max-time 20 'https://fc6f93f9-guts.stanjarin.workers.dev/LANDING%20PAGE.jpg' -o /tmp/version_landing
+          curl -fsS -A "$UA" --max-time 20 'https://gutenbrg.com/Carousel.jpg' -o /tmp/domain_carousel
+          curl -fsS -A "$UA" --max-time 20 'https://fc6f93f9-guts.stanjarin.workers.dev/Carousel.jpg' -o /tmp/version_carousel
+          curl -fsS -A "$UA" --max-time 20 'https://gutenbrg.com/Suggestions.png' -o /tmp/domain_suggestions
+          curl -fsS -A "$UA" --max-time 20 'https://fc6f93f9-guts.stanjarin.workers.dev/Suggestions.png' -o /tmp/version_suggestions
           python3 - <<'PY'
-          import urllib.request,hashlib,pathlib
-          assets=['LANDING PAGE.jpg','Carousel.jpg','Suggestions.png']
-          bases={'domain':'https://gutenbrg.com/','version':'https://fc6f93f9-guts.stanjarin.workers.dev/'}
+          import hashlib,pathlib
+          assets=[('LANDING PAGE.jpg','/tmp/domain_landing','/tmp/version_landing'),('Carousel.jpg','/tmp/domain_carousel','/tmp/version_carousel'),('Suggestions.png','/tmp/domain_suggestions','/tmp/version_suggestions')]
           lines=['# PRODUCTION LANDING ASSET COMPARISON','']
-          for a in assets:
-              rows={}
-              for k,b in bases.items():
-                  u=b+urllib.parse.quote(a)
-                  data=urllib.request.urlopen(u,timeout=20).read()
-                  rows[k]=(len(data),hashlib.sha256(data).hexdigest())
-              lines += [f'## {a}',f'- domain: {rows["domain"][0]} bytes `{rows["domain"][1]}`',f'- version: {rows["version"][0]} bytes `{rows["version"][1]}`',f'- identical: **{"YES" if rows["domain"]==rows["version"] else "NO"}**','']
+          for a,dp,vp in assets:
+              dd=pathlib.Path(dp).read_bytes(); vd=pathlib.Path(vp).read_bytes()
+              dh=hashlib.sha256(dd).hexdigest(); vh=hashlib.sha256(vd).hexdigest()
+              lines += [f'## {a}',f'- domain: {len(dd)} bytes `{dh}`',f'- version: {len(vd)} bytes `{vh}`',f'- identical: **{"YES" if dd==vd else "NO"}**','']
           pathlib.Path('PRODUCTION_ASSET_COMPARISON_2026-09-28.md').write_text('\n'.join(lines))
           PY
       - name: Commit report
