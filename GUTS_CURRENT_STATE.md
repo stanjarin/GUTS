@@ -157,3 +157,40 @@ Current clean repaired branch tip after the three file edits:
 Landing/carousel layer is now **FROZEN**.
 
 NEXT ACTION: test **H2G2 → GUTS arming only** against the branch preview. Do not alter corpus, Reader presentation, or landing/carousel.
+
+
+## 2026-09-28 H2G2 → GUTS arming PASS
+
+Stanley armed **GOPHERS** through NoBo H2G2.
+
+Verified transport:
+- H2G2 posts to `https://gutenbrg.com/api/performer/state`.
+- production and branch preview read the same KV state.
+- after ARM, both endpoints reported:
+  - phase: ARMED
+  - word: GOPHERS
+  - revision: 27
+
+A visible `GOPHERS$` anomaly appeared when testing through the stable branch alias. Investigation ruled out:
+- H2G2 input corruption;
+- KV corruption;
+- malformed `$$$$` sockets;
+- stale repository Reader code;
+- stale deployed Reader code;
+- stale deployed Thurber JSON;
+- service-worker/PWA caching.
+
+Current deployed Reader HTML and Thurber JSON were byte-identical to repository versions, with exact `split('$$$')` substitution and exact `$$$` sockets.
+
+Testing the unique Cloudflare version URL:
+- `https://666e831b-guts.stanjarin.workers.dev`
+produced **GOPHERS clean**.
+
+Conclusion:
+- H2G2 → Worker/KV → GUTS arming path is **PASS**.
+- the `GOPHERS$` symptom was caused by Safari/stable-preview-alias cache serving an older Reader document.
+- no corpus or Reader-source repair is required for this issue.
+
+Arming layer is now **FROZEN**.
+
+NEXT ACTION: deliberately CLEAN remote state, then test the final READY / ARMED / PAID / CLEAN performance path on the fresh build URL before release/deployment decisions.
