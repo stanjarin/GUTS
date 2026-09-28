@@ -1,0 +1,36 @@
+name: Compare production and preview GUTS state
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/compare_state_endpoints.yml']
+permissions:
+  contents: write
+jobs:
+  compare:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair}
+      - name: Fetch both state endpoints
+        run: |
+          set -e
+          PROD="$(curl -fsS --max-time 20 https://gutenbrg.com/api/state)"
+          PREV="$(curl -fsS --max-time 20 https://contents-repair-guts.stanjarin.workers.dev/api/state)"
+          python3 - "$PROD" "$PREV" <<'PY'
+          import json,sys,pathlib
+          prod=json.loads(sys.argv[1]); prev=json.loads(sys.argv[2])
+          same_core=all(prod.get(k)==prev.get(k) for k in ('phase','word','revision','updatedAt'))
+          lines=['# GUTS STATE ENDPOINT COMPARISON','',
+                 '## Production','```json',json.dumps(prod,indent=2),'```','',
+                 '## Branch preview','```json',json.dumps(prev,indent=2),'```','',
+                 'Core state identical: **'+('YES' if same_core else 'NO')+'**']
+          pathlib.Path('STATE_ENDPOINT_COMPARISON_2026-09-28.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS inspector'
+          git config user.email 'actions@users.noreply.github.com'
+          git add STATE_ENDPOINT_COMPARISON_2026-09-28.md
+          git commit -m 'Compare production and preview state endpoints'
+          git push origin HEAD:contents-repair
