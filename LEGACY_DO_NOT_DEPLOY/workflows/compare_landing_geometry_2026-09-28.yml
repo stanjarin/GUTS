@@ -1,0 +1,81 @@
+name: Compare landing image geometry
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/compare_landing_geometry.yml']
+permissions:
+  contents: write
+jobs:
+  compare:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair, fetch-depth: 0}
+      - name: Compare historical landing images
+        run: |
+          python3 -m pip -q install pillow numpy
+          git show 367646ac0cb94c07a00c9760b44e9fd7f5d04967:'LANDING PAGE.jpg' > /tmp/old.jpg
+          git show 23843512e385b019db3c7311eb32d4c04be06837:'LANDING PAGE.jpg' > /tmp/new.jpg
+          python3 - <<'PY'
+          from PIL import Image, ImageChops
+          import numpy as np, pathlib
+          old=np.asarray(Image.open('/tmp/old.jpg').convert('L'),dtype=np.float32)
+          new=np.asarray(Image.open('/tmp/new.jpg').convert('L'),dtype=np.float32)
+          H,W=old.shape
+          # Downsample horizontally to reduce JPEG noise; use mean luminance and vertical edge energy.
+          op=old.mean(axis=1); npf=new.mean(axis=1)
+          oe=np.abs(np.diff(old,axis=0)).mean(axis=1); ne=np.abs(np.diff(new,axis=0)).mean(axis=1)
+          def best_shift(a,b,y0,y1,limit=800):
+              x=a[y0:y1]
+              x=(x-x.mean())/(x.std()+1e-6)
+              best=None
+              for sh in range(-limit,limit+1):
+                  s0=y0+sh; s1=y1+sh
+                  if s0<0 or s1>len(b): continue
+                  y=b[s0:s1]
+                  y=(y-y.mean())/(y.std()+1e-6)
+                  corr=float((x*y).mean())
+                  if best is None or corr>best[0]: best=(corr,sh)
+              return best
+          bands=[(0,1200),(1200,2000),(2000,2800),(2400,3900),(2800,3600),(3600,4400),(4400,5600),(5600,6800),(6800,8000)]
+          lines=['# LANDING IMAGE GEOMETRY COMPARISON','',
+                 f'- dimensions both: {W} × {H} px','',
+                 'Positive shift means the same old-band structure appears LOWER in the replacement.','',
+                 '## Band registration']
+          for y0,y1 in bands:
+              c1,s1=best_shift(op,npf,y0,y1)
+              c2,s2=best_shift(oe,ne,y0,min(y1,H-1))
+              lines.append(f'- old y {y0}–{y1}: luminance shift {s1:+d}px (corr {c1:.4f}); edge shift {s2:+d}px (corr {c2:.4f})')
+          # rowwise absolute difference summary
+          diff=np.abs(old-new).mean(axis=1)
+          # 100px bins, highest average differences
+          bins=[]
+          for y in range(0,H,100):
+              bins.append((float(diff[y:min(y+100,H)].mean()),y,min(y+100,H)))
+          bins.sort(reverse=True)
+          lines += ['','## Highest-change 100px bands']
+          for v,y0,y1 in bins[:20]:
+              lines.append(f'- y {y0}–{y1}: mean abs difference {v:.2f}')
+          # exact carousel CSS geometry for 8000 px canvas
+          top=round(H*.305); bottom=round(H*(.305+.182))
+          lines += ['','## Current carousel CSS mapped to pixels',
+                    f'- top 30.5% = y {top}px',
+                    f'- height 18.2% = {round(H*.182)}px',
+                    f'- bottom = y {bottom}px',
+                    '',
+                    '## Old/new crop matching around carousel']
+          # Search best shift for several 300px windows inside carousel zone
+          for y0 in range(top,bottom,300):
+              y1=min(y0+300,bottom)
+              c,s=best_shift(oe,ne,y0,min(y1,H-1),500)
+              lines.append(f'- old y {y0}–{y1}: best new shift {s:+d}px (edge corr {c:.4f})')
+          pathlib.Path('LANDING_GEOMETRY_COMPARISON_2026-09-28.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS inspector'
+          git config user.email 'actions@users.noreply.github.com'
+          git add LANDING_GEOMETRY_COMPARISON_2026-09-28.md
+          git commit -m 'Measure old vs replacement landing geometry'
+          git push origin HEAD:contents-repair
