@@ -227,3 +227,19 @@ The following layers are now frozen:
 - full READY/ARMED/PAID/CLEAN performance state chain.
 
 NEXT ACTION: compare the frozen release candidate against production `main`, remove/quarantine temporary diagnostic workflows and reports that are no longer needed, and prepare a release/deployment checklist without altering frozen runtime behavior.
+
+
+## 2026-09-28 release-candidate preparation
+
+Pre-release cleanup completed without changing frozen runtime behaviour.
+
+Completed:
+- compared `contents-repair` against `main`: branch was ahead, 0 commits behind;
+- quarantined all temporary 28-Sep diagnostic workflows;
+- quarantined obsolete active 0.35 writer/audit workflows;
+- moved transient diagnostic reports under `LEGACY_DO_NOT_DEPLOY/diagnostics/`;
+- created `GUTS_RELEASE_CHECKLIST_2026-09-28.md`.
+
+No corpus, Reader, landing/carousel, Worker/KV or state-machine behaviour was altered by this cleanup.
+
+NEXT ACTION: verify repository hygiene, freeze the exact approved tip as a named release-candidate branch, then await Stanley's explicit approval before any merge to `main`.
