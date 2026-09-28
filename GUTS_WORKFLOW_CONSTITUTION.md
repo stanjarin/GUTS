@@ -127,11 +127,13 @@ One problem class at a time.
 - Runyon
 - Joyce
 
-### Rebuilt, awaiting phone verification
+### Passed and frozen at corpus level
 - Jeeves
 - Huck
 - Farewell
 - Christie
+
+All eight active books are now corpus-frozen. Reader presentation remains a separate downstream layer.
 
 ### Parked
 - Parker
@@ -165,6 +167,6 @@ Every project status/handover must state:
 
 ## Current next action
 
-Verify the rebuilt Jeeves, Huck, Farewell and Christie chapter boundaries/openings on phone using the isolated four-book QA page.
+Phone-QA the repaired main Reader presentation for all eight active books.
 
-Do **not** alter the main Reader presentation until that corpus-level phone QA passes.
+Do **not** regenerate or alter any corpus while doing Reader QA.
