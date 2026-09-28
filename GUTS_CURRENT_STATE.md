@@ -243,3 +243,27 @@ Completed:
 No corpus, Reader, landing/carousel, Worker/KV or state-machine behaviour was altered by this cleanup.
 
 NEXT ACTION: verify repository hygiene, freeze the exact approved tip as a named release-candidate branch, then await Stanley's explicit approval before any merge to `main`.
+
+
+## 2026-09-28 production deployment COMPLETE
+
+Frozen release candidate `release-candidate-2026-09-28` at `aef68707b1ad031eab16ae1efbecce5733630186` was fast-forwarded to `main`.
+
+Production validation:
+- Cloudflare build for the frozen RC completed successfully.
+- Unique production version URL passed landing/carousel and basic Reader navigation smoke test.
+- Full H2G2 performance chain had already passed on the frozen runtime.
+- Custom domain `gutenbrg.com` briefly displayed the old grey carousel slab, then corrected itself without refresh.
+- Machine comparison confirmed custom-domain HTML was byte-identical to the unique production version.
+- Machine comparison confirmed `LANDING PAGE.jpg`, `Carousel.jpg`, and `Suggestions.png` were byte-identical between custom domain and unique production version.
+- Conclusion: the temporary grey slab was a transient browser/custom-domain cache/resource-loading effect, not a production code regression.
+
+Post-release housekeeping:
+- final production comparison workflows quarantined under `LEGACY_DO_NOT_DEPLOY/workflows/`;
+- final production comparison reports archived under `LEGACY_DO_NOT_DEPLOY/diagnostics/`;
+- no runtime files changed during housekeeping;
+- production `main` remains the frozen RC commit.
+
+CURRENT STATUS: **PRODUCTION DEPLOYMENT COMPLETE AND PASSED.**
+
+NEXT ACTION: return to the next planned GUTS layer/task; do not reopen frozen release work unless a specific production defect is observed.
