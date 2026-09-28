@@ -124,3 +124,36 @@ Current uniquely named Reader QA commit:
 - `public/READER_QA_2026-09-28.html`
 
 NEXT ACTION: freeze this Reader state, then test live H2G2 → GUTS arming/deployment against a controlled candidate without altering corpus or Reader presentation.
+
+
+## 2026-09-28 landing/carousel source repair PASS
+
+Stanley phone- and desktop-tested the branch preview after restoring the pre-0.32 carousel presentation model.
+
+Root cause chain:
+- 0.31 had no carousel mask.
+- 0.32 introduced an unrelated white carousel background plus `.carousel-mask`.
+- 0.33 deliberately resized that mask, preserving the compromised structure.
+- later builds inherited it.
+- the replacement `LANDING PAGE.jpg` was ruled out: old and replacement are both 2048 × 8000 and pixel-aligned through the carousel zone.
+
+Clean repair on `contents-repair`:
+- removed `.carousel-mask` CSS;
+- removed carousel-mask markup;
+- removed `background:#fff` from `.carousel-window`;
+- retained native touch scrolling and current hit-map logic;
+- retained exact `$$$` substitution;
+- root/public Reader files verified identical.
+
+Stanley result: **A-OK on phone and desktop.**
+
+Rollback anchor created immediately before clean repair:
+- `visually-good-backup-2026-09-28`
+- commit `a188dbfea75317ea0663adf00b4fd5c22ebcb6b5`
+
+Current clean repaired branch tip after the three file edits:
+- `e6f56f27a3b8a9775e4bcc3a5cfa666c9cfbcb9f`
+
+Landing/carousel layer is now **FROZEN**.
+
+NEXT ACTION: test **H2G2 → GUTS arming only** against the branch preview. Do not alter corpus, Reader presentation, or landing/carousel.
