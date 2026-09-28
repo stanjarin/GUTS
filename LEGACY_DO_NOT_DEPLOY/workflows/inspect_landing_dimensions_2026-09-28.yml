@@ -1,0 +1,53 @@
+name: Inspect landing image dimensions
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/inspect_landing_dimensions.yml']
+permissions:
+  contents: write
+jobs:
+  inspect:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair, fetch-depth: 0}
+      - name: Read historical JPEG dimensions
+        run: |
+          python3 - <<'PY'
+          import subprocess,struct,pathlib,hashlib
+          refs=[
+            ('OLD_WORKING','367646ac0cb94c07a00c9760b44e9fd7f5d04967'),
+            ('REPLACEMENT','23843512e385b019db3c7311eb32d4c04be06837'),
+            ('CURRENT','HEAD')
+          ]
+          def jpeg_dims(data):
+              if data[:2] != b'\xff\xd8': return None
+              i=2
+              while i < len(data):
+                  if data[i] != 0xff:
+                      i += 1; continue
+                  while i < len(data) and data[i] == 0xff: i += 1
+                  marker=data[i]; i+=1
+                  if marker in (0xd8,0xd9): continue
+                  if i+2>len(data): break
+                  seglen=struct.unpack('>H',data[i:i+2])[0]
+                  if marker in range(0xc0,0xc4):
+                      h,w=struct.unpack('>HH',data[i+3:i+7])
+                      return w,h
+                  i += seglen
+              return None
+          lines=['# LANDING PAGE JPEG DIMENSIONS','']
+          for label,ref in refs:
+              data=subprocess.check_output(['git','show',f'{ref}:LANDING PAGE.jpg'])
+              dims=jpeg_dims(data)
+              lines += [f'## {label}',f'- ref: {ref}',f'- bytes: {len(data)}',f'- sha256: {hashlib.sha256(data).hexdigest()}',f'- dimensions: {dims[0]} × {dims[1]} px' if dims else '- dimensions: unreadable','']
+          pathlib.Path('LANDING_IMAGE_DIMENSIONS_2026-09-28.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS inspector'
+          git config user.email 'actions@users.noreply.github.com'
+          git add LANDING_IMAGE_DIMENSIONS_2026-09-28.md
+          git commit -m 'Record historical landing image dimensions'
+          git push origin HEAD:contents-repair
