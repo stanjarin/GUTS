@@ -1,0 +1,36 @@
+name: Compare production landing assets
+on:
+  push:
+    branches: [contents-repair]
+    paths: ['.github/workflows/compare_prod_assets.yml']
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: contents-repair}
+      - name: Compare assets
+        run: |
+          python3 - <<'PY'
+          import urllib.request,hashlib,pathlib
+          assets=['LANDING PAGE.jpg','Carousel.jpg','Suggestions.png']
+          bases={'domain':'https://gutenbrg.com/','version':'https://fc6f93f9-guts.stanjarin.workers.dev/'}
+          lines=['# PRODUCTION LANDING ASSET COMPARISON','']
+          for a in assets:
+              rows={}
+              for k,b in bases.items():
+                  u=b+urllib.parse.quote(a)
+                  data=urllib.request.urlopen(u,timeout=20).read()
+                  rows[k]=(len(data),hashlib.sha256(data).hexdigest())
+              lines += [f'## {a}',f'- domain: {rows["domain"][0]} bytes `{rows["domain"][1]}`',f'- version: {rows["version"][0]} bytes `{rows["version"][1]}`',f'- identical: **{"YES" if rows["domain"]==rows["version"] else "NO"}**','']
+          pathlib.Path('PRODUCTION_ASSET_COMPARISON_2026-09-28.md').write_text('\n'.join(lines))
+          PY
+      - name: Commit report
+        run: |
+          git config user.name 'GUTS inspector'
+          git config user.email 'actions@users.noreply.github.com'
+          git add PRODUCTION_ASSET_COMPARISON_2026-09-28.md
+          git commit -m 'Compare production landing assets'
+          git push origin HEAD:contents-repair
