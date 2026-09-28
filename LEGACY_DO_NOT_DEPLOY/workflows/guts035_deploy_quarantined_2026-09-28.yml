@@ -1,0 +1,38 @@
+name: GUTS 0.35 Reader deployment
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wire 0.35 corpus into Reader safely
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          # This workflow is retained as a manual/recovery tool. It accepts an
+          # already-live 0.35 Reader and refuses to manufacture an unknown state.
+          if 'v0.35-performance-reader' not in s:
+              raise SystemExit('Expected 0.35 Reader marker not found; refusing unsafe deploy')
+          # Keep the visible build stamp truthful.
+          s=s.replace('<span class="buildstamp">0.34</span>', '<span class="buildstamp">0.35</span>')
+          if '<span class="buildstamp">0.35</span>' not in s:
+              raise SystemExit('0.35 build stamp not found; refusing unsafe deploy')
+          p.write_text(s)
+          # Cloudflare serves ./public, so the served Reader must be the same file.
+          Path('public/index.html').write_text(s)
+          PY
+      - name: Commit synchronised 0.35 Reader
+        run: |
+          git config user.name 'GUTS builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html public/index.html
+          if git diff --cached --quiet; then
+            echo 'Reader already synchronised; nothing to commit.'
+          else
+            git commit -m 'Synchronise GUTS 0.35 Reader and served copy'
+            git push
+          fi
