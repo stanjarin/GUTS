@@ -114,17 +114,36 @@ Privately change, when ready:
 
 Do not place secret values in repo documentation beyond this user-approved naming intent; actual bindings remain private in Cloudflare.
 
+## Cover system — PASSED AND FROZEN (29 Sep 2026)
+
+Eight modern covers now use the responsive cover renderer. Parker remains deliberately on the old treatment as a placeholder/control specimen.
+
+Frozen behaviour:
+- ordinary portrait phones are width-led at **112vw**;
+- the first view is vertically centred;
+- vertical scrolling remains available; do **not** restore a hard vertical `overflow:hidden` crop;
+- wide portrait screens at **600 CSS px and above** are height-led at **100dvh**, centred with white side space;
+- landscape gets **no warning screen and no special redesign**; ordinary user behaviour is allowed to solve it;
+- modern covers auto-advance to Contents after **1400 ms**;
+- old NoBo reference delay was **1500 ms**;
+- tapping the cover advances immediately and cancels the timer;
+- no separate cover-swipe mechanism is required;
+- Parker remains manual and untouched.
+
+Stanley phone sweep: **PASS** across the eight modern covers. First-load Jeeves briefly decoded late, then behaved normally once cached; no source change was required.
+
+Do not reopen this cover behaviour unless a specific observed defect appears.
+
 ## Open work / next actions
 
-1. Stanley cleans the dirty backgrounds on the covers.
-2. Use one revised cover as the pilot for the same width-overscale crop model.
-3. If that passes, roll the model across the cover set.
-4. Replace Parker with a book having many genuine chapter pages; possibly add several more books.
-5. Resolve remaining visible chapter-number consistency issues without touching frozen corpus structure.
-6. Attach `ebooks.fyi` when the branch work is ready for deployment.
+1. Replace Parker later, when wanted, with a genuine multi-chapter title.
+2. Add further books later if desired.
+3. Resolve remaining visible chapter-number consistency issues without touching frozen corpus structure.
+4. Attach `ebooks.fyi` when the branch work is ready for deployment.
+5. Privately simplify ARM/SHOW control values when ready.
 
 ## Mandatory handover phrase
 
 **Read broadly, act narrowly.**
 
-**NEXT ACTION: Stanley revises one cover; Kryten wires that single cover as the next crop pilot without touching frozen Reader/corpus/state machinery.**
+**NEXT ACTION: leave the passed cover system alone and move to the next explicitly chosen item.**

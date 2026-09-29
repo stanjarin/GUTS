@@ -129,19 +129,27 @@ Not yet done.
 
 Do not expose actual secret bindings in repo.
 
-## 7. Next work
+## 7. Cover work — COMPLETE / FROZEN
 
-### STANLEY'S JOB
-Clean the dirty backgrounds on the book covers.
+Cover pilot and rollout passed on phone.
 
-### KRYTEN'S JOB
-When one revised cover arrives:
-1. wire only that cover on `prepage-refresh-2026-09-28`;
-2. test the same width-overscale/crop principle;
-3. phone-QA it;
-4. only then consider rolling the treatment across all covers.
+Current canonical behaviour:
+- eight modern covers use the new responsive renderer;
+- Parker deliberately remains the old placeholder/control specimen;
+- phones: **112vw**, centred first view, normal vertical scroll available;
+- wide portrait screens (>=600 CSS px): **100dvh** height-led presentation, horizontally centred with white side space;
+- no hard vertical `overflow:hidden` crop on modern covers;
+- no landscape warning or orientation nanny;
+- modern covers auto-slide to Contents after **1400 ms**;
+- tapping advances immediately and cancels the timer;
+- no dedicated swipe behaviour is needed.
 
-Later:
+Historical reference:
+- old NoBo held the cover for **1500 ms** and used a **300 ms** exit slide.
+
+Stanley verdict: **covers look great**. Freeze this behaviour unless a concrete defect is observed.
+
+Remaining later work:
 - replace Parker with a title having many genuine chapter pages;
 - perhaps add several books;
 - clean visible chapter-numbering inconsistencies;
@@ -161,4 +169,4 @@ Later:
 
 ## NEXT ACTION
 
-**Stanley revises one cover. Kryten then runs a single-cover cosmetic/crop pilot on the existing work branch.**
+**Cover system is frozen. Do not touch it again without a specific observed defect; proceed only to Stanley's next chosen item.**
