@@ -2,20 +2,24 @@
 
 This filename is retained because older notes and links refer to it.
 
-**Do not use the former contents of this file as current truth.**
+**Current truth is now 29 September 2026.**
 
-Authoritative current state is:
+Read:
+1. `GUTS_WORKFLOW_CONSTITUTION.md`
+2. `GUTS_HANDOVER_2026-09-29.md`
+3. `GUTS_CURRENT_STATE.md`
+4. `GUTS_NOBO_SYSTEM_AUDIT_MAP_2026-09-27.md`
+5. `GUTS_OHS_RECOVERY.md`
 
-1. `GUTS_HANDOVER_2026-09-27.md`
-2. `GUTS_CURRENT_STATE.md`
-3. `GUTS_OHS_RECOVERY.md`
-4. `GUTS_THREAD_WALL_CHECKPOINT_2026-09-27.md`
+Production `main` is:
+`aef68707b1ad031eab16ae1efbecce5733630186`
 
-Emergency branch rule at 27 Sep 2026:
+Current cosmetic/work branch:
+`prepage-refresh-2026-09-28`
 
-- `main` remains untouched.
-- working branch is `contents-repair`.
-- corpus provenance/integrity audit has not begun.
-- no production corpus repair has been made since branching.
+Approved runtime checkpoint before the 29-Sep documentation pass:
+`d5bec8a6d202042b922e49858124478036b10afd`
 
-If this file and an older chat/README disagree, the canonical files above win.
+The old emergency statement that `main` was untouched at the 27-Sep anchor is historical only.
+
+If this file and an older chat/README disagree, the 29-Sep handover/current-state documents win.
