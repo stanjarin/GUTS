@@ -1,3 +1,5 @@
+> **29-Sep current-state warning:** this is a forensic audit map, not the live resume point. Later full rebuild/QA superseded several retained-chapter counts below. For current truth read `GUTS_HANDOVER_2026-09-29.md` and `GUTS_CURRENT_STATE.md` first.
+
 # GUTS — SYSTEM AUDIT / MAP
 
 **Canonical machine map — 27 September 2026**  
