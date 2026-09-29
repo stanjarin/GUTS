@@ -1,3 +1,5 @@
+> **SUPERSEDED FOR CURRENT RESUME:** read `GUTS_HANDOVER_2026-09-29.md` first. This 27-Sep file remains historical engineering detail.
+
 # GUTS — HANDOVER / START HERE
 
 **Handover checkpoint: 27 September 2026**
