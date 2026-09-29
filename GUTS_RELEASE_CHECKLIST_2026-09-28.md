@@ -1,104 +1,89 @@
-# GUTS RELEASE CANDIDATE CHECKLIST — 28 September 2026
+# GUTS RELEASE CHECKLIST — 28/29 September 2026
 
-Status: **PREPARED — NOT YET MERGED TO PRODUCTION MAIN**
+Status: **RELEASE COMPLETED / PRODUCTION PASS**
 
-## Authority
+## Production
 
-Read in this order:
-1. `GUTS_WORKFLOW_CONSTITUTION.md`
-2. `GUTS_CURRENT_STATE.md`
-3. this checklist
-4. supporting audit/recovery documents only as needed
+Production `main`:
+`aef68707b1ad031eab16ae1efbecce5733630186`
 
-Rule: **read broadly, act narrowly.**
+The frozen release candidate was fast-forwarded to `main`.
 
-## Production anchor
+Production smoke test passed:
+- landing/carousel
+- book → Contents → Reader
+- live performance state chain
 
-- Production branch: `main`
-- Production anchor before this repair campaign: `b662978d1de67304cc96ad78e3c224f2d2b75533`
-- Release work branch: `contents-repair`
-- `contents-repair` is ahead of `main` and was 0 commits behind at pre-release comparison.
-- Existing rollback anchors remain:
-  - `contents-repair-backup-2026-09-27`
-  - `visually-good-backup-2026-09-28`
-  - `GUTS-035-KNOWN-GOOD`
-
-## Frozen layers — DO NOT EDIT DURING RELEASE
+## Frozen runtime layers
 
 - corpus
 - Reader presentation
 - landing/carousel
-- H2G2 covert arming path
+- H2G2 covert arming
 - Worker/KV transport
-- READY / ARMED / PAID / CLEAN state machinery
+- READY / ARMED / PAID / CLEAN
 - selected-chapter opener protection
-- 6-second dwell and PAID persistence
+- 6-second dwell
+- PAID persistence
 
-## Human QA already passed
-
-- all eight active books: corpus + real Reader phone QA
-- landing/carousel: phone + desktop A-OK
-- H2G2 → Worker/KV → GUTS: PASS
-- complete performance chain:
-  **CLEAN → ARMED → protected opener → prepared payoff → 6s dwell → PAID persistence → CLEAN**
-- unique Cloudflare version URL produced clean force-word substitution
+Do not regenerate or re-architect these layers during cosmetic work.
 
 ## Cache caveat
 
-Safari may retain an older Reader when using the stable branch-preview alias.
+Stable branch aliases and Safari can serve stale resources.
 
-For deployment QA, use the unique Cloudflare version URL first. Only after that passes should the stable alias/custom domain be judged. A visible trailing-dollar symptom (`GOPHERS$`) was proven to be stale alias/browser cache, not current source, corpus, KV, or deployed version content.
+Known examples:
+- `GOPHERS$` on a stale preview alias
+- transient grey landing slab
 
-## Repository hygiene before release
+In both cases current source/deployed assets were clean.
 
-Completed:
-- temporary 28-Sep diagnostic workflows moved under `LEGACY_DO_NOT_DEPLOY/workflows/`
-- obsolete 0.35 writer/audit workflows removed from active `.github/workflows/`
-- transient diagnostic reports moved under `LEGACY_DO_NOT_DEPLOY/diagnostics/`
-- no frozen runtime behaviour changed during cleanup
+Rule:
+**compare source/build evidence before editing frozen runtime to chase a visual cache symptom.**
 
-Before merge:
-- confirm `.github/workflows/` contains no active writer workflow
-- confirm root `index.html` and `public/index.html` are byte-identical
-- confirm exact socket injector remains `split('$$$').join(magic.force)`
-- confirm active performance pages contain exactly one canonical `$$$` socket per prepared page
-- confirm Cloudflare branch build succeeds
+## Post-release cosmetic branch
 
-## Release procedure
+Current branch:
+`prepage-refresh-2026-09-28`
 
-1. Freeze a named release-candidate branch at the exact approved `contents-repair` tip.
-2. Compare release candidate against `main`; inspect runtime/code/data differences only.
-3. Do **not** regenerate corpus or run old build workflows.
-4. Merge the frozen release candidate to `main` only after explicit Stanley approval.
-5. Wait for Cloudflare production build to finish successfully.
-6. Capture the unique production version URL.
-7. On that unique URL, smoke-test:
-   - landing and carousel;
-   - one book/Contents/Reader path;
-   - CLEAN;
-   - H2G2 ARM with a fresh word;
-   - protected opener;
-   - payoff page;
-   - 6+ second dwell;
-   - PAID persistence;
-   - CLEAN.
-8. Test `https://gutenbrg.com` separately after unique-version QA.
-9. If custom-domain Safari appears stale, do not modify source merely to chase cache. Compare against the unique build first.
-10. If any genuine regression appears, stop and roll back to the frozen RC/known-good anchor; do not patch multiple layers at once.
+Approved runtime checkpoint before 29-Sep docs-only commits:
+`d5bec8a6d202042b922e49858124478036b10afd`
 
-## Explicitly not part of this release
+Current branch purpose:
+- new generic Resources Pre-Page
+- artwork float/crop experiments
+- future cover cosmetic cleanup
 
-- Huck OCR cleanup
-- Parker resurrection
-- new corpus generation
-- NoBo corpus/editorial changes
-- multi-performer/session architecture expansion
-- cosmetic experimentation beyond the already-approved landing/carousel repair
+Production `main` is not to be used as the artwork workbench.
 
-## Release gate
+## Pre-Page pilot — PASS
 
-Production merge requires one explicit decision only:
+Passing long-page model:
+- width overscale to 112%
+- horizontal offset -6%
+- height auto
+- normal vertical scrolling
+- one hotspot spanning all four links
 
-**Stanley approves the frozen RC for merge to `main`.**
+Do not use viewport `object-fit: cover` for the long Pre-Page.
 
-Until then, `main` remains untouched.
+## Artwork master
+
+- fixed-page master: 2048 × 4210
+- essential/safe: 1804 × 3640
+- long landing master may extend to 2048 × 8000
+
+## Next release gate
+
+No new production release is currently authorised.
+
+Before the next merge to `main`:
+1. finish cosmetic branch work;
+2. phone-QA one cover pilot;
+3. roll out only after the pilot passes;
+4. verify root/public identity;
+5. verify frozen runtime invariants remain unchanged;
+6. create/freeze a new release candidate;
+7. merge only after Stanley explicitly approves.
+
+**NEXT ACTION: revise and test one book cover as the next isolated cosmetic pilot.**
