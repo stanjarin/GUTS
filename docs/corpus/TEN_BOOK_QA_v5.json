@@ -1,0 +1,148 @@
+{
+  "version": "ten-book-corpus-v5",
+  "books": {
+    "brodie": {
+      "title": "The Prime of Miss Jean Brodie",
+      "chapters": 6,
+      "prepared_pages": 113,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "e226046e51278b362774e48bad7d2d122cfd00b534c85b7cfe5d0ddd89dd91f9"
+    },
+    "chandler": {
+      "title": "Farewell, My Lovely",
+      "chapters": 39,
+      "prepared_pages": 248,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "cba5caa6dcf3f753516cfd5a57457acc1a909a2862cf42440ea2d2dc3b900135"
+    },
+    "kontiki": {
+      "title": "The Kon-Tiki Expedition",
+      "chapters": 8,
+      "prepared_pages": 222,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "84df4b71986946bd3d74ac89748e0ada1b20ee72a94112d08e9f02f6e66db491"
+    },
+    "parker": {
+      "title": "Here Lies: Collected Stories of Dorothy Parker",
+      "chapters": 24,
+      "prepared_pages": 227,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "3de094370736e84c8a8027526294700c4951be20ea0ced44e688e4225454e085"
+    },
+    "peake": {
+      "title": "Gormenghast",
+      "chapters": 61,
+      "prepared_pages": 608,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "a6012b3fc5a0b0e48033c31dfd7825eb310c988c5a071fc1dbec65c978fb780b"
+    },
+    "perelman": {
+      "title": "The Best of S. J. Perelman",
+      "chapters": 49,
+      "prepared_pages": 257,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "5e42a2d604c3997336db037b126b67a9e3f9be936f5803de7b766f081224a715"
+    },
+    "policeman": {
+      "title": "The Third Policeman",
+      "chapters": 12,
+      "prepared_pages": 210,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "0b2e905db83783789a67c21af2e4047f09a271a319d2853a88e3d91589e38365"
+    },
+    "ripley": {
+      "title": "The Talented Mr. Ripley",
+      "chapters": 29,
+      "prepared_pages": 225,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "300bb3723fd3f91d9421d10540134b6877282b2aaa3a703acb870e17dbfaa19b"
+    },
+    "ubu": {
+      "title": "King Ubu (Ubu Roi)",
+      "chapters": 5,
+      "prepared_pages": 30,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "8236f847a2bc69b6f163423d38acd7f2523d7fae7b25f593c596e53bdbf5a191"
+    },
+    "keys": {
+      "title": "The Keys of the Kingdom",
+      "chapters": 6,
+      "prepared_pages": 329,
+      "marker_bad": [],
+      "genuine_marker_bad": [],
+      "quoted_bad": [],
+      "source_order_bad": [],
+      "airlock_first_bad": [],
+      "PASS": true,
+      "sha256": "657aa433ec62465d217e8edc060c54ab42bd4b840e91147544ea9a72c5ba4e24"
+    }
+  },
+  "global": {
+    "book_count": 10,
+    "PASS": true,
+    "keys_scan_pages": {
+      "first": 9,
+      "last": 350,
+      "count": 329,
+      "low_text_pages": [
+        [
+          163,
+          39,
+          "Lawler'. e»mple, he reioiced in his pov"
+        ]
+      ],
+      "documented_source_gaps": [
+        {
+          "scan_page": 163,
+          "surviving_ocr": "Lawler'. e»mple, he reioiced in his pov",
+          "note": "user-supplied EPUB OCR is truncated on this scan leaf; preserved in sequence, not guessed or externally reconstructed"
+        }
+      ]
+    }
+  }
+}

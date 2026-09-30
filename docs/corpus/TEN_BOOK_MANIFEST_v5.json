@@ -1,0 +1,95 @@
+{
+  "version": "ten-book-corpus-v5",
+  "files": [
+    {
+      "file": "brodie_performance.json",
+      "id": "brodie",
+      "title": "The Prime of Miss Jean Brodie",
+      "author": "Muriel Spark",
+      "chapters": 6,
+      "pages": 113,
+      "sha256": "e226046e51278b362774e48bad7d2d122cfd00b534c85b7cfe5d0ddd89dd91f9"
+    },
+    {
+      "file": "chandler_performance.json",
+      "id": "chandler",
+      "title": "Farewell, My Lovely",
+      "author": "Raymond Chandler",
+      "chapters": 39,
+      "pages": 248,
+      "sha256": "cba5caa6dcf3f753516cfd5a57457acc1a909a2862cf42440ea2d2dc3b900135"
+    },
+    {
+      "file": "keys_performance.json",
+      "id": "keys",
+      "title": "The Keys of the Kingdom",
+      "author": "A. J. Cronin",
+      "chapters": 6,
+      "pages": 329,
+      "sha256": "657aa433ec62465d217e8edc060c54ab42bd4b840e91147544ea9a72c5ba4e24"
+    },
+    {
+      "file": "kontiki_performance.json",
+      "id": "kontiki",
+      "title": "The Kon-Tiki Expedition",
+      "author": "Thor Heyerdahl",
+      "chapters": 8,
+      "pages": 222,
+      "sha256": "84df4b71986946bd3d74ac89748e0ada1b20ee72a94112d08e9f02f6e66db491"
+    },
+    {
+      "file": "parker_performance.json",
+      "id": "parker",
+      "title": "Here Lies: Collected Stories of Dorothy Parker",
+      "author": "Dorothy Parker",
+      "chapters": 24,
+      "pages": 227,
+      "sha256": "3de094370736e84c8a8027526294700c4951be20ea0ced44e688e4225454e085"
+    },
+    {
+      "file": "peake_performance.json",
+      "id": "peake",
+      "title": "Gormenghast",
+      "author": "Mervyn Peake",
+      "chapters": 61,
+      "pages": 608,
+      "sha256": "a6012b3fc5a0b0e48033c31dfd7825eb310c988c5a071fc1dbec65c978fb780b"
+    },
+    {
+      "file": "perelman_performance.json",
+      "id": "perelman",
+      "title": "The Best of S. J. Perelman",
+      "author": "S. J. Perelman",
+      "chapters": 49,
+      "pages": 257,
+      "sha256": "5e42a2d604c3997336db037b126b67a9e3f9be936f5803de7b766f081224a715"
+    },
+    {
+      "file": "policeman_performance.json",
+      "id": "policeman",
+      "title": "The Third Policeman",
+      "author": "Flann O’Brien",
+      "chapters": 12,
+      "pages": 210,
+      "sha256": "0b2e905db83783789a67c21af2e4047f09a271a319d2853a88e3d91589e38365"
+    },
+    {
+      "file": "ripley_performance.json",
+      "id": "ripley",
+      "title": "The Talented Mr. Ripley",
+      "author": "Patricia Highsmith",
+      "chapters": 29,
+      "pages": 225,
+      "sha256": "300bb3723fd3f91d9421d10540134b6877282b2aaa3a703acb870e17dbfaa19b"
+    },
+    {
+      "file": "ubu_performance.json",
+      "id": "ubu",
+      "title": "King Ubu (Ubu Roi)",
+      "author": "Alfred Jarry",
+      "chapters": 5,
+      "pages": 30,
+      "sha256": "8236f847a2bc69b6f163423d38acd7f2523d7fae7b25f593c596e53bdbf5a191"
+    }
+  ]
+}
