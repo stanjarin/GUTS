@@ -1,0 +1,164 @@
+name: TEN BOOK IMPORT ONCE
+
+on:
+  push:
+    branches:
+      - prepage-refresh-2026-09-28
+    paths:
+      - GUTS_TEN_BOOK_PERFORMANCE_CORPUS_v5.zip
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: prepage-refresh-2026-09-28
+          fetch-depth: 0
+
+      - name: Expand ten-book corpus
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _tenbook_import
+          mkdir _tenbook_import
+          unzip -q GUTS_TEN_BOOK_PERFORMANCE_CORPUS_v5.zip -d _tenbook_import
+
+          SRC="_tenbook_import/GUTS_TEN_BOOK_CORPUS_v5"
+          test -f "$SRC/BUILD_REPORT.md"
+          test -f "$SRC/MANIFEST.json"
+          test -f "$SRC/QA_TEN_BOOKS_v5.json"
+
+          mkdir -p PERFORMANCE10 public/PERFORMANCE10 docs/corpus
+          cp "$SRC"/*_performance.json PERFORMANCE10/
+          cp "$SRC"/*_performance.json public/PERFORMANCE10/
+          cp "$SRC/BUILD_REPORT.md" docs/corpus/TEN_BOOK_BUILD_REPORT_2026-09-30.md
+          cp "$SRC/MANIFEST.json" docs/corpus/TEN_BOOK_MANIFEST_v5.json
+          cp "$SRC/QA_TEN_BOOKS_v5.json" docs/corpus/TEN_BOOK_QA_v5.json
+
+          for f in BRODIE.jpg CHANDLER.jpg FLANN.jpg KEYS.jpg KON-TIKI.jpg PARKER.jpg PEAKE.jpg RIPLEY.jpg SJP.jpg UBU.jpg; do
+            test -f "$f"
+            cp "$f" "public/$f"
+          done
+
+      - name: Wire the eighteen-book shelf
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p=Path("index.html")
+          s=p.read_text(encoding="utf-8")
+
+          meta='''const META=[
+          {id:"aam",title:"The House at Pooh Corner",author:"A. A. Milne",file:"PERFORMANCE35/aam_035.json",legacy:true},
+          {id:"jeeves",title:"Right Ho, Jeeves!",author:"P. G. Wodehouse",file:"PERFORMANCE35/jeeves_035.json",legacy:true},
+          {id:"farewell",title:"A Farewell to Arms",author:"Ernest Hemingway",file:"PERFORMANCE35/farewell_035.json",legacy:true},
+          {id:"huck",title:"Adventures of Huckleberry Finn",author:"Mark Twain",file:"PERFORMANCE35/huck_035.json",legacy:true},
+          {id:"dr",title:"On Broadway",author:"Damon Runyon",file:"PERFORMANCE35/dr_035.json",legacy:true},
+          {id:"ac",title:"The Murder at the Vicarage",author:"Agatha Christie",file:"PERFORMANCE35/ac_035.json",legacy:true},
+          {id:"jj",title:"Ulysses",author:"James Joyce",file:"PERFORMANCE35/jj_035.json",legacy:true},
+          {id:"jt",title:"My Life and Hard Times",author:"James Thurber",file:"PERFORMANCE35/jt_035.json",legacy:true},
+          {id:"brodie",title:"The Prime of Miss Jean Brodie",author:"Muriel Spark",file:"PERFORMANCE10/brodie_performance.json",legacy:true},
+          {id:"chandler",title:"Farewell, My Lovely",author:"Raymond Chandler",file:"PERFORMANCE10/chandler_performance.json",legacy:true},
+          {id:"keys",title:"The Keys of the Kingdom",author:"A. J. Cronin",file:"PERFORMANCE10/keys_performance.json",legacy:true},
+          {id:"kontiki",title:"The Kon-Tiki Expedition",author:"Thor Heyerdahl",file:"PERFORMANCE10/kontiki_performance.json",legacy:true},
+          {id:"parker",title:"Here Lies: Collected Stories of Dorothy Parker",author:"Dorothy Parker",file:"PERFORMANCE10/parker_performance.json",legacy:true},
+          {id:"peake",title:"Gormenghast",author:"Mervyn Peake",file:"PERFORMANCE10/peake_performance.json",legacy:true},
+          {id:"perelman",title:"The Best of S. J. Perelman",author:"S. J. Perelman",file:"PERFORMANCE10/perelman_performance.json",legacy:true},
+          {id:"policeman",title:"The Third Policeman",author:"Flann O’Brien",file:"PERFORMANCE10/policeman_performance.json",legacy:true},
+          {id:"ripley",title:"The Talented Mr. Ripley",author:"Patricia Highsmith",file:"PERFORMANCE10/ripley_performance.json",legacy:true},
+          {id:"ubu",title:"King Ubu (Ubu Roi)",author:"Alfred Jarry",file:"PERFORMANCE10/ubu_performance.json",legacy:true}
+          ];'''
+
+          display='''const DISPLAY=["jt","jeeves","farewell","aam","huck","parker","dr","ac","jj","brodie","chandler","policeman","keys","kontiki","peake","perelman","ripley","ubu"];'''
+
+          covers='''const BIG_COVERS={jt:"THURBER.jpg",jeeves:"JEEVES.jpg",farewell:"HEMINGWAY.jpg",aam:"POOH.jpg",huck:"HUCK.jpg",parker:"PARKER.jpg",dr:"RUNYON.jpg",ac:"CHRISTIE.jpg",jj:"JOYCE.jpg",brodie:"BRODIE.jpg",chandler:"CHANDLER.jpg",policeman:"FLANN.jpg",keys:"KEYS.jpg",kontiki:"KON-TIKI.jpg",peake:"PEAKE.jpg",perelman:"SJP.jpg",ripley:"RIPLEY.jpg",ubu:"UBU.jpg"};'''
+
+          s2=re.sub(r'const META=\[.*?\];const DISPLAY=\[.*?\];const BIG_COVERS=\{.*?\};',
+                    meta+display+covers,s,count=1,flags=re.S)
+          if s2==s:
+              raise SystemExit("META/DISPLAY/BIG_COVERS patch did not match")
+          s=s2
+
+          css='''.carousel-track{display:flex;gap:12px;padding:0 10px;height:100%;width:max-content;align-items:stretch}.carousel-book{height:100%;width:auto;flex:none;border:0;background:transparent;padding:0;cursor:pointer}.carousel-book img{display:block;height:100%;width:auto;max-width:none;box-shadow:0 1px 3px rgba(0,0,0,.18)}'''
+          if css not in s:
+              s=s.replace('</style>',css+'</style>',1)
+
+          old="""if(state.screen==='home'){a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg"><div class="carousel-window"><div class="carousel-track"><img src="Carousel.jpg"><div class="carousel-links">'+DISPLAY.map(id=>'<button onclick="openBook(\\''+id+'\\')"></button>').join('')+'</div></div></div><img class="suggestions-overlay" src="Suggestions.png"><span class="buildstamp">0.35</span></div>';return}"""
+          new="""if(state.screen==='home'){const loop=[...DISPLAY,...DISPLAY,...DISPLAY];a.innerHTML='<div class="artpage landing-art"><img class="base" src="LANDING%20PAGE.jpg"><div class="carousel-window" onscroll="carouselLoop(this)"><div class="carousel-track">'+loop.map(id=>'<button class="carousel-book" onclick="openBook(\\''+id+'\\')"><img src="'+BIG_COVERS[id]+'" alt=""></button>').join('')+'</div></div><img class="suggestions-overlay" src="Suggestions.png"><span class="buildstamp">0.36</span></div>';requestAnimationFrame(initCarousel);return}"""
+          if old not in s:
+              raise SystemExit("home renderer patch did not match")
+          s=s.replace(old,new,1)
+
+          marker="function centerCover(img){const s=img.closest('.cover-modern');if(s)s.scrollTop=Math.max(0,(s.scrollHeight-s.clientHeight)/2)}"
+          funcs="""function carouselLoop(w){if(!w||w.dataset.loopReady!=='1')return;const t=w.querySelector('.carousel-track');if(!t)return;const one=t.scrollWidth/3;if(!one)return;if(w.scrollLeft<one*.35)w.scrollLeft+=one;else if(w.scrollLeft>one*1.65)w.scrollLeft-=one}function initCarousel(){const w=document.querySelector('.carousel-window'),t=w&&w.querySelector('.carousel-track');if(!w||!t)return;const settle=()=>{const one=t.scrollWidth/3;if(one>0){w.dataset.loopReady='0';w.scrollLeft=one;requestAnimationFrame(()=>w.dataset.loopReady='1')}else setTimeout(settle,40)};settle()}"""
+          if funcs not in s:
+              if marker not in s:
+                  raise SystemExit("carousel function insertion marker missing")
+              s=s.replace(marker,marker+funcs,1)
+
+          p.write_text(s,encoding="utf-8")
+          Path("public/index.html").write_text(s,encoding="utf-8")
+
+      - name: Machine QA
+        shell: python
+        run: |
+          from pathlib import Path
+          import json, hashlib, re, sys
+
+          expected=[
+            "brodie","chandler","keys","kontiki","parker",
+            "peake","perelman","policeman","ripley","ubu"
+          ]
+          for stem in expected:
+              a=Path("PERFORMANCE10")/(stem+"_performance.json")
+              b=Path("public/PERFORMANCE10")/(stem+"_performance.json")
+              if not a.exists() or not b.exists():
+                  raise SystemExit("missing corpus "+stem)
+              da=json.loads(a.read_text(encoding="utf-8"))
+              db=json.loads(b.read_text(encoding="utf-8"))
+              if da!=db:
+                  raise SystemExit("root/public mismatch "+stem)
+              pages=sum(len(c.get("pages",[])) for c in da["chapters"])
+              if pages<1:
+                  raise SystemExit("no pages "+stem)
+              for c in da["chapters"]:
+                  for page in c.get("pages",[]):
+                      if "$$$" in "\n".join(map(str,page.get("paragraphs",[]))):
+                          raise SystemExit("socket leaked into genuine text "+stem)
+                      fp=page.get("force_paragraphs")
+                      if fp is not None and "\n".join(map(str,fp)).count("$$$")!=1:
+                          raise SystemExit("bad force socket count "+stem)
+
+          for f in ["BRODIE.jpg","CHANDLER.jpg","FLANN.jpg","KEYS.jpg","KON-TIKI.jpg","PARKER.jpg","PEAKE.jpg","RIPLEY.jpg","SJP.jpg","UBU.jpg"]:
+              a=Path(f).read_bytes(); b=Path("public",f).read_bytes()
+              if hashlib.sha256(a).digest()!=hashlib.sha256(b).digest():
+                  raise SystemExit("cover mismatch "+f)
+
+          root=Path("index.html").read_text(encoding="utf-8")
+          pub=Path("public/index.html").read_text(encoding="utf-8")
+          if root!=pub:
+              raise SystemExit("root/public index mismatch")
+          if 'const DISPLAY=["jt","jeeves","farewell","aam","huck","parker","dr","ac","jj","brodie","chandler","policeman","keys","kontiki","peake","perelman","ripley","ubu"]' not in root:
+              raise SystemExit("18-book display list missing")
+          if "0.36" not in root:
+              raise SystemExit("build stamp missing")
+          print("TEN-BOOK INTEGRATION QA: PASS")
+
+      - name: Commit and quarantine importer
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _tenbook_import
+          git rm -f GUTS_TEN_BOOK_PERFORMANCE_CORPUS_v5.zip
+          mkdir -p LEGACY_DO_NOT_DEPLOY/workflows
+          git mv .github/workflows/ten_book_import_once.yml LEGACY_DO_NOT_DEPLOY/workflows/ten_book_import_once_2026-09-30.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Integrate ten-book performance corpus and 18-book shelf"
+          git push origin prepage-refresh-2026-09-28
