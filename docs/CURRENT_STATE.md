@@ -4,71 +4,121 @@ Working branch: `prepage-refresh-2026-09-28`
 Do not modify `main` during current experimentation.
 
 ## Production safety
-- Production `main` remains frozen.
-- Current experimental/documentation work is on `prepage-refresh-2026-09-28`.
-- No Reader/runtime changes were made in the 2026-09-30 air-lock/chapter-architecture session.
+- Production `main` remains frozen and untouched.
+- Pre-integration rollback branch: `ten-book-pre-integration-backup-2026-09-30`.
+- Current integrated working-branch commit: `c3f390ee20ba1b6beab11f0476fe857ec7922a30`.
 
-## Core engine
-- H2 PUSHES — GUT PULLS.
-- READY / ARMED / CLEAN machinery remains the signed-off basis.
-- Existing Reader, Worker/KV, dwell, PAID persistence, opener protection, and leave-no-trace behaviour remain frozen unless explicitly reopened.
-- No simplification of global/session machinery without deliberate review.
+## Frozen engine
+Do not reopen without a specific observed defect:
+- H2 PUSH / GUT PULL
+- READY / ARMED / CLEAN
+- Worker/KV transport
+- exact `$$$` substitution
+- selected-chapter opener protection
+- 6-second dwell
+- PAID persistence
+- leave-no-trace behaviour
+- existing Reader page-turn mechanics
 
-## Current corpus direction
-- Performance edition may deliberately prune short/unusable source divisions.
-- SOURCE TRUTH preserves genuine source structure in the source master.
-- PERFORMANCE EDITION may omit unsuitable divisions, document cuts, and renumber surviving numbered chapters consistently.
-- Silent destructive deletion is the defect; deliberate documented performance pruning is permitted.
+## Ten-book expansion
+Prepared and integrated on the working branch:
+- Brodie
+- Chandler
+- Flann O’Brien
+- Keys of the Kingdom
+- Kon-Tiki
+- Parker
+- Peake
+- Ripley
+- Perelman
+- Ubu
 
-## Air-lock / Voice problem
-The old assumption — one insertable paragraph per book that can land anywhere — is under review.
+Corpus locations:
+- `PERFORMANCE10/`
+- `public/PERFORMANCE10/`
 
-Two distinct problems were identified:
-1. VOICE: a character/focal consciousness can plausibly remember/think something; pure description or unseen narration may offer no legitimate mind to carry the intrusion.
-2. PAYLOAD SPOTLIGHT: prose that explicitly treats `$$$` as a "word", "name", letters, etc. risks drawing attention to the method.
+Batch records:
+- `docs/corpus/TEN_BOOK_BUILD_REPORT_2026-09-30.md`
+- `docs/corpus/TEN_BOOK_MANIFEST_v5.json`
+- `docs/corpus/TEN_BOOK_QA_v5.json`
 
-The thread searched for a fractal / invariant solution. Local scene-by-scene adaptation was rejected as contrary to the fractal requirement.
+Ten new covers are present in repo root and `public/`.
 
-## Current architectural breakthrough
-**CREATE THE CHAPTER.**
+One-shot importer completed successfully and is quarantined at:
+`LEGACY_DO_NOT_DEPLOY/workflows/ten_book_import_once_2026-09-30.yml`
 
-Instead of solving arbitrary paragraph insertion, move control up to chapter architecture:
-- establish a legitimate performance Voice from the beginning of the synthetic section/chapter;
-- carry `$$$` inside that controlled Voice;
-- hand back to genuine text cleanly.
+## Current air-lock method
+The earlier synthetic "CREATE THE CHAPTER" concept did not become the active implementation for this batch.
 
-Current concept under morning review:
-- legit/genuine opener establishes trust;
-- short controlled synthetic middle section per book rather than hundreds of local air-locks;
-- several genuinely different performance pages, not a repeated identical page;
-- stagger socket vertical position;
-- selected chapter may become the performance chapter only after commitment;
-- once PAID, preserve enough neighbouring performance context to avoid a narrative cliff, then clean on departure.
+Current practical classification:
+- P = person/focal consciousness available
+- NP = no person / scenic or authorial description
+- D = dialogue/dramatic form
+- C = anonymous cutaway escape hatch where needed
 
-This is a concept only. **No runtime implementation yet.**
+Rules:
+- preserve genuine text order around insertion;
+- avoid unnecessarily highlighting the force as a lexical object;
+- use C only when useful;
+- engineer awkward pages rather than silently excluding them;
+- chapter/division pruning must be deliberate and documented.
 
-## Peake + Perelman
-- Mervyn Peake — *Gormenghast*: middle novel only from trilogy source; 80 genuine numbered chapters isolated; provisional performance gate 61 kept / 19 cut.
-- S. J. Perelman — *The Best of S. J. Perelman*: 49 contents-listed pieces; provisional gate 49 kept / 0 cut.
-- Both remain PRE-AIRLOCK.
-- No approved final Peake/Perelman air-lock has been embedded.
-- Local pre-airlock source package was created during the session.
+## Keys
+Source supplied as scan/OCR EPUB. Six major divisions retained:
+- Beginning of the End
+- Strange Vocation
+- An Unsuccessful Curate
+- The China Incident
+- The Return
+- End of the Beginning
 
-## Morning NEXT ACTION
-Review the synthetic chapter idea from first principles before any build:
-- does the genuine-opener / synthetic-section seam survive normal scrolling?
-- what happens on swipe-back / swipe-forward?
-- how much paid context must remain to keep narrative continuity?
-- can one synthetic section per book serve every selectable chapter?
-- can `$$$` be carried without explicitly highlighting it as a lexical object?
+OCR is imperfect but usable. One badly mangled source leaf was preserved rather than reconstructed.
+
+## Shelf state
+Target expanded shelf: **18 unique books total**.
+
+The old visible carousel artwork still contains only the original 9 thumbnails.
+
+A temporary working-branch code change renders covers dynamically for loop mechanics. This is not the intended final design.
+
+## Carousel — OPEN
+Missing prerequisite: the expanded baked carousel graphic.
+
+Agreed artwork:
+- one long strip;
+- 18 unique thumbnails once each;
+- normal gaps internally;
+- half-gap at each outer edge so tiling creates one normal seam gap.
+
+Agreed runtime:
+- repeat strip internally as a buffer;
+- begin in the middle copy;
+- silently recenter by one strip-width near either edge;
+- apparent endless spin in both directions;
+- 18 tappable zones per cycle.
+
+## NEXT ACTION
+
+**YOUR JOB — Stanley**
+Tomorrow, create and upload the expanded `Carousel.jpg` with 18 unique covers, normal internal gaps, and half-gap at each end.
+
+**MY JOB — Kryten**
+After upload:
+1. replace the old carousel artwork;
+2. restore the intended graphic-based carousel;
+3. map all 18 clickable areas;
+4. implement and verify endless bidirectional looping;
+5. verify old and new books open correctly;
+6. hand to Stanley for phone QA;
+7. update canonical release state after PASS.
 
 ## 3058 OUT bootstrap protocol
 When Stanley says **3058 out** in an established project thread:
 1. Write/update a dated checkpoint under `docs/checkpoints/`.
 2. Update this `docs/CURRENT_STATE.md` if canonical state changed.
-3. Verify the GitHub writes.
+3. Verify both GitHub writes.
 4. Only after verification reply:
    `Thread details stored on GitHub`
    `Latitude 90° North out.`
 
-If the write fails, report the failure and do not claim storage succeeded.
+If verification fails, report the failure and do not claim storage succeeded.
