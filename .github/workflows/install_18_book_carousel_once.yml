@@ -1,0 +1,45 @@
+name: INSTALL 18 BOOK CAROUSEL ONCE
+
+on:
+  push:
+    branches:
+      - prepage-refresh-2026-09-28
+    paths:
+      - Carousel_FINAL_18.jpg
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: prepage-refresh-2026-09-28
+          fetch-depth: 0
+
+      - name: Install carousel artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s Carousel_FINAL_18.jpg
+          cp Carousel_FINAL_18.jpg Carousel.jpg
+          cp Carousel_FINAL_18.jpg public/Carousel.jpg
+          test "$(sha256sum Carousel.jpg | cut -d' ' -f1)" = "$(sha256sum public/Carousel.jpg | cut -d' ' -f1)"
+          grep -Fq 'grid-template-columns:repeat(18,1fr)' index.html
+          grep -Fq 'cycle+cycle+cycle' index.html
+          grep -Fq 'const DISPLAY=["jt","jeeves","farewell","aam","huck","dr","parker","ac","jj","brodie","keys","ubu","policeman","peake","kontiki","perelman","ripley","chandler"]' index.html
+
+      - name: Commit and quarantine installer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f Carousel_FINAL_18.jpg
+          mkdir -p LEGACY_DO_NOT_DEPLOY/workflows
+          git mv .github/workflows/install_18_book_carousel_once.yml LEGACY_DO_NOT_DEPLOY/workflows/install_18_book_carousel_once_2026-10-01.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Install final 18-book carousel artwork"
+          git push origin prepage-refresh-2026-09-28
