@@ -1,3 +1,7 @@
+# START HERE
+
+Fresh ewe: read `GUTS_WORKFLOW_CONSTITUTION.md`, then `GUTS_HANDOVER_2026-10-02.md`, then `GUTS_CURRENT_STATE.md` before touching production.
+
 # GUTS
 
 ## CURRENT AUTHORITY — 29 September 2026
