@@ -139,3 +139,14 @@ Protocol cleanup coordinated with NoBo test branch:
 - the 6-second dwell and PAID remain local GUTS execution behaviour.
 
 Production `main` remains untouched.
+
+
+### Phone QA PASS — 2026-10-02 00:38 Melbourne
+- [WORD] survived navigation across all books.
+- [WORD] survived HIDD ↔ SHW changes.
+- [WORD] survived a fresh GUTS request/refresh.
+- Full PAID chain passed: ARM → prepared page → 6+ second dwell → leave page → PAID persistence.
+- NoBo RSET then cleared the remote magic state; subsequent prepared pages showed no [WORD].
+- Visibility remained orthogonal to magic state; landing in real Gutenberg after RSET was explained by HIDD still being active, not by loss of magic state.
+
+Result: coordinated READY / ARMED / PAID / RSET protocol is phone-QA PASSED on the safe branches. Production mains remain untouched pending promotion.
