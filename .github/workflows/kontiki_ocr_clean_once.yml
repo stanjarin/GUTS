@@ -1,0 +1,114 @@
+name: KONTIKI OCR CLEAN ONCE
+
+on:
+  push:
+    branches:
+      - prepage-refresh-2026-09-28
+    paths:
+      - KONTIKI_OCR_CLEAN_TRIGGER.txt
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: prepage-refresh-2026-09-28
+          fetch-depth: 0
+
+      - name: Clean Kon-Tiki OCR conservatively
+        shell: python
+        run: |
+          from pathlib import Path
+          import json,re
+
+          targets=[Path("PERFORMANCE10/kontiki_performance.json"),Path("public/PERFORMANCE10/kontiki_performance.json")]
+          repl={
+          'diey':'they','odier':'other','diere':'there','dirough':'through','diis':'this','togedier':'together',
+          'bodi':'both','dian':'than','widiout':'without','diemselves':'themselves','diree':'three',
+          'anodier':'another','depdis':'depths','fardier':'farther','somediing':'something','beneadi':'beneath',
+          'dicir':'their','dicre':'there','dien':'then','diick':'thick','diings':'things','diose':'those',
+          'diousand':'thousand','everydiing':'everything','whedier':'whether','whedicr':'whether',
+          'deadi':'death','diing':'thing','diink':'think','diought':'thought','padis':'paths','teedi':'teeth',
+          'dius':'thus','hodi':'both','fiom':'from','masdiead':'masthead','underneadi':'underneath',
+          'ICnut':'Knut','Nordiem':'Northern','Kon-TikL':'Kon-Tiki','Tlte':'The','Explorcis':'Explorers',
+          'Tiiunwirate':'Triumvirate'
+          }
+
+          def fix_text(s):
+              for a,b in repl.items():
+                  s=re.sub(r'(?<![A-Za-z])'+re.escape(a)+r'(?![A-Za-z])',b,s)
+              s=s.replace('One Painter ami Two Saboteurs','One Painter and Two Saboteurs')
+              s=s.replace('Puba-pitka','Puka-Puka')
+              s=s.replace('-Eon-Tiki Island','Kon-Tiki Island')
+              s=s.replace('armjLJ>£ green. giant growths','army of green giant growths')
+              s=s.replace('A THBORY','A THEORY')
+              s=s.replace('AN EXPEDITION IS BOSN','AN EXPEDITION IS BORN')
+              s=s.replace('AN EXPEDITION IS BOHN','AN EXPEDITION IS BORN')
+              s=re.sub(r'^TO SOOTH AMERICA\s+49\s+','',s)
+              return s
+
+          def is_header(s):
+              x=s.strip()
+              if len(x)>75:
+                  return False
+              xu=x.upper()
+              if re.search(r'\bEXP(?:EDITION|SBDITXON|FCEDITL?O?TF?)\b',xu) and ('KON' in xu or 'EON' in xu or 'ICON' in xu or 'THB' in xu):
+                  return True
+              if ('PACIFIC' in xu or 'PACIEIC' in xu or 'FACIFIC' in xu or 'RACIFIC' in xu) and ('ACROSS' in xu or 'ACKOSS' in xu or 'ACFIOSS' in xu):
+                  return True
+              if ('SOUTH AMERICA' in xu or 'SOOTH AMERICA' in xu or 'SOTLTH AMERICA' in xu) and len(x)<40:
+                  return True
+              if ('SOUTH SEA' in xu) and ('ISLANDS' in xu or 'ISIANDS' in xu or 'ISXANDS' in xu) and len(x)<50:
+                  return True
+              return False
+
+          def clean(path):
+              j=json.loads(path.read_text(encoding='utf-8'))
+              changed=removed=0
+              for c in j['chapters']:
+                  for p in c['pages']:
+                      for key in ('paragraphs','force_paragraphs'):
+                          arr=p.get(key)
+                          if not arr: continue
+                          out=[]
+                          for s in arr:
+                              fs=fix_text(str(s))
+                              if is_header(fs):
+                                  removed+=1
+                                  continue
+                              if fs!=s:
+                                  changed+=1
+                              out.append(fs)
+                          p[key]=out
+                      fp=p.get('force_paragraphs')
+                      if fp is not None:
+                          hits=[i for i,s in enumerate(fp) if '$$$' in str(s)]
+                          if len(hits)!=1:
+                              raise SystemExit(f'bad force socket count {path}: {hits}')
+                          p['airlock_index']=hits[0]
+                      if '$$$' in '\n'.join(map(str,p.get('paragraphs',[]))):
+                          raise SystemExit(f'socket leaked into genuine text {path}')
+              path.write_text(json.dumps(j,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+              return changed,removed
+
+          stats=[clean(p) for p in targets]
+          if targets[0].read_bytes()!=targets[1].read_bytes():
+              raise SystemExit('root/public Kon-Tiki mismatch')
+          print('KON-TIKI OCR CLEAN PASS',stats)
+
+      - name: Commit and quarantine
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm -f KONTIKI_OCR_CLEAN_TRIGGER.txt
+          mkdir -p LEGACY_DO_NOT_DEPLOY/workflows
+          git mv .github/workflows/kontiki_ocr_clean_once.yml LEGACY_DO_NOT_DEPLOY/workflows/kontiki_ocr_clean_once_2026-10-01.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Clean Kon-Tiki OCR and remove running-head noise"
+          git push origin prepage-refresh-2026-09-28
