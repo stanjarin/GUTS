@@ -122,3 +122,20 @@ When Stanley says **3058 out** in an established project thread:
    `Latitude 90° North out.`
 
 If verification fails, report the failure and do not claim storage succeeded.
+
+
+## 2026-10-01 — protocol-cleanup branch
+
+Working branch: `protocol-cleanup-2026-10-01`.
+
+Protocol cleanup coordinated with NoBo test branch:
+- live remote magic phases are **READY / ARMED** only;
+- NoBo RSET sends READY;
+- new `/api/performer/validate` checks ARM PIN without mutating state;
+- SHOW/REHEARSAL (displayed by NoBo as SHW/HIDD) changes visibility only;
+- `/performer/rehearsal` authorises the browser only and no longer changes mode or magic state;
+- absent site-mode KV now defaults to **REHEARSAL/HIDD**;
+- GUTS reader accepts READY/ARMED only; READY clears local ARMED/PAID state, while ARMED does not overwrite an already-PAID page;
+- the 6-second dwell and PAID remain local GUTS execution behaviour.
+
+Production `main` remains untouched.
