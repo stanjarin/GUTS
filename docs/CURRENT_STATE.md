@@ -143,3 +143,9 @@ Next work is promotion/deployment:
 **Fresh ewe:** perform promotion/deployment only. Do not reopen corpus/Reader/cosmetics.
 
 **Stanley:** final phone smoke test when requested.
+
+## Promotion anchors — 2 October 2026
+
+- phone-QA frozen GUTS anchor: `qa-pass-2026-10-02` @ `59b6e1015cc7ff8bc51bedbd1a874d974b6710b5`
+- pre-promotion GUTS rollback: `rollback-pre-promotion-2026-10-02` @ `aef68707b1ad031eab16ae1efbecce5733630186`
+- promotion scope remains deployment only; frozen corpus/Reader/cosmetics are not reopened.
