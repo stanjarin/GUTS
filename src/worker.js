@@ -23,7 +23,7 @@ async function writeState(env, phase, word = "") {
   await env.GUTS_STATE.put(STATE_KEY, JSON.stringify(next));
   return next;
 }
-async function readMode(env) { return await env.GUTS_STATE.get(MODE_KEY) || "SHOW"; }
+async function readMode(env) { return await env.GUTS_STATE.get(MODE_KEY) || "REHEARSAL"; }
 function pinOK(got, want) { return !!want && String(got || "") === String(want); }
 function sessionKey(id) { return `session:${id}`; }
 function aliasKey(alias) { return `alias:${alias}`; }
@@ -60,7 +60,7 @@ export default {
       const alias = String(body?.alias || "").toLowerCase(); const id = await env.GUTS_STATE.get(aliasKey(alias));
       if (!validSession(id)) return json({ error: "unknown_alias" }, 404);
       const phase = String(body?.phase || "").toUpperCase();
-      if (!["ARMED", "CLEAN"].includes(phase)) return json({ error: "invalid_phase" }, 400);
+      if (!["READY", "ARMED"].includes(phase)) return json({ error: "invalid_phase" }, 400);
       const word = phase === "ARMED" ? String(body?.word || "").trim() : "";
       if (phase === "ARMED" && !word) return json({ error: "armed_requires_word" }, 400);
       if (word.length > 120) return json({ error: "word_too_long" }, 400);
@@ -88,7 +88,7 @@ export default {
       let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400); }
       if (!pinOK(body?.pin, env.GUTS_ARM_PIN)) return json({ error: "unauthorized" }, 401);
       const id = String(body?.session || ""); if (!validSession(id)) return json({ error: "invalid_session" }, 400);
-      const phase = String(body?.phase || "").toUpperCase(); if (!["ARMED", "CLEAN"].includes(phase)) return json({ error: "invalid_phase" }, 400);
+      const phase = String(body?.phase || "").toUpperCase(); if (!["READY", "ARMED"].includes(phase)) return json({ error: "invalid_phase" }, 400);
       const word = phase === "ARMED" ? String(body?.word || "").trim() : ""; if (phase === "ARMED" && !word) return json({ error: "armed_requires_word" }, 400); if (word.length > 120) return json({ error: "word_too_long" }, 400);
       return json(await writeSession(env, id, phase, word));
     }
@@ -102,9 +102,18 @@ export default {
       if (request.method !== "POST") return new Response("Method not allowed", { status: 405, headers: { "allow": "GET, POST" } });
       const auth = request.headers.get("authorization") || ""; if (!env.GUTS_PUSH_SECRET || auth !== `Bearer ${env.GUTS_PUSH_SECRET}`) return json({ error: "unauthorized" }, 401);
       let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400); }
-      const phase = String(body?.phase || "").toUpperCase(); if (!["READY", "ARMED", "CLEAN"].includes(phase)) return json({ error: "invalid_phase" }, 400);
+      const phase = String(body?.phase || "").toUpperCase(); if (!["READY", "ARMED"].includes(phase)) return json({ error: "invalid_phase" }, 400);
       const word = phase === "ARMED" ? String(body?.word || "").trim() : ""; if (phase === "ARMED" && !word) return json({ error: "armed_requires_word" }, 400); if (word.length > 120) return json({ error: "word_too_long" }, 400);
       return json(await writeState(env, phase, word));
+    }
+    if (url.pathname === "/api/performer/validate") {
+      const origin = request.headers.get("origin") || ""; const allowedOrigin = "https://stanjarin.github.io";
+      const cors = origin === allowedOrigin ? { "access-control-allow-origin": allowedOrigin, "access-control-allow-methods": "POST, OPTIONS", "access-control-allow-headers": "content-type", "vary": "Origin" } : {};
+      if (request.method === "OPTIONS") { if (origin !== allowedOrigin) return new Response(null, { status: 403 }); return new Response(null, { status: 204, headers: cors }); }
+      if (request.method !== "POST") return new Response("Method not allowed", { status: 405, headers: cors });
+      let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400, cors); }
+      if (!pinOK(body?.pin, env.GUTS_ARM_PIN)) return json({ error: "unauthorized" }, 401, cors);
+      return json({ ok: true }, 200, cors);
     }
     if (url.pathname === "/api/performer/state") {
       const origin = request.headers.get("origin") || ""; const allowedOrigin = "https://stanjarin.github.io";
@@ -113,7 +122,7 @@ export default {
       if (request.method !== "POST") return new Response("Method not allowed", { status: 405, headers: cors });
       let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400, cors); }
       if (!pinOK(body?.pin, env.GUTS_ARM_PIN)) return json({ error: "unauthorized" }, 401, cors);
-      const phase = String(body?.phase || "").toUpperCase(); if (!["ARMED", "CLEAN"].includes(phase)) return json({ error: "invalid_phase" }, 400, cors);
+      const phase = String(body?.phase || "").toUpperCase(); if (!["READY", "ARMED"].includes(phase)) return json({ error: "invalid_phase" }, 400, cors);
       const word = phase === "ARMED" ? String(body?.word || "").trim() : ""; if (phase === "ARMED" && !word) return json({ error: "armed_requires_word" }, 400, cors); if (word.length > 120) return json({ error: "word_too_long" }, 400, cors);
       return json(await writeState(env, phase, word), 200, cors);
     }
@@ -121,7 +130,6 @@ export default {
       if (request.method === "GET") return new Response('<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rehearsal</title><form method="post" style="font:18px Helvetica,sans-serif;max-width:22rem;margin:20vh auto;padding:1rem"><label>SHOW PIN<br><input name="pin" type="password" autofocus style="font:inherit;width:100%;box-sizing:border-box;margin:.5rem 0"></label><button style="font:inherit">REHEARSE</button></form>', { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
       if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
       const form = await request.formData(); if (!pinOK(form.get("pin"), env.GUTS_SITE_PIN)) return new Response("Wrong PIN", { status: 401, headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "no-store" } });
-      await env.GUTS_STATE.put(MODE_KEY, "REHEARSAL"); await writeState(env, "CLEAN", "");
       return new Response(null, { status: 303, headers: { "location": "/", "set-cookie": "guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Lax", "cache-control": "no-store" } });
     }
     if (url.pathname === "/api/performer/mode") {
@@ -133,9 +141,9 @@ export default {
       let body; try { body = await request.json(); } catch { return json({ error: "invalid_json" }, 400, cors); }
       if (!pinOK(body?.pin, env.GUTS_SITE_PIN)) return json({ error: "unauthorized" }, 401, cors);
       const mode2 = String(body?.mode || "").toUpperCase(); if (!["REHEARSAL", "SHOW"].includes(mode2)) return json({ error: "invalid_mode" }, 400, cors);
-      await env.GUTS_STATE.put(MODE_KEY, mode2); let state = await readState(env); if (mode2 === "REHEARSAL") state = await writeState(env, "CLEAN", "");
+      await env.GUTS_STATE.put(MODE_KEY, mode2);
       const headers = { ...cors }; if (mode2 === "REHEARSAL") headers["set-cookie"] = "guts_rehearsal=1; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=None"; else headers["set-cookie"] = "guts_rehearsal=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=None";
-      return json({ mode: mode2, state }, 200, headers);
+      return json({ mode: mode2, state: await readState(env) }, 200, headers);
     }
     const mode = await readMode(env); const rehearsalAuthorised = cookie(request, "guts_rehearsal") === "1";
     if (mode === "REHEARSAL" && !rehearsalAuthorised) {
