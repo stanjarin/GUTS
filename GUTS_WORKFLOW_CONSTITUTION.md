@@ -1,32 +1,34 @@
 # GUTS WORKFLOW CONSTITUTION
 
-**Purpose:** stop regressions by separating layers, freezing wins, and requiring human-visible QA before moving downstream.
+**Purpose:** prevent regressions by separating layers, freezing wins, and requiring machine + phone QA before promotion.
 
 ## 1. Read everything, then act narrowly
 
 At every handover:
-- read all GUTS documentation, code, workflows, configs and relevant data;
-- read all NoBo material for context;
-- remember that for GUTS, NoBo is operationally relevant only through **H2G2 arming**.
+- read this constitution;
+- read the latest dated handover;
+- read `GUTS_CURRENT_STATE.md` and `docs/CURRENT_STATE.md`;
+- read relevant GUTS code/config/docs;
+- read relevant NoBo handover/README for the cross-system control contract.
 
 Do not begin by changing anything.
 
 ## 2. Work in this order only
 
-1. **SOURCE TRUTH**
-2. **CORPUS**
-3. **READER**
-4. **ARMING**
-5. **DEPLOYMENT**
-6. **COSMETICS**
+1. SOURCE TRUTH
+2. CORPUS
+3. READER
+4. ARMING / STATE
+5. DEPLOYMENT
+6. COSMETICS
 
 A downstream layer must not silently rewrite an upstream layer.
 
 ## 3. Freeze wins
 
-Once a layer or book passes:
+Once a layer passes:
 - machine QA; and
-- Stanley’s actual-phone visual QA;
+- Stanley’s actual-phone QA;
 
 it is **FROZEN**.
 
@@ -34,33 +36,21 @@ Do not globally regenerate, renumber, repaginate, relabel or “improve” froze
 
 ## 4. Human-visible truth outranks structural neatness
 
-A corpus is not “sound” merely because:
-- JSON parses;
-- chapter arrays exist;
-- sockets count correctly;
-- root/public copies match.
+A corpus or interface is not “sound” merely because files parse and counts match.
 
 The spectator-facing test is decisive:
 
-**Does this look and behave like the real book a spectator expects to see?**
-
-Wrong chapter starts, missing chapters, bare-number Contents, false numbering or implausible openings are failures even when the files are internally consistent.
+**Does this look and behave like the real thing a spectator expects to see?**
 
 ## 5. No destructive performance pruning
 
-Never remove genuine chapters merely because they are:
-- short;
-- fewer than a target page count;
-- inconvenient for pagination;
-- cosmetically uneven.
+Never remove genuine chapters merely because they are short, awkward, inconvenient for pagination, or cosmetically uneven.
 
-Performance preparation may change pagination and add force material, but must preserve the complete intended source structure unless Stanley explicitly approves an editorial cut.
+Any deliberate editorial cut must be explicitly approved and documented.
 
 ## 6. One authority per layer
 
-Avoid overlapping sources of truth.
-
-For each layer, identify one current authority:
+For each layer identify one authority:
 - source master;
 - generated corpus;
 - Reader;
@@ -72,221 +62,124 @@ Historical workflows, old generated reports and one-shot patches are evidence on
 ## 7. Automation is disposable
 
 One-shot repair/build workflows:
-- must be branch-only;
-- must not write to `main`;
-- must be quarantined immediately after successful use;
-- must never remain active where a later push can replay old assumptions.
+- branch-only;
+- never write to `main`;
+- quarantine after use;
+- never remain active where a later push can replay old assumptions.
 
-Automation must not outlive the problem it solved.
+## 8. Every major change gets a rollback point
 
-## 8. Every major change gets a clean rollback point
-
-Before a risky change:
-- freeze the current good state at an immutable commit and preferably a named backup branch;
+Before risky promotion/deployment:
+- freeze the current good state at an immutable commit;
+- preferably create a named backup branch;
 - record the SHA in canonical docs;
-- do not modify or delete that rollback point during the same repair pass.
+- do not alter/delete that rollback point during the same pass.
 
-## 9. QA gate for every layer
+## 9. QA gate
 
-For each layer:
+Every layer requires:
 
-**A. Machine QA**
+**Machine QA**
 - syntax/parsing;
-- counts;
-- identity checks;
-- invariants;
+- counts/invariants;
+- identity/parity checks;
 - no accidental overwrite.
 
-**B. Stanley phone QA**
-- visible Contents;
-- genuine chapter starts;
+**Stanley phone QA**
+- visible behaviour;
 - navigation;
 - reader feel;
-- actual spectator-facing behaviour.
+- actual performance chain.
 
-Only after both pass does the layer become frozen.
+Only after both pass does the layer freeze.
 
-## 10. No multi-layer repair passes
+## 10. No mixed repair campaigns
 
-Do not combine:
+Do not combine unrelated:
 - corpus rebuild;
 - Reader redesign;
-- state-machine changes;
+- state-machine repair;
 - deployment changes;
-- cosmetics
-
-in one pass.
+- cosmetics.
 
 One problem class at a time.
 
-## 11. Current freeze map
+## 11. Canonical control architecture
 
-### Passed and frozen unless a specific observed defect appears
-- all eight active book corpora: Pooh, Thurber, Runyon, Joyce, Jeeves, Huck, Farewell, Christie
-- Reader presentation
-- exact `$# GUTS WORKFLOW CONSTITUTION
+**NoBo commands. GUTS executes.**
 
-**Purpose:** stop regressions by separating layers, freezing wins, and requiring human-visible QA before moving downstream.
+Three independent axes:
 
-## 1. Read everything, then act narrowly
+### MAGIC
+- READY
+- ARMED
+- local PAID
 
-At every handover:
-- read all GUTS documentation, code, workflows, configs and relevant data;
-- read all NoBo material for context;
-- remember that for GUTS, NoBo is operationally relevant only through **H2G2 arming**.
+Remote NoBo↔GUTS protocol is **READY / ARMED only**.
 
-Do not begin by changing anything.
+### VISIBILITY
+- SHW
+- HIDD
 
-## 2. Work in this order only
+Visibility changes must not alter magic state.
 
-1. **SOURCE TRUTH**
-2. **CORPUS**
-3. **READER**
-4. **ARMING**
-5. **DEPLOYMENT**
-6. **COSMETICS**
+### AUTH
+- valid / invalid
 
-A downstream layer must not silently rewrite an upstream layer.
+Validation must not alter magic state.
 
-## 3. Freeze wins
+CLEAN is historical and is not part of the current live protocol.
 
-Once a layer or book passes:
-- machine QA; and
-- Stanley’s actual-phone visual QA;
+## 12. Current freeze map — 2 Oct 2026
 
-it is **FROZEN**.
+Passed/frozen unless a specific observed defect appears:
+- 18-book corpus/shelf;
+- Reader presentation;
+- exact `$$$` substitution;
+- selected-chapter opener protection;
+- 6-second dwell;
+- local PAID persistence;
+- H2 PUSH / GUT PULL;
+- Worker/KV transport;
+- READY / ARMED remote protocol;
+- non-mutating ARM validation;
+- SHW/HIDD orthogonality;
+- landing/pre-page;
+- carousel;
+- cover behaviour;
+- complete phone-tested chain:
+  **RSET → READY → ARM → GUTS → dwell → PAID → RSET → cleared**.
 
-Do not globally regenerate, renumber, repaginate, relabel or “improve” frozen material unless a specific observed defect requires it.
+Deferred only:
+- production promotion;
+- production domain attachment/verification;
+- final smoke test;
+- cosmetics/editorial items in `docs/COSMETICS_LATER.md`.
 
-## 4. Human-visible truth outranks structural neatness
+## 13. Production rule
 
-A corpus is not “sound” merely because:
-- JSON parses;
-- chapter arrays exist;
-- sockets count correctly;
-- root/public copies match.
-
-The spectator-facing test is decisive:
-
-**Does this look and behave like the real book a spectator expects to see?**
-
-Wrong chapter starts, missing chapters, bare-number Contents, false numbering or implausible openings are failures even when the files are internally consistent.
-
-## 5. No destructive performance pruning
-
-Never remove genuine chapters merely because they are:
-- short;
-- fewer than a target page count;
-- inconvenient for pagination;
-- cosmetically uneven.
-
-Performance preparation may change pagination and add force material, but must preserve the complete intended source structure unless Stanley explicitly approves an editorial cut.
-
-## 6. One authority per layer
-
-Avoid overlapping sources of truth.
-
-For each layer, identify one current authority:
-- source master;
-- generated corpus;
-- Reader;
-- Worker/state;
-- deployment target.
-
-Historical workflows, old generated reports and one-shot patches are evidence only unless explicitly promoted.
-
-## 7. Automation is disposable
-
-One-shot repair/build workflows:
-- must be branch-only;
-- must not write to `main`;
-- must be quarantined immediately after successful use;
-- must never remain active where a later push can replay old assumptions.
-
-Automation must not outlive the problem it solved.
-
-## 8. Every major change gets a clean rollback point
-
-Before a risky change:
-- freeze the current good state at an immutable commit and preferably a named backup branch;
-- record the SHA in canonical docs;
-- do not modify or delete that rollback point during the same repair pass.
-
-## 9. QA gate for every layer
-
-For each layer:
-
-**A. Machine QA**
-- syntax/parsing;
-- counts;
-- identity checks;
-- invariants;
-- no accidental overwrite.
-
-**B. Stanley phone QA**
-- visible Contents;
-- genuine chapter starts;
-- navigation;
-- reader feel;
-- actual spectator-facing behaviour.
-
-Only after both pass does the layer become frozen.
-
-## 10. No multi-layer repair passes
-
-Do not combine:
-- corpus rebuild;
-- Reader redesign;
-- state-machine changes;
-- deployment changes;
-- cosmetics
-
-in one pass.
-
-One problem class at a time.
-
- substitution
-- H2 PUSH / GUT PULL architecture
-- Worker/KV transport
-- READY / ARMED / CLEAN
-- local PAID/dwell persistence
-- selected-chapter opener protection
-- landing/carousel
-- complete live performance chain
-
-### Parked
-- Parker
-
-### Current cosmetic branch
-- `prepage-refresh-2026-09-28`
-- new Resources Pre-Page: phone QA PASS
-- width-overscale / horizontal-crop long-page pilot: PASS
-- next cosmetic layer: one cleaned-up cover pilot
-
-## 12. Production rule
-
-`main` remains production truth until the complete release candidate passes:
-- corpus QA;
-- Reader QA;
-- arming QA;
-- deployment QA;
-- actual-phone QA.
+`main` remains production truth until a tested release is deliberately promoted.
 
 Do not touch `main` merely to make testing easier.
 
-## 13. Mandatory status format
+Before promotion:
+- create rollback points;
+- record SHAs;
+- promote only QA-passed work;
+- verify each repo after promotion;
+- run final production phone smoke QA.
 
-Every project status/handover must state:
+## 14. Mandatory handover/status content
+
+Every handover must state:
 - what is frozen;
-- what is still open;
+- what is open;
 - what changed;
-- current rollback point;
-- **NEXT ACTION**.
+- current rollback/branch anchors;
+- exact next action.
 
 ## Current next action
 
-**Stanley revises one cover with the dirty background removed.**
+**Promotion/deployment only.**
 
-Then test that single cover as the next isolated float/crop pilot on `prepage-refresh-2026-09-28`.
-
-Do **not** alter corpus, Reader, arming or state machinery while doing cover cosmetics.
+Create rollback points, promote the QA-passed GUTS/NoBo branches, repoint NoBo to production GUTS, verify `ebooks.fyi`, run one final phone smoke test, then freeze the release.
