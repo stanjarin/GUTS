@@ -1,152 +1,145 @@
 # GUTS — CURRENT STATE
-Updated: 2026-09-30
-Working branch: `prepage-refresh-2026-09-28`
-Do not modify `main` during current experimentation.
 
-## Production safety
-- Production `main` remains frozen and untouched.
-- Pre-integration rollback branch: `ten-book-pre-integration-backup-2026-09-30`.
-- Current integrated working-branch commit: `c3f390ee20ba1b6beab11f0476fe857ec7922a30`.
+**Authoritative checkpoint: 2 October 2026**
 
-## Frozen engine
+## Read first
+
+1. `GUTS_WORKFLOW_CONSTITUTION.md`
+2. `GUTS_HANDOVER_2026-10-02.md`
+3. this file
+4. `docs/CURRENT_STATE.md`
+5. relevant NoBo handover/README
+
+Principle: **Read broadly, act narrowly.**
+
+## Production anchors
+
+- GUTS production `main`: `aef68707b1ad031eab16ae1efbecce5733630186`
+- Current QA-passed GUTS branch: `protocol-cleanup-2026-10-01`
+- Paired QA-passed NoBo branch: `controls-refresh-2026-10-01`
+- NoBo production `main`: `93d4ade5fee65d9931c5c6ad1b1b25cad8c18235`
+
+Both mains remain untouched pending deliberate promotion.
+
+## Canonical architecture
+
+**NoBo commands. GUTS executes.**
+
+Independent axes:
+- MAGIC: READY → ARMED → local PAID
+- VISIBILITY: SHW ↔ HIDD
+- AUTH: valid / invalid
+
+Visibility/auth actions must not mutate magic state.
+
+### Remote state
+Live remote protocol is only:
+- READY
+- ARMED (+ word)
+
+CLEAN is historical and not part of the current live NoBo↔GUTS protocol.
+
+### GUTS local execution
+Frozen/passed behaviour:
+- exact `$$$` substitution;
+- selected chapter opener protection;
+- 6-second dwell;
+- local PAID/frozen page;
+- remote READY clears local ARMED/PAID on a newer revision;
+- remote ARMED does not overwrite a PAID reader until reset.
+
+## Protocol cleanup — PASSED
+
+On `protocol-cleanup-2026-10-01`:
+- non-mutating ARM PIN validation endpoint added;
+- performer state accepts READY/ARMED only;
+- SHW/HIDD mode mutation is independent of magic state;
+- rehearsal authorisation is cookie/auth only;
+- default mode when absent is REHEARSAL/HIDD;
+- reader root/public copies consume READY/ARMED only;
+- machine checks passed.
+
+## Phone QA — PASSED 2 Oct 2026
+
+Actual iPhone results:
+- [WORD] survives all books;
+- [WORD] survives HIDD ↔ SHW;
+- [WORD] survives refresh/new GUTS request;
+- prepared page + 6+ seconds + departure reaches PAID;
+- PAID persists correctly;
+- NoBo RSET sends READY;
+- after RSET, [WORD] is gone from prepared pages.
+
+Full passed chain:
+
+**RSET → READY → ARM [WORD] → GUTS pull → prepared page → 6s dwell → PAID → persistence → RSET/READY → cleared**
+
+## PIN vocabulary
+
+Existing user-facing names:
+- ARM PIN = `arm`
+- SHOW PIN = `show`
+
+Do not introduce a third PIN term.
+
+## Test deployment
+
+NoBo:
+`https://stanjarin.github.io/NoBoNoFo/`
+
+GUTS protocol preview:
+`https://protocol-cleanup-2026-10-01-guts.stanjarin.workers.dev/`
+
+Rehearsal auth:
+`https://protocol-cleanup-2026-10-01-guts.stanjarin.workers.dev/performer/rehearsal`
+
+NoBo QA branch deliberately points to this GUTS preview until promotion.
+
+## Frozen visual/corpus state
+
 Do not reopen without a specific observed defect:
-- H2 PUSH / GUT PULL
-- READY / ARMED / CLEAN
-- Worker/KV transport
-- exact `$$$` substitution
-- selected-chapter opener protection
-- 6-second dwell
-- PAID persistence
-- leave-no-trace behaviour
-- existing Reader page-turn mechanics
+- 18-book shelf/corpus;
+- 18-cover baked carousel and endless loop behaviour;
+- landing/pre-page artwork;
+- Reader/nav;
+- page flicks;
+- chapter/cover behaviour;
+- exact force substitution;
+- opener protection;
+- 6-second dwell;
+- PAID;
+- current cover treatment;
+- deliberate ugly cover back-arrow overlap (STET).
 
-## Ten-book expansion
-Prepared and integrated on the working branch:
-- Brodie
-- Chandler
-- Flann O’Brien
-- Keys of the Kingdom
-- Kon-Tiki
-- Parker
-- Peake
-- Ripley
-- Perelman
-- Ubu
+Deferred cosmetic work remains in `docs/COSMETICS_LATER.md`.
 
-Corpus locations:
-- `PERFORMANCE10/`
-- `public/PERFORMANCE10/`
+## Domain plan
 
-Batch records:
-- `docs/corpus/TEN_BOOK_BUILD_REPORT_2026-09-30.md`
-- `docs/corpus/TEN_BOOK_MANIFEST_v5.json`
-- `docs/corpus/TEN_BOOK_QA_v5.json`
+Primary intended production spectator domain:
+`ebooks.fyi`
 
-Ten new covers are present in repo root and `public/`.
+Spare:
+`ebks.fyi`
 
-One-shot importer completed successfully and is quarantined at:
-`LEGACY_DO_NOT_DEPLOY/workflows/ten_book_import_once_2026-09-30.yml`
+Attach as a Cloudflare custom domain to the production Worker. Avoid a visible redirect exposing `gutenbrg.com`.
 
-## Current air-lock method
-The earlier synthetic "CREATE THE CHAPTER" concept did not become the active implementation for this batch.
+## Open work
 
-Current practical classification:
-- P = person/focal consciousness available
-- NP = no person / scenic or authorial description
-- D = dialogue/dramatic form
-- C = anonymous cutaway escape hatch where needed
+The protocol is no longer an open debugging problem.
 
-Rules:
-- preserve genuine text order around insertion;
-- avoid unnecessarily highlighting the force as a lexical object;
-- use C only when useful;
-- engineer awkward pages rather than silently excluding them;
-- chapter/division pruning must be deliberate and documented.
-
-## Keys
-Source supplied as scan/OCR EPUB. Six major divisions retained:
-- Beginning of the End
-- Strange Vocation
-- An Unsuccessful Curate
-- The China Incident
-- The Return
-- End of the Beginning
-
-OCR is imperfect but usable. One badly mangled source leaf was preserved rather than reconstructed.
-
-## Shelf state
-Target expanded shelf: **18 unique books total**.
-
-The old visible carousel artwork still contains only the original 9 thumbnails.
-
-A temporary working-branch code change renders covers dynamically for loop mechanics. This is not the intended final design.
-
-## Carousel — OPEN
-Missing prerequisite: the expanded baked carousel graphic.
-
-Agreed artwork:
-- one long strip;
-- 18 unique thumbnails once each;
-- normal gaps internally;
-- half-gap at each outer edge so tiling creates one normal seam gap.
-
-Agreed runtime:
-- repeat strip internally as a buffer;
-- begin in the middle copy;
-- silently recenter by one strip-width near either edge;
-- apparent endless spin in both directions;
-- 18 tappable zones per cycle.
+Next work is promotion/deployment:
+1. create named immutable rollback points for the two QA-passed branches;
+2. record those rollback SHAs;
+3. promote GUTS tested work to GUTS `main`;
+4. promote NoBo tested work to NoBo `main`;
+5. repoint NoBo from branch-preview GUTS to production GUTS;
+6. attach/verify `ebooks.fyi`;
+7. run one final production smoke test:
+   **RSET → ARM → GUTS → PAID → RSET**;
+8. freeze release.
 
 ## NEXT ACTION
 
-**YOUR JOB — Stanley**
-Tomorrow, create and upload the expanded `Carousel.jpg` with 18 unique covers, normal internal gaps, and half-gap at each end.
+**Fresh ewe:** perform promotion/deployment only. Do not reopen corpus/Reader/cosmetics.
 
-**MY JOB — Kryten**
-After upload:
-1. replace the old carousel artwork;
-2. restore the intended graphic-based carousel;
-3. map all 18 clickable areas;
-4. implement and verify endless bidirectional looping;
-5. verify old and new books open correctly;
-6. hand to Stanley for phone QA;
-7. update canonical release state after PASS.
-
-## 3058 OUT bootstrap protocol
-When Stanley says **3058 out** in an established project thread:
-1. Write/update a dated checkpoint under `docs/checkpoints/`.
-2. Update this `docs/CURRENT_STATE.md` if canonical state changed.
-3. Verify both GitHub writes.
-4. Only after verification reply:
-   `Thread details stored on GitHub`
-   `Latitude 90° North out.`
-
-If verification fails, report the failure and do not claim storage succeeded.
-
-
-## 2026-10-01 — protocol-cleanup branch
-
-Working branch: `protocol-cleanup-2026-10-01`.
-
-Protocol cleanup coordinated with NoBo test branch:
-- live remote magic phases are **READY / ARMED** only;
-- NoBo RSET sends READY;
-- new `/api/performer/validate` checks ARM PIN without mutating state;
-- SHOW/REHEARSAL (displayed by NoBo as SHW/HIDD) changes visibility only;
-- `/performer/rehearsal` authorises the browser only and no longer changes mode or magic state;
-- absent site-mode KV now defaults to **REHEARSAL/HIDD**;
-- GUTS reader accepts READY/ARMED only; READY clears local ARMED/PAID state, while ARMED does not overwrite an already-PAID page;
-- the 6-second dwell and PAID remain local GUTS execution behaviour.
-
-Production `main` remains untouched.
-
-
-### Phone QA PASS — 2026-10-02 00:38 Melbourne
-- [WORD] survived navigation across all books.
-- [WORD] survived HIDD ↔ SHW changes.
-- [WORD] survived a fresh GUTS request/refresh.
-- Full PAID chain passed: ARM → prepared page → 6+ second dwell → leave page → PAID persistence.
-- NoBo RSET then cleared the remote magic state; subsequent prepared pages showed no [WORD].
-- Visibility remained orthogonal to magic state; landing in real Gutenberg after RSET was explained by HIDD still being active, not by loss of magic state.
-
-Result: coordinated READY / ARMED / PAID / RSET protocol is phone-QA PASSED on the safe branches. Production mains remain untouched pending promotion.
+**Stanley:** final phone smoke test when requested.
