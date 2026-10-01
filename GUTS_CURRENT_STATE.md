@@ -19,7 +19,7 @@ Principle: **Read broadly, act narrowly.**
 - Paired QA-passed NoBo branch: `controls-refresh-2026-10-01`
 - NoBo production `main`: `93d4ade5fee65d9931c5c6ad1b1b25cad8c18235`
 
-Both mains remain untouched pending deliberate promotion.
+Promotion completed on GitHub on 2 October 2026. External domain verification and the final phone smoke test remain pending.
 
 ## Canonical architecture
 
@@ -127,22 +127,23 @@ Attach as a Cloudflare custom domain to the production Worker. Avoid a visible r
 
 The protocol is no longer an open debugging problem.
 
-Next work is promotion/deployment:
-1. create named immutable rollback points for the two QA-passed branches;
-2. record those rollback SHAs;
-3. promote GUTS tested work to GUTS `main`;
-4. promote NoBo tested work to NoBo `main`;
-5. repoint NoBo from branch-preview GUTS to production GUTS;
-6. attach/verify `ebooks.fyi`;
-7. run one final production smoke test:
+Completed on GitHub:
+1. rollback branches created and recorded;
+2. GUTS tested work promoted to `main`;
+3. NoBo tested work promoted to `main`;
+4. NoBo production controller repointed to `https://ebooks.fyi`.
+
+Still pending:
+1. externally verify that `ebooks.fyi` is attached to the production GUTS Worker and serving the promoted build;
+2. run one final production phone smoke test:
    **RSET → ARM → GUTS → PAID → RSET**;
-8. freeze release.
+3. freeze release.
 
 ## NEXT ACTION
 
-**Fresh ewe:** perform promotion/deployment only. Do not reopen corpus/Reader/cosmetics.
+**Fresh ewe:** GitHub promotion is complete. Verify `ebooks.fyi`, then request only the final phone smoke test. Do not reopen corpus/Reader/cosmetics.
 
-**Stanley:** final phone smoke test when requested.
+**Stanley:** final phone smoke test only after production-domain verification.
 
 ## Promotion anchors — 2 October 2026
 
