@@ -171,3 +171,24 @@ A full 18-book prepared-corpus sweep was completed on `airlock-sweep-2026-10-02`
 Rollback: `rollback-pre-airlock-sweep-2026-10-02` @ `6113a1a7bac25f389ddb5444dca4d7b4c775b459`.
 
 Promotion was explicitly authorised after machine QA. Phone/visual spot-check remains pending; do not call this layer newly phone-frozen until that check is done.
+
+
+## Immediate handover state — wall-hit, 2 Oct 2026
+
+Latest prepared-corpus work:
+- full 18-book AIRLOCK PLACEMENT + RETENTION sweep is complete, promoted and machine-QA PASSED;
+- rollback: `rollback-pre-airlock-sweep-2026-10-02` @ `6113a1a7bac25f389ddb5444dca4d7b4c775b459`;
+- detailed checkpoint: `docs/checkpoints/2026-10-02_airlock-placement-retention-sweep.md`;
+- no runtime/Reader/state/cover/chapter/repagination change;
+- **visual/phone spot-check of repaired prepared pages remains pending**.
+
+Current public journey:
+- `https://ebooks.fyi` = HTTPS entry / Resources pre-page;
+- `https://www3.library.gutenbrg.com/project_library/books/browse/` = HTTPS GUTS library/carousel/Reader;
+- Safari may collapse the long path to `www3.library.gutenbrg.com`; accepted.
+
+Carousel first-arrival start is now **Jean Brodie**; return-to-jump-point remains intact.
+
+Paired NoBo now has the back-room Corpus Workshop via reader EDIT or Library MORE → DATA. Read the latest NoBo handover before workshop changes.
+
+**NEXT ACTION:** representative phone/visual spot-check of repaired GUTS airlock placement/retention. Do not rerun the sweep.
