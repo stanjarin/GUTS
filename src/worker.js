@@ -150,6 +150,6 @@ export default {
       const real = new URL("https://www.gutenberg.org/"); if (url.pathname !== "/") real.pathname = url.pathname; real.search = url.search;
       return new Response(null, { status: 302, headers: { "location": real.toString(), "cache-control": "no-store" } });
     }
-    return env.ASSETS ? env.ASSETS.fetch(request) : new Response("Not found", { status: 404 });
+    if (url.pathname === "/project_library/books/browse/" && env.ASSETS) { const home = new URL(request.url); home.pathname = "/"; home.search = ""; return env.ASSETS.fetch(new Request(home.toString(), request)); }\n    return env.ASSETS ? env.ASSETS.fetch(request) : new Response("Not found", { status: 404 });
   }
 };
