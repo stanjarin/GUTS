@@ -217,3 +217,115 @@ Frozen runtime anchors:
 - NoBo `release-2026-10-02-production-pass` @ `6dcd4b33429788f413f6fd80e503f08553eda0cd`
 
 No functional work is open.
+
+---
+
+# LATEST IMMEDIATE HANDOVER UPDATE — 2 October 2026, wall-hit
+
+**THIS SECTION OVERRIDES EARLIER “NEXT ACTION”, branch, domain and frozen-corpus wording above.**
+
+## Current production / branch truth
+
+- GUTS `main` and `airlock-sweep-2026-10-02` are currently identical at:
+  `8a79206da91fe5216c695401d6d3319ba24d32b4`
+- pre-sweep rollback:
+  `rollback-pre-airlock-sweep-2026-10-02` @ `6113a1a7bac25f389ddb5444dca4d7b4c775b459`
+- the older frozen runtime anchor `release-2026-10-02-production-pass` remains historical evidence of the previously phone-passed runtime.
+- No Reader/state/Worker code was changed by the airlock sweep.
+
+## Public surface truth
+
+Current public journey:
+1. `https://ebooks.fyi` — HTTPS entry / Resources pre-page.
+2. tap through to GUTS at:
+   `https://www3.library.gutenbrg.com/project_library/books/browse/`
+   — HTTPS Gutenberg-facing landing/carousel/Reader.
+3. Safari compact address bar may display only `www3.library.gutenbrg.com`; Stanley explicitly accepted this.
+
+NoBo remains:
+`https://stanjarin.github.io/NoBoNoFo/`
+
+NoBo API/control base remains `https://ebooks.fyi`; this is intentional.
+
+## Carousel cosmetic completed today
+
+GUTS first-arrival carousel start was changed from Thurber to **Jean Brodie**.
+Return-to-jump-point behaviour is preserved.
+Runtime/carousel mechanics otherwise unchanged.
+
+## NoBo Corpus Workshop created today
+
+NoBo now contains a back-room **CORPUS WORKSHOP**:
+- Book open → **EDIT** → workshop on current book/chapter/page.
+- Library → long-press **MORE** → **DATA** → workshop fallback.
+- axes: **GUTS / NoBo** × **AIRLOCK / CORPUS**.
+- AIRLOCK shows the complete genuine page with **⟦ AIRLOCK HERE ⟧** and edits the prepared socket paragraph.
+- CORPUS edits genuine page text/chapter heading.
+- **DONE / CANCEL** work in both modes.
+- local working copy only; **IMPORT / EXPORT BOOK / RESET BOOK**.
+- no direct GitHub write-back from the browser workshop.
+- Pages branch `controls-refresh-2026-10-01` was fast-forwarded to current NoBo `main` so the live Pages URL serves the workshop.
+
+NoBo rollback before workshop:
+`rollback-pre-corpus-workshop-2026-10-02`.
+
+## GUTS AIRLOCK PLACEMENT + RETENTION SWEEP — COMPLETED / MACHINE-QA PASSED
+
+Stanley authorised a single-pass audit + repair + validation + promotion.
+
+Scope:
+- all 18 active GUTS books;
+- prepared layer only;
+- no repagination;
+- no chapter restructuring;
+- no Reader/state/covers changes;
+- genuine `paragraphs` remain untouched.
+
+Canonical repair logic:
+- PLACEMENT defect: airlock at top, fewer than 12 genuine words before it, or heading-only material before it.
+- RETENTION defect: run of 3+ consecutive eligible pages with pre-airlock depth within an 8-word band.
+- historical carry targets used as repair compass:
+  **28 / 48 / 68 / 38 / 58 words**.
+- existing paragraph boundaries preferred.
+- where necessary, only `force_paragraphs` was split at a sentence boundary.
+- selected-chapter page-1 opener protection remains runtime law: the selected opener is genuine and does not arm/dwell.
+
+Audit before repair:
+- prepared pages scanned: **4,858**
+- PLACEMENT flags: **552**
+- RETENTION flags: **12**
+
+Repair:
+- prepared pages changed: **567**
+- prepared-only sentence splits: **301**
+
+Whole-corpus post-repair machine QA:
+- 18/18 books parsed;
+- PLACEMENT flags: **0**
+- RETENTION flags: **0**
+- bad/missing/multiple sockets: **0**
+- `$$$` leaks into genuine text: **0**
+- genuine token-order mismatches: **0**
+- root/public corpus parity failures: **0**
+
+Canonical detail:
+`docs/checkpoints/2026-10-02_airlock-placement-retention-sweep.md`
+
+## IMPORTANT: what remains unverified
+
+The airlock sweep is **machine-QA PASSED and promoted**, but **new production phone/visual spot-check is still pending**.
+
+Do **not** call the repaired prepared-corpus layer newly phone-frozen until Stanley visually checks a representative sample on the actual phone.
+
+The previous runtime/state phone QA remains valid because runtime code was not changed.
+
+## Exact next action for fresh ewe
+
+1. Read Constitution + this latest handover update + `GUTS_CURRENT_STATE.md` + `docs/CURRENT_STATE.md`.
+2. Read NoBo latest handover for Corpus Workshop state.
+3. **Do not rerun or regenerate the airlock sweep.**
+4. Guide Stanley through a small representative visual spot-check of repaired prepared pages / retention using the current live GUTS path.
+5. If visual behaviour passes, record the repaired corpus as phone/visual PASS and freeze it.
+6. If a defect appears, repair that specific defect only; rollback exists at `rollback-pre-airlock-sweep-2026-10-02`.
+
+Wall-hit state is safe and recoverable.
