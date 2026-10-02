@@ -14,12 +14,12 @@ Principle: **Read broadly, act narrowly.**
 
 ## Production anchors
 
-- GUTS production `main`: `aef68707b1ad031eab16ae1efbecce5733630186`
+- GUTS production runtime anchor: `4e6c5c4835fb858ba10409962af694657d921d77` (`release-2026-10-02-production-pass`)
 - Current QA-passed GUTS branch: `protocol-cleanup-2026-10-01`
 - Paired QA-passed NoBo branch: `controls-refresh-2026-10-01`
-- NoBo production `main`: `93d4ade5fee65d9931c5c6ad1b1b25cad8c18235`
+- NoBo production runtime anchor: `6dcd4b33429788f413f6fd80e503f08553eda0cd` (`release-2026-10-02-production-pass`)
 
-Promotion completed on GitHub on 2 October 2026. External domain verification and the final phone smoke test remain pending.
+Production promotion, domain attachment, and final phone smoke QA all PASSED on 2 October 2026. Release is frozen.
 
 ## Canonical architecture
 
@@ -82,18 +82,17 @@ Existing user-facing names:
 
 Do not introduce a third PIN term.
 
-## Test deployment
+## Production deployment
 
 NoBo:
 `https://stanjarin.github.io/NoBoNoFo/`
 
-GUTS protocol preview:
-`https://protocol-cleanup-2026-10-01-guts.stanjarin.workers.dev/`
+GUTS spectator domain:
+`https://ebooks.fyi`
 
-Rehearsal auth:
-`https://protocol-cleanup-2026-10-01-guts.stanjarin.workers.dev/performer/rehearsal`
+`ebooks.fyi` is connected to Cloudflare and attached to the production `guts` Worker.
 
-NoBo QA branch deliberately points to this GUTS preview until promotion.
+The temporary protocol-preview URL is retained only as historical QA evidence; production NoBo now points to `https://ebooks.fyi`.
 
 ## Frozen visual/corpus state
 
@@ -113,40 +112,47 @@ Do not reopen without a specific observed defect:
 
 Deferred cosmetic work remains in `docs/COSMETICS_LATER.md`.
 
-## Domain plan
+## Domain state
 
-Primary intended production spectator domain:
-`ebooks.fyi`
+Primary production spectator domain:
+`ebooks.fyi` — **LIVE / PASSED**
 
 Spare:
 `ebks.fyi`
 
-Attach as a Cloudflare custom domain to the production Worker. Avoid a visible redirect exposing `gutenbrg.com`.
+`ebooks.fyi` is delegated to Cloudflare and attached directly as a custom domain to the production GUTS Worker. No visible redirect exposes `gutenbrg.com`.
 
-## Open work
+## Release status
 
-The protocol is no longer an open debugging problem.
+**PRODUCTION RELEASE PASSED / FROZEN — 2 October 2026**
 
-Completed on GitHub:
+Completed:
 1. rollback branches created and recorded;
 2. GUTS tested work promoted to `main`;
 3. NoBo tested work promoted to `main`;
-4. NoBo production controller repointed to `https://ebooks.fyi`.
-
-Still pending:
-1. externally verify that `ebooks.fyi` is attached to the production GUTS Worker and serving the promoted build;
-2. run one final production phone smoke test:
-   **RSET → ARM → GUTS → PAID → RSET**;
-3. freeze release.
+4. NoBo production controller repointed to `https://ebooks.fyi`;
+5. `ebooks.fyi` delegated to Cloudflare and attached to production GUTS;
+6. live production domain verified;
+7. final actual-phone smoke test PASSED:
+   **RSET → ARM → GUTS → prepared page → 6+ sec → PAID persistence → RSET → cleared**.
 
 ## NEXT ACTION
 
-**Fresh ewe:** GitHub promotion is complete. Verify `ebooks.fyi`, then request only the final phone smoke test. Do not reopen corpus/Reader/cosmetics.
-
-**Stanley:** final phone smoke test only after production-domain verification.
+No functional work is open. Return only to explicitly deferred cosmetics/editorial work when desired. Do not reopen frozen corpus, Reader, protocol, state architecture, covers, carousel, or deployment without a specific observed defect.
 
 ## Promotion anchors — 2 October 2026
 
 - phone-QA frozen GUTS anchor: `qa-pass-2026-10-02` @ `59b6e1015cc7ff8bc51bedbd1a874d974b6710b5`
 - pre-promotion GUTS rollback: `rollback-pre-promotion-2026-10-02` @ `aef68707b1ad031eab16ae1efbecce5733630186`
 - promotion scope remains deployment only; frozen corpus/Reader/cosmetics are not reopened.
+
+
+## Final production pass — 2 October 2026
+
+Stanley reported **“All systems nominal!”** after the final production phone smoke test against `https://ebooks.fyi`.
+
+Frozen production runtime anchors:
+- GUTS: `release-2026-10-02-production-pass` @ `4e6c5c4835fb858ba10409962af694657d921d77`
+- NoBo: `release-2026-10-02-production-pass` @ `6dcd4b33429788f413f6fd80e503f08553eda0cd`
+
+The release is closed.
