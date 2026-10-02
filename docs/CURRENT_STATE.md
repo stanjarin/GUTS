@@ -156,3 +156,18 @@ Frozen production runtime anchors:
 - NoBo: `release-2026-10-02-production-pass` @ `6dcd4b33429788f413f6fd80e503f08553eda0cd`
 
 The release is closed.
+
+## Airlock placement + retention sweep — 2 Oct 2026
+
+A full 18-book prepared-corpus sweep was completed on `airlock-sweep-2026-10-02`.
+
+- 4,858 prepared pages scanned;
+- 552 PLACEMENT defects and 12 RETENTION defects identified before repair;
+- 567 prepared pages changed;
+- genuine `paragraphs` unchanged;
+- no Reader/state/cover/chapter/repagination changes;
+- post-repair machine QA: 0 placement flags, 0 retention flags, 0 socket failures/leaks, 0 genuine token-order mismatches, root/public parity PASS.
+
+Rollback: `rollback-pre-airlock-sweep-2026-10-02` @ `6113a1a7bac25f389ddb5444dca4d7b4c775b459`.
+
+Promotion was explicitly authorised after machine QA. Phone/visual spot-check remains pending; do not call this layer newly phone-frozen until that check is done.
