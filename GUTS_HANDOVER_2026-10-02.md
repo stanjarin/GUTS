@@ -155,11 +155,13 @@ Preserve:
 
 This handover is about **promotion of passed plumbing**, not reopening corpus or cosmetics.
 
-## 8. What is still open
+## 8. Release closure
 
-The protocol itself is no longer the debugging job.
+**Production release PASSED / FROZEN — 2 October 2026.**
 
-The remaining functional work is **promotion/deployment**:
+The protocol is not an open debugging job. Promotion/deployment is complete.
+
+Historical promotion plan was:
 
 1. create immutable rollback points for both current QA-passed branches;
 2. promote the tested GUTS changes to GUTS `main`;
@@ -195,3 +197,23 @@ If any production smoke test fails, revert to the named rollback point rather th
 
 **STANLEY'S JOB**
 Only the final phone smoke test when asked. No need to repeat the long QA campaign already passed.
+
+
+## 11. FINAL PRODUCTION PASS — 2 October 2026
+
+Completed and verified:
+- GUTS promoted to production;
+- NoBo promoted to production;
+- NoBo production target = `https://ebooks.fyi`;
+- `ebooks.fyi` connected to Cloudflare and attached to the production GUTS Worker;
+- live production domain verified;
+- actual-phone smoke test PASSED:
+  **RSET → ARM → GUTS → prepared page → 6+ sec → PAID persistence → RSET → cleared**.
+
+Stanley’s final report: **“All systems nominal!”**
+
+Frozen runtime anchors:
+- GUTS `release-2026-10-02-production-pass` @ `4e6c5c4835fb858ba10409962af694657d921d77`
+- NoBo `release-2026-10-02-production-pass` @ `6dcd4b33429788f413f6fd80e503f08553eda0cd`
+
+No functional work is open.
