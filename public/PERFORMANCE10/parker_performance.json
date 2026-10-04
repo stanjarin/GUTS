@@ -270,8 +270,8 @@
           ],
           "force_paragraphs": [
             "“Yes, you do,” he said. “There’s something the trouble. Is it anything I’ve done, or anything?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Goodness,” she said, “I’m sure it isn’t any of my business, anything you do. I certainly wouldn’t feel I had any right to criticize.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Will you stop talking like that?” he said. “Will you, please?”",
             "“Talking like what?” she said.",
             "“You know,” he said. “That’s the way you were talking over the telephone today, too. You were so snotty when I called you up, I was afraid to talk to you.”",
@@ -286,7 +286,7 @@
             "“I certainly wouldn’t like to feel,” she said, “that I was interfering with your work."
           ],
           "word_count": 339,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 16,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -345,9 +345,10 @@
           ],
           "force_paragraphs": [
             "“I wouldn’t look at you?” she said. “Oh, that’s awfully funny. Oh, that’s marvelous. You don’t mind if I laugh, do you?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Go ahead and laugh your head off,” he said. “But you wouldn’t.”",
-            "“Well, the minute you came in the room,” she said, “you started making such a fuss over Florence Leaming, I thought you never wanted to see anybody else. You two seemed to be having such a wonderful time together, goodness knows I wouldn’t have butted in for anything.”",
+            "“Well, the minute you came in the room,” she said, “you started making such a fuss over Florence Leaming, I thought you never wanted to see anybody else.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "You two seemed to be having such a wonderful time together, goodness knows I wouldn’t have butted in for anything.”",
             "“My God,” he said, “this what’s-her-name girl came up and began talking to me before I even saw anybody else, and what could I do? I couldn’t sock her in the nose, could I?”",
             "“I certainly didn’t see you try,” she said.",
             "“You saw me try to talk to you, didn’t you?” he said. “And what did you do? ‘Oh, how do you do.’ Then this what’s-her-name came up again, and there I was, stuck. Florence Leaming! I think she’s terrible. Know what I think of her? I think she’s a damn little fool. That’s what I think of her.”",
@@ -364,7 +365,7 @@
             "“I think you’re just perfectly crazy,” she said. “I was not sore! What on earth ever made you think I was? You’re simply crazy. Ow, my new pearl beads! Wait a second till I take them off. There!”"
           ],
           "word_count": 418,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 22,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -439,16 +440,17 @@
           ],
           "force_paragraphs": [
             "Thus the smallest details of the room kept loyally to the spirit of the thing, and carried on the effect.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "But the three people now sitting in the Bains’ living-room were not in the least oppressed by the decorative scheme. Two of them, Mr. and Mrs. Bain, not only had had twenty-eight years of the room to accustom themselves to it, but had been stanch admirers of it from the first. And no surroundings, however morbid, could close in on the aristocratic calm of Mrs. Bain’s sister, Mrs. Whittaker.",
-            "She graciously patronized the very chair she now sat in, smiled kindly on the glass of cider she held in her hand. The Bains were poor, and Mrs. Whittaker had, as it is ingenuously called, married well, and none of them ever lost sight of these facts.",
+            "She graciously patronized the very chair she now sat in, smiled kindly on the glass of cider she held in her hand.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "The Bains were poor, and Mrs. Whittaker had, as it is ingenuously called, married well, and none of them ever lost sight of these facts.",
             "But Mrs. Whittaker’s attitude of kindly tolerance was not confined to her less fortunate relatives. It extended to friends of her youth, working people, the arts, politics, the United States in general, and God, Who had always supplied her with the best of service. She could have given Him an excellent reference at any time.",
             "The three people sat with a comfortable look of spending the evening. There was an air of expectancy about them, a not unpleasant little nervousness, as of those who wait for a curtain to rise. Mrs. Bain had brought in cider in the best tumblers, and had served some of her nut cookies in the plate painted by hand with clusters of cherries—the plate she had used for sandwiches when, several years ago, her card club had met at her house.",
             "She had thought it over a little tonight, before she lifted out the cherry plate, then quickly decided and resolutely heaped it with cookies. After all, it was an occasion—informal, perhaps, but still an occasion. The Old Gentleman was dying upstairs. At five o’clock that afternoon the doctor had said that it would be a surprise to him if the Old Gentleman lasted till the middle of the night—a big surprise, he had augmented.",
             "There was no need for them to gather at the Old Gentleman’s bedside. He would not have known any of them."
           ],
           "word_count": 370,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 20,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -516,15 +518,16 @@
           ],
           "force_paragraphs": [
             "But, as she told her friends, she had held back and let Allie and Lewis have the Old Gentleman.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“You see,” she explained, dropping her voice to the tones reserved for not very pretty subjects, “Allie and Lewis are—well, they haven’t a great deal.”",
-            "So it was gathered that the Old Gentleman would do big things for the Bains when he came to live with them. Not exactly by paying board—it is a little too much to ask your father to pay for his food and lodging, as if he were a stranger. But, as Mrs. Whittaker suggested, he could do a great deal in the way of buying needed things for the house and keeping everything going.",
+            "So it was gathered that the Old Gentleman would do big things for the Bains when he came to live with them.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "Not exactly by paying board—it is a little too much to ask your father to pay for his food and lodging, as if he were a stranger. But, as Mrs. Whittaker suggested, he could do a great deal in the way of buying needed things for the house and keeping everything going.",
             "And the Old Gentleman did contribute to the Bain household. He bought an electric heater and an electric fan, new curtains, storm-windows, and light-fixtures, all for his bedroom; and had a nice little bathroom for his personal use made out of the small guest-room adjoining it.",
             "He shopped for days until he found a coffee-cup large enough for his taste; he bought several large ash-trays, and a dozen extra-size bath-towels, that Mrs. Bain marked with his initials. And every Christmas and birthday he gave Mrs. Bain a round, new, shining ten-dollar gold piece. Of course, he presented gold pieces to Mrs. Whittaker, too, on like appropriate occasions. The Old Gentleman prided himself always on his fair-mindedness. He often said that he was not one to show any favoritism.",
             "Mrs. Whittaker was Cordelia-like to her father during his declining years. She came to see him several times a month, bringing him jelly or potted hyacinths. Sometimes she sent her car and chauffeur for him, so that he might take an easy drive through the town, and Mrs. Bain might be afforded a chance to drop her cooking and accompany him. When Mrs. Whittaker was away on trips with her husband, she almost never neglected to send her father picture post-cards of various points of interest."
           ],
           "word_count": 334,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -546,9 +549,10 @@
           ],
           "force_paragraphs": [
             "The Old Gentleman appreciated her affection, and took pride in her. He enjoyed being told that she was like him.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“That Hattie,” he used to tell Mrs. Bain, “she’s a fine woman—a fine woman.”",
-            "As soon as she had heard that the Old Gentleman was dying Mrs. Whittaker had come right over, stopping only to change her dress and have her dinner. Her husband was away in the woods with some men, fishing. She explained to the Bains that there was no use in disturbing him—it would have been impossible for him to get back that night. As soon as—well, if anything happened she would telegraph him, and he could return in time for the funeral.",
+            "As soon as she had heard that the Old Gentleman was dying Mrs. Whittaker had come right over, stopping only to change her dress and have her dinner. Her husband was away in the woods with some men, fishing.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "She explained to the Bains that there was no use in disturbing him—it would have been impossible for him to get back that night. As soon as—well, if anything happened she would telegraph him, and he could return in time for the funeral.",
             "Mrs. Bain was sorry that he was away. She liked her ruddy, jovial, loud-voiced brother-in-law.",
             "“It’s too bad that Clint couldn’t be here,” she said, as she had said several times before. “He’s so fond of cider,” she added.",
             "“Father,” said Mrs. Whittaker, “was always very fond of Clint.” Already the Old Gentleman had slipped into the past tense.",
@@ -560,7 +564,7 @@
             "“Oh, yes,” Mrs. Bain said eagerly. “And it’s all clean and lovely."
           ],
           "word_count": 317,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 20,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -645,9 +649,10 @@
           ],
           "force_paragraphs": [
             "“But I thought he’d straightened up,” said Mr. Bain. “Thought he was all right since he got married.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Yes, I know, I know, Lewis,” Mrs. Whittaker said wearily. “I’ve heard all about that. All I say is, I know what Matt is.”",
-            "“John Loomis was telling me,” reported Mr. Bain, “he was going through Akron, and he stopped off to see Matt. Said they had a nice little place, and he seemed to be getting along fine. Said she seemed like a cracker-jack housekeeper.”",
+            "“John Loomis was telling me,” reported Mr. Bain, “he was going through Akron, and he stopped off to see Matt.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "Said they had a nice little place, and he seemed to be getting along fine. Said she seemed like a cracker-jack housekeeper.”",
             "Mrs. Whittaker smiled.",
             "“Yes,” she said, “John Loomis and Matt were always two of a kind—you couldn’t believe a word either of them said. Probably she did seem to be a good housekeeper. I’ve no doubt she acted the part very well. Matt never made any bones of the fact that she was on the stage once, for almost a year. Excuse me from having that woman come to father’s funeral. If you want to know what I think, I think that Matt marrying a woman like that had a good deal to do with hastening father’s death.”",
             "The Bains sat in awe.",
@@ -656,7 +661,7 @@
             "“Mr. Fuller told me about it himself. Said it was wonderful the way the Old Gentleman came right out and talked just as frankly to him."
           ],
           "word_count": 344,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -677,10 +682,10 @@
           ],
           "force_paragraphs": [
             "Said he’d never had any idea Matt was that way—wanted to hear all about it.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mrs. Whittaker nodded sadly.",
             "“Oh, I know,” she said. “Time and again father would do that. And then, as like as not, Matt would get one of his sulky fits, and not turn up at his work.”",
             "“And when Matt would be out of work,” Mrs. Bain said, “the way father’d hand him out his car-fare, and I don’t know what all! When Matt was a grown man, going on thirty years old, father would take him down to Newins & Malley’s and buy him a whole new outfit—pick out everything himself. He always used to say Matt was the kind that would get cheated out of his eye-teeth if he went into a store alone.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“My, father hated to see anybody make a fool of themselves about money,” Mrs. Whittaker commented. “Remember how he always used to say, ‘Anybody can make money, but it takes a wise man to keep it’?”",
             "“I suppose he must be a pretty rich man,” Mr. Bain said, abruptly restoring the Old Gentleman to the present.",
             "“Oh—rich!” Mrs. Whittaker’s smile was at its kindliest. “But he managed his affairs very well, father did, right up to the last. Everything is in splendid shape, Clint says.”",
@@ -690,7 +695,7 @@
             "“ Awfully good,” she said. She broke into a little bubbly laugh, the laugh she used at teas and wedding receptions and fairly formal dinners. “You know,” she went on, as one sharing a good story, “he’s gone and left all that old money to me. ‘Why, Father!’ I said, as soon as I’d read that part. But it seems he’d gotten some sort of idea in his head that Clint and I would be able to take care of it better than anybody else, and you know what father was, once he made up that mind of his. You can just imagine how I felt. I couldn’t say a thing.”"
           ],
           "word_count": 393,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 16,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -746,8 +751,8 @@
           ],
           "force_paragraphs": [
             "“Do I remember!” said Mrs. Whittaker. “And do you remember how they used to play whist, and how furious father used to get when he lost?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Yes,” Mrs. Bain cried excitedly, “and how mother used to have to cheat, so as to be sure and not win from him? She got so she used to be able to do it just as well!”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "They laughed softly, filled with memories of the gone days. A pleasant, thoughtful silence fell around them.",
             "Mrs. Bain patted a yawn to extinction, and looked at the clock.",
             "“Ten minutes to eleven,” she said. “Goodness, I had no idea it was anywhere near so late. I wish—” She stopped just in time, crimson at what her wish would have been.",
@@ -763,7 +768,7 @@
             "Among them they got Mrs. Bain up the stairs."
           ],
           "word_count": 415,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 26,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -810,14 +815,15 @@
           ],
           "force_paragraphs": [
             "I’ll be good, God. I will try to be better, I will, if You will let me see him again. If You will let him telephone me. Oh, let him telephone me now.",
+            "Ah, don’t let my prayer seem too little to You, God. You sit up there, so white and old, with all the angels about You and the stars slipping by.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Ah, don’t let my prayer seem too little to You, God. You sit up there, so white and old, with all the angels about You and the stars slipping by. And I come to You with a prayer about a telephone call. Ah, don’t laugh, God. You see, You don’t know how it feels. You’re so safe, there on Your throne, with the blue swirling under You. Nothing can touch You; no one can twist Your heart in his hands. This is suffering, God, this is bad, bad suffering. Won’t You help me? For Your Son’s sake, help me. You said You would do whatever was asked of You in His name. Oh, God, in the name of Thine only beloved Son, Jesus Christ, our Lord, let him telephone me now.",
+            "And I come to You with a prayer about a telephone call. Ah, don’t laugh, God. You see, You don’t know how it feels. You’re so safe, there on Your throne, with the blue swirling under You. Nothing can touch You; no one can twist Your heart in his hands. This is suffering, God, this is bad, bad suffering. Won’t You help me? For Your Son’s sake, help me. You said You would do whatever was asked of You in His name. Oh, God, in the name of Thine only beloved Son, Jesus Christ, our Lord, let him telephone me now.",
             "I must stop this. I mustn’t be this way. Look. Suppose a young man says he’ll call a girl up, and then something happens, and he doesn’t. That isn’t so terrible, is it? Why, it’s going on all over the world, right this minute. Oh, what do I care what’s going on all over the world? Why can’t that telephone ring? Why can’t it, why can’t it? Couldn’t you ring? Ah, please, couldn’t you? You damned, ugly, shiny thing. It would hurt you to ring, wouldn’t it? Oh, that would hurt you. Damn you, I’ll pull your filthy roots out of the wall, I’ll smash your smug black face in little bits. Damn you to hell.",
             "No, no, no. I must stop. I must think about something else. This is what I’ll do. I’ll put the clock in the other room. Then I can’t look at it. If I do have to look at it, then I’ll have to walk into the bedroom, and that will be something to do. Maybe, before I look at it again, he will call me. I’ll be so sweet to him, if he calls me. If he says he can’t see me tonight, I’ll say, “Why, that’s all right, dear. Why, of course it’s all right.” I’ll be the way I was when I first met him. Then maybe he’ll like me again. I was always sweet, at first. Oh, it’s so easy to be sweet to people before you love them.",
             "I think he must still like me a little. He couldn’t have called me “darling” twice today, if he didn’t still like me a little. It isn’t all gone, if he still likes me a little; even if it’s only a little, little bit."
           ],
           "word_count": 456,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 33,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -832,14 +838,15 @@
           ],
           "force_paragraphs": [
             "You see, God, if You would just let him telephone me, I wouldn’t have to ask You anything more. I would be sweet to him, I would be gay, I would be just the way I used to be, and then he would love me again. And then I would never have to ask You for anything more. Don’t You see, God? So won’t You please let him telephone me? Won’t You please, please, please?",
+            "Are You punishing me, God, because I’ve been bad? Are You angry with me because I did that? Oh, but, God, there are so many bad people—You could not be hard only to me.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Are You punishing me, God, because I’ve been bad? Are You angry with me because I did that? Oh, but, God, there are so many bad people—You could not be hard only to me. And it wasn’t very bad; it couldn’t have been bad. We didn’t hurt anybody, God. Things are only bad when they hurt people. We didn’t hurt one single soul; You know that. You know it wasn’t bad, don’t You, God? So won’t You let him telephone me now?",
+            "And it wasn’t very bad; it couldn’t have been bad. We didn’t hurt anybody, God. Things are only bad when they hurt people. We didn’t hurt one single soul; You know that. You know it wasn’t bad, don’t You, God? So won’t You let him telephone me now?",
             "If he doesn’t telephone me, I’ll know God is angry with me. I’ll count five hundred by fives, and if he hasn’t called me then, I will know God isn’t going to help me, ever again. That will be the sign. Five, ten, fifteen, twenty, twenty-five, thirty, thirty-five, forty, forty-five, fifty, fifty-five. . . . It was bad. I knew it was bad. All right, God, send me to hell. You think You’re frightening me with Your hell, don’t You? You think Your hell is worse than mine.",
             "I mustn’t. I mustn’t do this. Suppose he’s a little late calling me up—that’s nothing to get hysterical about. Maybe he isn’t going to call—maybe he’s coming straight up here without telephoning. He’ll be cross if he sees I have been crying. They don’t like you to cry. He doesn’t cry. I wish to God I could make him cry. I wish I could make him cry and tread the floor and feel his heart heavy and big and festering in him. I wish I could hurt him like hell.",
             "He doesn’t wish that about me. I don’t think he even knows how he makes me feel. I wish he could know, without my telling him. They don’t like you to tell them they’ve made you cry. They don’t like you to tell them you’re unhappy because of them. If you do, they think you’re possessive and exacting. And then they hate you. They hate you whenever you say anything you really think. You always have to keep playing little games. Oh, I thought we didn’t have to; I thought this was so big I could say whatever I meant. I guess you can’t, ever."
           ],
           "word_count": 440,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 75,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -975,9 +982,9 @@
           ],
           "force_paragraphs": [
             "The young man studied his wrist-watch as if he were just acquiring the knack of reading time.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“We have been married,” he said, “exactly two hours and twenty-six minutes.”",
             "“My,” she said. “It seems like longer.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“No,” he said. “It isn’t hardly half-past six yet.”",
             "“It seems like later,” she said. “I guess it’s because it starts getting dark so early.”",
             "“It does, at that,” he said. “The nights are going to be pretty long from now on. I mean. I mean—well, it starts getting dark early.”",
@@ -989,7 +996,7 @@
             "“Let them worry,” he said. “We don’t have to. We know darn well what’s going to happen next."
           ],
           "word_count": 318,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 17,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1007,17 +1014,17 @@
           ],
           "force_paragraphs": [
             "I mean. I mean—well, we know it’s going to be great. Well, we know we’re going to be happy. Don’t we?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, of course,” she said. “Only you think of all the people, and you have to sort of keep thinking. It makes you feel funny. An awful lot of people that get married, it doesn’t turn out so well. And I guess they all must have thought it was going to be great.”",
             "“Come on, now,” he said. “This is no way to start a honeymoon, with all this thinking going on. Look at us—all married and everything done. I mean. The wedding all done and all.”",
             "“Ah, it was nice, wasn’t it?” she said. “Did you really like my veil?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“You looked great,” he said. “Just great.”",
             "“Oh, I’m terribly glad,” she said. “Ellie and Louise looked lovely, didn’t they? I’m terribly glad they did finally decide on pink. They looked perfectly lovely.”",
             "“Listen,” he said. “I want to tell you something. When I was standing up there in that old church waiting for you to come up, and I saw those two bridesmaids, I thought to myself, I thought, ‘Well, I never knew Louise could look like that!’ Why, she’d have knocked anybody’s eye out.”",
             "“Oh, really?” she said. “Funny. Of course, everybody thought her dress and hat were lovely, but a lot of people seemed to think she looked sort of tired. People have been saying that a lot, lately. I tell them I think it’s awfully mean of them to go around saying that about her. I tell them they’ve got to remember that Louise isn’t so terribly young any more, and they’ve got to expect her to look like that. Louise can say she’s twenty-three all she wants to, but she’s a good deal nearer twenty-seven.”"
           ],
           "word_count": 304,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 22,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1034,16 +1041,17 @@
           ],
           "force_paragraphs": [
             "“Well, she was certainly a knock-out at the wedding,” he said. “Boy!”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“I’m terribly glad you thought so,” she said. “I’m glad some one did. How did you think Ellie looked?”",
             "“Why, I honestly didn’t get a look at her,” he said.",
-            "“Oh, really?” she said. “Well, I certainly think that’s too bad. I don’t suppose I ought to say it about my own sister, but I never saw anybody look as beautiful as Ellie looked today. And always so sweet and unselfish, too. And you didn’t even notice her. But you never pay attention to Ellie, anyway. Don’t think I haven’t noticed it. It makes me feel just terrible. It makes me feel just awful, that you don’t like my own sister.”",
+            "“Oh, really?” she said. “Well, I certainly think that’s too bad.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "I don’t suppose I ought to say it about my own sister, but I never saw anybody look as beautiful as Ellie looked today. And always so sweet and unselfish, too. And you didn’t even notice her. But you never pay attention to Ellie, anyway. Don’t think I haven’t noticed it. It makes me feel just terrible. It makes me feel just awful, that you don’t like my own sister.”",
             "“I do so like her!” he said. “I’m crazy for Ellie. I think she’s a great kid.”",
             "“Don’t think it makes any difference to Ellie!” she said. “Ellie’s got enough people crazy about her. It isn’t anything to her whether you like her or not. Don’t flatter yourself she cares! Only, the only thing is, it makes it awfully hard for me you don’t like her, that’s the only thing. I keep thinking, when we come back and get in the apartment and everything, it’s going to be awfully hard for me that you won’t want my own sister to come and see me. It’s going to make it awfully hard for me that you won’t ever want my family around. I know how you feel about my family. Don’t think I haven’t seen it. Only, if you don’t ever want to see them, that’s your loss. Not theirs. Don’t flatter yourself!”",
             "“Oh, now, come on!” he said. “What’s all this talk about not wanting your family around? Why, you know how I feel about your family. I think your old lady—I think your mother’s swell. And Ellie. And your father. What’s all this talk?”"
           ],
           "word_count": 319,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 12,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1150,19 +1158,20 @@
           ],
           "force_paragraphs": [
             "I’m not going to have my wife getting a lot of letters from cheap traveling salesmen!”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Joe Brooks is not a cheap traveling salesman!” she said. “He is not! He gets a wonderful salary.”",
             "“Oh yeah?” he said. “Where did you hear that?”",
             "“He told me so himself,” she said.",
             "“Oh, he told you so himself,” he said. “I see. He told you so himself.”",
             "“You’ve got a lot of right to talk about Joe Brooks,” she said. “You and your friend Louise. All you ever talk about is Louise.”",
-            "“Oh, for heaven’s sakes!” he said. “What do I care about Louise? I just thought she was a friend of yours, that’s all. That’s why I ever even noticed her.”",
+            "“Oh, for heaven’s sakes!” he said. “What do I care about Louise?",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "I just thought she was a friend of yours, that’s all. That’s why I ever even noticed her.”",
             "“Well, you certainly took an awful lot of notice of her today,” she said. “On our wedding day! You said yourself when you were standing there in the church you just kept thinking of her. Right up at the altar. Oh, right in the presence of God! And all you thought about was Louise.”",
             "“Listen, honey,” he said, “I never should have said that. How does anybody know what kind of crazy things come into their heads when they’re standing there waiting to get married? I was just telling you that because it was so kind of crazy. I thought it would make you laugh.”",
             "“I know,” she said. “I’ve been all sort of mixed up today, too. I told you that. Everything so strange and everything. And me all the time thinking about all those people all over the world, and now us here all alone, and everything. I know you get all mixed up. Only I did think, when you kept talking about how beautiful Louise looked, you did it with malice and forethought.”"
           ],
           "word_count": 296,
-          "airlock_index": 1,
+          "airlock_index": 7,
           "pre_airlock_words": 16,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1184,9 +1193,10 @@
           ],
           "force_paragraphs": [
             "“I never did anything with malice and forethought!” he said. “I just told you that about Louise because I thought it would make you laugh.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Well, it didn’t,” she said.",
-            "“No, I know it didn’t,” he said. “It certainly did not. Ah, baby, and we ought to be laughing, too. Hell, honey lamb, this is our honeymoon. What’s the matter?”",
+            "“No, I know it didn’t,” he said. “It certainly did not. Ah, baby, and we ought to be laughing, too.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "Hell, honey lamb, this is our honeymoon. What’s the matter?”",
             "“I don’t know,” she said. “We used to squabble a lot when we were going together and then engaged and everything, but I thought everything would be so different as soon as you were married. And now I feel so sort of strange and everything. I feel so sort of alone.”",
             "“Well, you see, sweetheart,” he said, “we’re not really married yet. I mean. I mean—well, things will be different afterwards. Oh, hell. I mean, we haven’t been married very long.”",
             "“No,” she said.",
@@ -1198,7 +1208,7 @@
             "“Well, you see,” she said. “I’ve been perfectly terrible. What with all the excitement and everything. I never did thank poor old Mrs. Sprague for her berry spoon, and I never did a thing about those book ends the McMasters sent. It’s just too awful of me. I’ve got to write them this very night.”"
           ],
           "word_count": 313,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 25,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1224,10 +1234,10 @@
           ],
           "force_paragraphs": [
             "“And when you’ve finished writing your letters,” he said, “maybe I could get you a magazine or a bag of peanuts.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“What?” she said.",
             "“I mean,” he said, “I wouldn’t want you to be bored.”",
             "“As if I could be bored with you!” she said. “Silly! Aren’t we married? Bored!”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“What I thought,” he said, “I thought when we got in, we could go right up to the Biltmore and anyway leave our bags, and maybe have a little dinner in the room, kind of quiet, and then do whatever we wanted. I mean. I mean—well, let’s go right up there from the station.”",
             "“Oh, yes, let’s,” she said. “I’m so glad we’re going to the Biltmore. I just love it. The twice I’ve stayed in New York we’ve always stayed there, Papa and Mamma and Ellie and I, and I was crazy about it. I always sleep so well there. I go right off to sleep the minute I put my head on the pillow.”",
             "“Oh, you do?” he said.",
@@ -1242,7 +1252,7 @@
             "“Oh, no,” she said. “Not ever! I don’t know what made me do like that. It all got so sort of funny, sort of like a nightmare, the way I got thinking of all those people getting married all the time; and so many of them, everything spoils on account of fighting and everything. I got all mixed up thinking about them. Oh, I don’t want to be like them. But we won’t be, will we?”"
           ],
           "word_count": 350,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 21,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1329,13 +1339,14 @@
           ],
           "force_paragraphs": [
             "I’ve given in often enough, goodness knows. Now she can just call me first. Frankly and honestly, that’s what I said!",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "And then I saw Alice, and I did feel mean, I really did. And now to see you lying there—well, I feel like a complete dog . That’s what you do to people even when you’re in the wrong the way you always are, you wicked little thing, you! Ah, the poor dear! Feels just so awful, doesn’t it?",
-            "Oh, don’t keep trying to be brave, child. Not with me. Just give in—it helps so much. Just tell me all about it. You know I’ll never say a word. Or at least you ought to know. When Alice told me that maid of yours said you were all tired out and your nerves had gone bad, I naturally never said anything, but I thought to myself, “Well, maybe that’s the only thing Mona could say was the matter. That’s probably about the best excuse she could think of.” And of course I’ll never deny it—but perhaps it might have been better to have said you had influenza or ptomaine poisoning. After all, people don’t stay in bed for ten whole days just because they’re nervous. All right, Mona, then they do . Then they do. Yes, dear.",
+            "Oh, don’t keep trying to be brave, child. Not with me. Just give in—it helps so much. Just tell me all about it.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "You know I’ll never say a word. Or at least you ought to know. When Alice told me that maid of yours said you were all tired out and your nerves had gone bad, I naturally never said anything, but I thought to myself, “Well, maybe that’s the only thing Mona could say was the matter. That’s probably about the best excuse she could think of.” And of course I’ll never deny it—but perhaps it might have been better to have said you had influenza or ptomaine poisoning. After all, people don’t stay in bed for ten whole days just because they’re nervous. All right, Mona, then they do . Then they do. Yes, dear.",
             "Ah, to think of you going through all this and crawling off here all alone like a little wounded animal or something. And with only that colored Edie to take care of you. Darling, oughtn’t you have a trained nurse, I mean really oughtn’t you? There must be so many things that have to be done for you. Why, Mona! Mona, please! Dear, you don’t have to get so excited. Very well, my dear, it’s just as you say—there isn’t a single thing to be done. I was mistaken, that’s all. I simply thought that after— Oh, now, you don’t have to do that. You never have to say you’re sorry, to me . I understand. As a matter of fact, I was glad to hear you lose your temper. It’s a good sign when sick people are cross. It means they’re on the way to getting better."
           ],
           "word_count": 367,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 21,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1350,14 +1361,15 @@
           ],
           "force_paragraphs": [
             "Oh, I know! You go right ahead and be cross all you want to.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Look, where shall I sit? I want to sit some place where you won’t have to turn around, so you can talk to me. You stay right the way you’re lying, and I’ll— Because you shouldn’t move around, I’m sure. It must be terribly bad for you. All right, dear, you can move around all you want to. All right, I must be crazy. I’m crazy, then. We’ll leave it like that. Only please, please don’t excite yourself that way.",
-            "I’ll just get this chair and put it over—oops, I’m sorry I joggled the bed—put it over here, where you can see me. There. But first I want to fix your pillows before I get settled. Well, they certainly are not all right, Mona. After the way you’ve been twisting them and pulling them, these last few minutes. Now look, honey, I’ll help you raise yourself ve-ry, ve-ry slo-o-ow-ly. Oh. Of course you can sit up by yourself, dear. Of course you can. Nobody ever said you couldn’t. Nobody ever thought of such a thing. There now, your pillows are all smooth and lovely, and you lie right down again, before you hurt yourself. Now, isn’t that better? Well, I should think it was!",
+            "I’ll just get this chair and put it over—oops, I’m sorry I joggled the bed—put it over here, where you can see me. There. But first I want to fix your pillows before I get settled. Well, they certainly are not all right, Mona.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "After the way you’ve been twisting them and pulling them, these last few minutes. Now look, honey, I’ll help you raise yourself ve-ry, ve-ry slo-o-ow-ly. Oh. Of course you can sit up by yourself, dear. Of course you can. Nobody ever said you couldn’t. Nobody ever thought of such a thing. There now, your pillows are all smooth and lovely, and you lie right down again, before you hurt yourself. Now, isn’t that better? Well, I should think it was!",
             "Just a minute, till I get my sewing. Oh, yes, I brought it along, so we’d be all cozy. Do you honestly, frankly and honestly, think it’s pretty? I’m so glad. It’s nothing but a tray-cloth, you know. But you simply can’t have too many. They’re a lot of fun to make, too, doing this edge—it goes so quickly. Oh, Mona dear, so often I think if you just had a home of your own, and could be all busy, making pretty little things like this for it, it would do so much for you. I worry so about you, living in a little furnished apartment, with nothing that belongs to you, no roots, no nothing. It’s not right for a woman. It’s all wrong for a woman like you. Oh, I wish you’d get over that Garry McVicker!",
             "If you could just meet some nice, sweet, considerate man, and get married to him, and have your own lovely place—and with your taste , Mona!—and maybe have a couple of children. You’re so simply adorable with children. Why, Mona Morrison, are you crying? Oh, you’ve got a cold? You’ve got a cold, too ? I thought you were crying, there for a second."
           ],
           "word_count": 424,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 14,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1436,14 +1448,15 @@
           ],
           "force_paragraphs": [
             "Why, he couldn’t have stayed in Chicago more than a day or so—if he went at all.",
+            "Well, he was with her when we saw him, honey. Apparently he’s with her all the time; nobody ever sees him with anyone else. You really must make up your mind to it, dear; it’s the only thing to do. I hear all over that he’s just simply pleading with her to marry him, but I don’t know how true that is.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Well, he was with her when we saw him, honey. Apparently he’s with her all the time; nobody ever sees him with anyone else. You really must make up your mind to it, dear; it’s the only thing to do. I hear all over that he’s just simply pleading with her to marry him, but I don’t know how true that is. I’m sure I can’t see why he’d want to, but then you never can tell what a man like that will do. It would be just good enough for him if he got her, that’s what I say. Then he’d see. She’d never stand for any of his nonsense. She’d make him toe the mark. She’s a smart woman.",
+            "I’m sure I can’t see why he’d want to, but then you never can tell what a man like that will do. It would be just good enough for him if he got her, that’s what I say. Then he’d see. She’d never stand for any of his nonsense. She’d make him toe the mark. She’s a smart woman.",
             "But, oh, so ordinary . I thought, when we saw them the other night, “Well, she just looks cheap, that’s all she looks.” That must be what he likes, I suppose. I must admit he looked very well. I never saw him look better. Of course you know what I think of him, but I always had to say he’s one of the handsomest men I ever saw in my life. I can understand how any woman would be attracted to him—at first. Until they found out what he’s really like. Oh, if you could have seen him with that awful, common creature, never once taking his eyes off her, and hanging on every word she said, as if it was pearls! It made me just——",
             "Mona, angel, are you crying ? Now, darling, that’s just plain silly. That man’s not worth another thought. You’ve thought about him entirely too much, that’s the trouble. Three years! Three of the best years of your life you’ve given him, and all the time he’s been deceiving you with that woman. Just think back over what you’ve been through—all the times and times and times he promised you he’d give her up; and you, you poor little idiot, you’d believe him, and then he’d go right back to her again. And everybody knew about it. Think of that, and then try telling me that man’s worth crying over! Really, Mona! I’d have more pride.",
             "You know, I’m just glad this thing happened. I’m just glad you found out. This is a little too much, this time. In Chicago, indeed! Let you know the minute he came home! The kindest thing a person could possibly have done was to tell you, and bring you to your senses at last. I’m not sorry I did it, for a second. When I think of him out having the time of his life and you lying here deathly sick all on account of him, I could just— Yes, it is on account of him."
           ],
           "word_count": 476,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1502,8 +1515,8 @@
           ],
           "force_paragraphs": [
             "“My dear,” Mrs. Marshall said to Mrs. Ames, “I never was so surprised in my life. Never in my life. Why, Grace and I were like that—just like that .”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She held up her right hand, the upstanding first and second fingers rigidly close together, in illustration.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mrs. Ames shook her head sadly, and offered the cinnamon toast.",
             "“Imagine!” said Mrs. Marshall, refusing it though with a longing eye. “We were going to have dinner with them last Tuesday night, and then I got this letter from Grace from this little place up in Connecticut, saying she was going to be up there she didn’t know how long, and she thought, when she came back, she’d probably take just one big room with a kitchenette. Ernest was living down at the club, she said.”",
             "“But what did they do about their apartment?” Mrs. Ames’s voice was high with anxiety.",
@@ -1515,7 +1528,7 @@
             "“That’s what everybody says.” Mrs. Marshall quickly took away any undeserved credit. “To think of the Weldons separating! Why, I always used to say to Jim. ‘Well, there’s one happily married couple, anyway,’ I used to say, ‘so congenial, and with that nice apartment, and all.’ And then, right out of a clear sky, they go and separate. I simply can’t understand what on earth made them do it. It just seems too awful!”"
           ],
           "word_count": 322,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 30,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1554,15 +1567,16 @@
           ],
           "force_paragraphs": [
             "Then she stepped back, and surveyed her innovations. It was amazing how little difference they made to the room.",
+            "Sighing, Mrs. Weldon turned her attention to a bowl of daffodils, slightly past their first freshness. There was nothing to be done there; the omniscient Delia had refreshed them with clear water, had clipped their stems, and removed their more passé sisters.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Sighing, Mrs. Weldon turned her attention to a bowl of daffodils, slightly past their first freshness. There was nothing to be done there; the omniscient Delia had refreshed them with clear water, had clipped their stems, and removed their more passé sisters. Still, Mrs. Weldon bent over them pulling them gently about.",
+            "Still, Mrs. Weldon bent over them pulling them gently about.",
             "She liked to think of herself as one for whom flowers would thrive, who must always have blossoms about her, if she would be truly happy. When her living-room flowers died, she almost never forgot to stop in at the florist’s, the next day, and get a fresh bunch. She told people, in little bursts of confidence, that she loved flowers. There was something almost apologetic in her way of uttering her tender avowal, as if she would beg her listeners not to consider her too bizarre in her taste. It seemed rather as though she expected the hearer to fall back, startled, at her words, crying, “Not really! Well, what are we coming to?”",
             "She had other little confessions of affection, too, that she made from time to time; always with a little hesitation, as if understandably delicate about baring her heart, she told her love for color, the country, a good time, a really interesting play, nice materials, well-made clothes, and sunshine. But it was her fondness for flowers that she acknowledged oftenest. She seemed to feel that this, even more than her other predilections, set her apart from the general.",
             "Mrs. Weldon gave the elderly daffodils a final pat, now, and once more surveyed the room, to see if any other repairs suggested themselves. Her lips tightened as the little Japanese vase met her gaze; distinctly, it had been better off in the first place. She set it back, the irritation that the sight of the mantel always gave her welling within her.",
             "She had hated the mantelpiece from the moment they had first come to look at the apartment. There were other things that she had always hated about the place, too—the long, narrow hall, the dark dining-room, the inadequate closets."
           ],
           "word_count": 367,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1737,9 +1751,9 @@
           ],
           "force_paragraphs": [
             "“Well, that looks pretty good,” said Mr. Weldon, carving it. “We haven’t had steak for a long time.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Why, yes, we have, too, Ern,” his wife said eagerly. “We had it—let me see, what night were the Baileys here?—we had it Wednesday night—no, Thursday night. Don’t you remember?”",
             "“Did we?” he said. “Yes, I guess you’re right. It seemed longer, somehow.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mrs. Weldon smiled politely. She could not think of any way to prolong the discussion.",
             "What did married people talk about, anyway, when they were alone together? She had seen married couples—not dubious ones but people she really knew were husbands and wives—at the theater or in trains, talking together as animatedly as if they were just acquaintances. She always watched them, marvelingly, wondering what on earth they found to say.",
             "She could talk well enough to other people. There never seemed to be enough time for her to finish saying all she wanted to to her friends; she recalled how she had run on to Alice Marshall, only that afternoon. Both men and women found her attractive to listen to; not brilliant, not particularly funny, but still amusing and agreeable. She was never at a loss for something to say, never conscious of groping around for a topic. She had a good memory for bits of fresh gossip, or little stories of some celebrity that she had read or heard somewhere, and a knack of telling them entertainingly. Things people said to her stimulated her to quick replies, and more amusing narratives. They weren’t especially scintillating people, either; it was just that they talked to her.",
@@ -1747,7 +1761,7 @@
             "Ernest, too, seemed to be talkative enough when he was with others."
           ],
           "word_count": 321,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -1910,14 +1924,14 @@
           ],
           "force_paragraphs": [
             "He did not help her to enter, but the solicitous way in which he superintended the process gave all the effect of his having actually assisted her.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Her tight little skirt slipped up over her thin, pretty legs as she took the high step. There was a run in one of her flimsy silk stockings. She was doubtless unconscious of it; it was well back toward the seam, extending, probably from her garter, half-way down the calf. Mr. Durant had an odd desire to catch his thumb-nail in the present end of the run, and to draw it on down until the slim line of the dropped stitches reached to the top of her low shoe. An indulgent smile at his whimsy played about his mouth, broadening to a grin of affable evening greeting for the conductor, as he entered the car and paid his fare.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "The girl sat down somewhere far up at the front. Mr. Durant found a desirable seat toward the rear, and craned his neck to see her. He could catch a glimpse of a fold of her turban and a bit of her brightly rouged cheek, but only at a cost of holding his head in a strained, and presently painful, position. So, warmed by the assurance that there would always be others, he let her go, and settled himself restfully. He had a ride of twenty minutes or so before him. He allowed his head to fall gently back, to let his eyelids droop, and gave himself to his thoughts. Now that the thing was comfortably over and done with, he could think of it easily, almost laughingly.",
             "Last week, now, and even part of the week before, he had had to try with all his strength to force it back every time it wrenched itself into his mind. It had positively affected his sleep. Even though he was shielded by his newly acquired amused attitude, Mr. Durant felt indignation flood within him when he recalled those restless nights.",
             "He had met Rose for the first time about three months before. She had been sent up to his office to take some letters for him. Mr. Durant was assistant manager of the rubber company’s credit department; his wife was wont to refer to him as one of the officers of the company, and, though she often spoke thus of him to people in his presence, he never troubled to go more fully into detail about his position."
           ],
           "word_count": 413,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 27,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2044,8 +2058,9 @@
           ],
           "force_paragraphs": [
             "She had even thought of wiring the sister beforehand that Rose had had influenza and must have a rest.",
+            "Mr. Durant had urged Rose to look on it as just a little vacation. He promised, moreover, to put in a good word for her whenever she wanted her job back.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Mr. Durant had urged Rose to look on it as just a little vacation. He promised, moreover, to put in a good word for her whenever she wanted her job back. But Rose had gone pink about the nose again at the thought. She had sobbed her rasping sobs, then had raised her face from her stringy handkerchief and said, with an entirely foreign firmness, that she never wanted to see the rubber works or Ruby or Mr. Durant again. He had laughed indulgently, had made himself pat her thin back. In his relief at the outcome of things, he could be generous to the pettish.",
+            "But Rose had gone pink about the nose again at the thought. She had sobbed her rasping sobs, then had raised her face from her stringy handkerchief and said, with an entirely foreign firmness, that she never wanted to see the rubber works or Ruby or Mr. Durant again. He had laughed indulgently, had made himself pat her thin back. In his relief at the outcome of things, he could be generous to the pettish.",
             "He chuckled inaudibly, as he reviewed that last scene. “I suppose she thought she’d make me sore, saying she was never coming back,” he told himself. “I suppose I was supposed to get down on my knees and coax her.”",
             "It was fine to dwell on the surety that it was all done with. Mr. Durant had somewhere picked up a phrase that seemed ideally suited to the occasion. It was to him an admirably dashing expression. There was something stylish about it; it was the sort of thing you would expect to hear used by men who wore spats and swung canes without self-consciousness. He employed it now, with satisfaction.",
             "“Well, that’s that,” he said to himself. He was not sure that he didn’t say it aloud.",
@@ -2053,7 +2068,7 @@
             "In high humor, he left the car at his street, and walked in the direction of his house."
           ],
           "word_count": 354,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2067,13 +2082,14 @@
           ],
           "force_paragraphs": [
             "It was a mean night, but the insinuating cold and the black rain only made more graphic his picture of the warm, bright house, the great dish of steaming fish chowder, the well-behaved children and wife that awaited him. He walked rather slowly to make them seem all the better for the wait, humming a little on his way down the neat sidewalk, past the solid, reputably shabby houses.",
+            "Two girls ran past him, holding their hands over their heads to protect their hats from the wet.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Two girls ran past him, holding their hands over their heads to protect their hats from the wet. He enjoyed the click of their heels on the pavement, their little bursts of breathless laughter, their arms upraised in a position that brought out all the neat lines of their bodies. He knew who they were—they lived three doors down from him, in the house with the lamp-post in front of it. He had often lingeringly noticed their fresh prettiness. He hurried, so that he might see them run up the steps, their narrow skirts sliding up over their legs. His mind went back to the girl with the run in her stocking, and amusing thoughts filled him as he entered his own house.",
+            "He enjoyed the click of their heels on the pavement, their little bursts of breathless laughter, their arms upraised in a position that brought out all the neat lines of their bodies. He knew who they were—they lived three doors down from him, in the house with the lamp-post in front of it. He had often lingeringly noticed their fresh prettiness. He hurried, so that he might see them run up the steps, their narrow skirts sliding up over their legs. His mind went back to the girl with the run in her stocking, and amusing thoughts filled him as he entered his own house.",
             "His children rushed, clamoring, to meet him, as he unlocked the door. There was something exciting going on, for Junior and Charlotte were usually too careful-mannered to cause people discomfort by rushing and babbling. They were nice, sensible children, good at their lessons, and punctilious about brushing their teeth, speaking the truth, and avoiding playmates who used bad words. Junior would be the very picture of his father, when they got the bands off his teeth, and little Charlotte strongly resembled her mother. Friends often commented on what a nice arrangement it was.",
             "Mr. Durant smiled good-naturedly through their racket, carefully hanging up his coat and hat."
           ],
           "word_count": 300,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 69,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2117,10 +2133,10 @@
           ],
           "force_paragraphs": [
             "Durant to give it a fair trial. The children had told it to lie down there, and so it did not move. That was something it could do toward repaying them.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mr. Durant warmed to it. He did not dislike dogs, and he somewhat fancied the picture of himself as a soft-hearted fellow who extended shelter to friendless animals. He bent, and held out a hand to it.",
             "“Well, sir,” he said, genially. “Come here, good fellow.”",
             "The dog ran to him, wriggling ecstatically. It covered his cold hand with joyous, though respectful kisses, then laid its warm, heavy head on his palm. “You are beyond a doubt the greatest man in America,” it told him with its eyes.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mr. Durant enjoyed appreciation and gratitude. He patted the dog graciously.",
             "“Well, sir, how’d you like to board with us?” he said. “I guess you can plan to settle down.” Charlotte squeezed Junior’s arm wildly. Neither of them, though, thought it best to crowd their good fortune by making any immediate comment on it.",
             "Mrs. Durant entered from the kitchen, flushed with her final attentions to the chowder. There was a worried line between her eyes. Part of the worry was due to the dinner, and part to the disturbing entrance of the little dog into the family life. Anything not previously included in her day’s schedule threw Mrs. Durant into a state resembling that of one convalescing from shellshock. Her hands jerked nervously, beginning gestures that they never finished.",
@@ -2129,7 +2145,7 @@
             "Mr. Durant’s hand stopped sharply in its patting motions, as if the dog’s neck had become red-hot to his touch."
           ],
           "word_count": 354,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 31,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2150,9 +2166,9 @@
           ],
           "force_paragraphs": [
             "He rose, and looked at his wife as at a stranger who had suddenly begun to behave wildly.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“She?” he said. He maintained the look and repeated the word. “She?”",
             "Mrs. Durant’s hands jerked.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Well—” she began, as if about to plunge into a recital of extenuating circumstances. “Well—yes,” she concluded.",
             "The children and the dog looked nervously at Mr. Durant, feeling something was gone wrong. Charlotte whimpered wordlessly.",
             "“Quiet!” said her father, turning suddenly upon her. “I said it could stay, didn’t I? Did you ever know Father to break a promise?”",
@@ -2163,7 +2179,7 @@
             "Mr. Durant’s books were lined up behind the glass of the bookcase. They were all tall, thick books, brightly bound, and they justified his pride in their showing. They were mostly accounts of favorites of the French court, with a few volumes on odd personal habits of various monarchs, and the adventures of former Russian monks."
           ],
           "word_count": 376,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2241,13 +2257,14 @@
           ],
           "force_paragraphs": [
             "You can always tell that the crash is coming when I start getting tender about Our Dumb Friends. Three highballs, and I think I’m St. Francis of Assisi.",
+            "But I don’t believe anything is going to happen to me on these. That’s because they’re made of real stuff. That’s what the difference is. This just makes you feel fine. Oh, I feel swell, Fred. You do too, don’t you? I knew you did, because you look better. I love that tie you have on. Oh, did Edith give it to you? Ah, wasn’t that nice of her? You know, Fred, most people are really awfully nice. There are darn few that aren’t pretty fine at heart. You’ve got a beautiful heart, Fred. You’d be the first person I’d go to if I were in trouble. I guess you are just about the best friend I’ve got in the world. But I worry about you, Fred.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "But I don’t believe anything is going to happen to me on these. That’s because they’re made of real stuff. That’s what the difference is. This just makes you feel fine. Oh, I feel swell, Fred. You do too, don’t you? I knew you did, because you look better. I love that tie you have on. Oh, did Edith give it to you? Ah, wasn’t that nice of her? You know, Fred, most people are really awfully nice. There are darn few that aren’t pretty fine at heart. You’ve got a beautiful heart, Fred. You’d be the first person I’d go to if I were in trouble. I guess you are just about the best friend I’ve got in the world. But I worry about you, Fred. I do so, too. I don’t think you take enough care of yourself.",
+            "I do so, too. I don’t think you take enough care of yourself.",
             "You ought to take care of yourself for your friends’ sake. You oughtn’t to drink all this terrible stuff that’s around; you owe it to your friends to be careful. You don’t mind my talking to you like this, do you? You see, dear, it’s because I’m your friend that I hate to see you not taking care of yourself. It hurts me to see you batting around the way you’ve been doing. You ought to stick to this place, where they have real Scotch that can’t do you any harm. Oh, darling, do you really think I ought to? Well, you tell him just a little bit of a one. Tell him, sweet.",
             "Do you come here often, Fred? I shouldn’t worry about you so much if I knew you were in a safe place like this. Oh, is this where you were Thursday night? I see. Why, no, it didn’t make a bit of difference, only you told me to call you up, and like a fool I broke a date I had, just because I thought I was going to see you. I just sort of naturally thought so, when you said to call you up. Oh, good Lord, don’t make all that fuss about it. It really didn’t make the slightest difference. It just didn’t seem a very friendly way to behave, that’s all. I don’t know—I’d been believing we were such good friends. I’m an awful idiot about people, Fred. There aren’t many who are really your friend at heart."
           ],
           "word_count": 424,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 28,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2261,13 +2278,14 @@
           ],
           "force_paragraphs": [
             "Practically anybody would play you dirt for a nickel. Oh, yes, they would.",
+            "Was Edith here with you, Thursday night? This place must be very becoming to her. Next to being in a coal mine, I can’t think of anywhere she could go that the light would be more flattering to that pan of hers. Do you really know a lot of people that say she’s good-looking? You must have a wide acquaintance among the astigmatic, haven’t you, Freddie, dear? Why, I’m not being any way at all—it’s simply one of those things, either you can see it or you can’t. Now to me, Edith looks like something that would eat her young. Dresses well? Edith dresses well?",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Was Edith here with you, Thursday night? This place must be very becoming to her. Next to being in a coal mine, I can’t think of anywhere she could go that the light would be more flattering to that pan of hers. Do you really know a lot of people that say she’s good-looking? You must have a wide acquaintance among the astigmatic, haven’t you, Freddie, dear? Why, I’m not being any way at all—it’s simply one of those things, either you can see it or you can’t. Now to me, Edith looks like something that would eat her young. Dresses well? Edith dresses well? Are you trying to kid me, Fred, at my age? You mean you mean it? Oh, my God. You mean those clothes of hers are intentional ? My heavens, I always thought she was on her way out of a burning building.",
+            "Are you trying to kid me, Fred, at my age? You mean you mean it? Oh, my God. You mean those clothes of hers are intentional ? My heavens, I always thought she was on her way out of a burning building.",
             "Well, we live and learn. Edith dresses well! Edith’s got good taste! Yes, she’s got sweet taste in neckties. I don’t suppose I ought to say it about such a dear friend of yours, Fred, but she is the lousiest necktie-picker-out I ever saw. I never saw anything could touch that thing you have around your neck. All right, suppose I did say I liked it. I just said that because I felt sorry for you. I’d feel sorry for anybody with a thing like that on. I just wanted to try to make you feel good, because I thought you were my friend. My friend! I haven’t got a friend in the world. Do you know that, Fred? Not one single friend in this world.",
             "All right, what do you care if I’m crying? I can cry if I want to, can’t I? I guess you’d cry, too, if you didn’t have a friend in the world. Is my face very bad? I suppose that damned mascara has run all over it. I’ve got to give up using mascara, Fred; life’s too sad."
           ],
           "word_count": 344,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 13,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2350,16 +2368,17 @@
           ],
           "force_paragraphs": [
             "For him, women who were not softly lovely were simply not women.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "He tried, too, so far as it was possible to his beautiful manners, to keep his eyes from her face. Not that it was unpleasant—a kind face, certainly. But, as he told Camilla, once he looked he stayed fascinated, awaiting the toss and the whinny.",
-            "“I love horses, myself,” he said to Camilla, who lay all white and languid on her apricot satin chaise-longue. “I’m a fool for a horse. Ah, what a noble animal, darling! All I say is, nobody has any business to go around looking like a horse and behaving as if it were all right. You don’t catch horses going around looking like people, do you?”",
+            "“I love horses, myself,” he said to Camilla, who lay all white and languid on her apricot satin chaise-longue.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "“I’m a fool for a horse. Ah, what a noble animal, darling! All I say is, nobody has any business to go around looking like a horse and behaving as if it were all right. You don’t catch horses going around looking like people, do you?”",
             "He did not dislike Miss Wilmarth; he only resented her. He had no bad wish in the world for her, but he waited with longing the day she would leave. She was so skilled and rhythmic in her work that she disrupted the household but little. Nevertheless, her presence was an onus. There was that thing of dining with her every evening. It was a chore for him, certainly, and one that did not ease with repetition, but there was no choice. Everyone had always heard of trained nurses’ bristling insistence that they be not treated as servants; Miss Wilmarth could not be asked to dine with the maids. He would not have dinner out; be away from Camilla ? It was too much to expect the maids to institute a second dinner service or to carry trays, other than Camilla’s, up and down the stairs.",
             "There were only three servants and they had work enough.",
             "“Those children,” Camilla’s mother was wont to say, chuckling. “Those two kids. The independence of them! Struggling along on cheese and kisses. Why, they hardly let me pay for the trained nurse. And it was all we could do, last Christmas, to make Camilla take the Packard and the chauffeur.”",
             "So Gerald dined each night with Miss Wilmarth. The small dread of his hour with her struck suddenly at him in the afternoon."
           ],
           "word_count": 351,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 12,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2455,9 +2474,9 @@
           ],
           "force_paragraphs": [
             "“Well,” Gerald said, “she might take herself a moonlight canter around the park.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, she doubtless gets a thrill out of dining with you,” Camilla said. “You’re a man, they tell me, and she can’t have seen many. Poor old horse. She’s not a bad soul.”",
             "“Yes,” he said. “And what a round of pleasure it is, having dinner every night with Not a Bad Soul.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“What makes you think,” Camilla said, “that I am caught up in any whirl of gaiety, lying here?”",
             "“Oh, darling,” he said. “Oh, my poor darling. I didn’t mean it, honestly I didn’t. Oh, Lord , I didn’t mean it. How could I complain, after all you’ve been through, and I haven’t done a thing? Please, sweet, please. Ah, Camilla, say you know I didn’t mean it.”",
             "“After all,” Camilla said, “you just have her at dinner. I have her around all day.”",
@@ -2467,7 +2486,7 @@
             "Her friends gathered, adoring, about the apricot satin chaise-longue where Camilla lay and moved her hands as if they hung heavy from her wrists; they had been wont before to gather and adore at the white satin sofa in the drawing-room where Camilla reclined, her hands like heavy lilies in a languid breeze."
           ],
           "word_count": 367,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 13,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2549,15 +2568,16 @@
           ],
           "force_paragraphs": [
             "“Thank you ,” she said. “I’m the one that ought to thank you . For the lovely little cockytail.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh,” he said, and failed at an easy laugh. He went back into Camilla’s room and closed the door behind him.",
             "Miss Wilmarth set her cocktail upon a table, and went down to inform Mary of the impending guests. She felt light and quick, and she told Mary gaily, awaiting a flash of gaiety in response. But Mary received the news impassively, made a grunt but no words, and slammed out through the swinging doors into the kitchen. Miss Wilmarth stood looking after her. Somehow servants never seemed to—She should have become used to it.",
-            "Even though the dinner hour was delayed, Miss Wilmarth was a little late. The three young men were standing in the dining-room, talking all at once and laughing all together. They stopped their noise when Miss Wilmarth entered, and Gerald moved forward to perform introductions. He looked at her, and then looked away. Prickling embarrassment tormented him. He introduced the young men, with his eyes away from her.",
+            "Even though the dinner hour was delayed, Miss Wilmarth was a little late.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "The three young men were standing in the dining-room, talking all at once and laughing all together. They stopped their noise when Miss Wilmarth entered, and Gerald moved forward to perform introductions. He looked at her, and then looked away. Prickling embarrassment tormented him. He introduced the young men, with his eyes away from her.",
             "Miss Wilmarth had dressed for dinner. She had discarded her linen uniform and put on a frock of dark blue taffeta, cut down to a point at the neck and given sleeves that left bare the angles of her elbows. Small, stiff ruffles occurred about the hips, and the skirt was short for its year. It revealed that Miss Wilmarth had clothed her ankles in roughened gray silk and her feet in black, casket-shaped slippers, upon which little bows quivered as if in lonely terror at the expanse before them. She had been busied with her hair; it was crimped and loosened, and ends that had escaped the tongs were already sliding from their pins. All the length of her nose and chin was heavily powdered; not with a perfumed dust, tinted to praise her skin, but with coarse, bright white talcum.",
             "Gerald presented his guests; Miss Wilmarth, Mr. Minot; Miss Wilmarth, Mr. Forster."
           ],
           "word_count": 335,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 17,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2625,9 +2645,9 @@
           ],
           "force_paragraphs": [
             "“I should say they do,” she said. “And they’re pretty nice patients, too. Aren’t they, Mr. Cruger?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“They certainly are,” Gerald said. “That’s right.”",
             "“They certainly are,” Mr. Minot said. “That’s what they are. Well. You must meet all sorts of people in your work, I suppose. Must be pretty interesting.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, sometimes it is,” Miss Wilmarth said. “It depends on the people.” Her words fell from her lips clear and separate, sterile as if each had been freshly swabbed with boracic acid solution. In her ears rang Camilla’s light, insolent drawl.",
             "“That’s right,” Mr. Forster said. “Everything depends on the people, doesn’t it? Always does, wherever you go. No matter what you do. Still, it must be wonderfully interesting work. Wonderfully.”",
             "“Wonderful the way this country’s come right up in medicine,” Mr. Minot said. “They tell me we have the greatest doctors in the world, right here. As good as any in Europe. Or Harley Street.”",
@@ -2639,7 +2659,7 @@
             "It was a short meal, as courses went. After it, Miss Wilmarth bade the guests good night and received their bows and their “ Good night, Miss Witmark.” She said she was awfully glad to have met them. They murmured."
           ],
           "word_count": 322,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 17,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2809,12 +2829,12 @@
           "force_paragraphs": [
             "“Good luck, Miss Wilmarth,” Camilla said. “Come see the baby.”",
             "Miss Wilmarth looked at Camilla and at Gerald standing beside her, touching one long white hand.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She left the room to fetch her hat-box.",
             "“I’ll take it down for you, Miss Wilmarth,” Gerald called after her.",
             "He bent and kissed Camilla gently, very, very gently.",
             "“Well, it’s nearly over, darling,” he said. “Sometimes I am practically convinced that there is a God.”",
             "“It was darn decent of you to bring her gardenias,” Camilla said. “What made you think of it?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“I was so crazed at the idea that she was really going,” he said, “that I must have lost my head. No one was more surprised than I, buying gardenias for Horsie. Thank the Lord she didn’t put them on. I couldn’t have stood that sight.”",
             "“She’s not really at her best in her street clothes,” Camilla said. “She seems to lack a certain chic .” She stretched her arms slowly above her head and let them sink slowly back. “That was a fascinating glimpse of her home life she gave us. Great fun.”",
             "“Oh, I don’t suppose she minds,” he said. “I’ll go down now and back her into the car, and that’ll finish it.”",
@@ -2825,7 +2845,7 @@
             "“Thank you , Mr. Cruger,” she said. “I—I can’t tell you how I’ve enjoyed it all the time I was here."
           ],
           "word_count": 317,
-          "airlock_index": 2,
+          "airlock_index": 7,
           "pre_airlock_words": 26,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -2843,8 +2863,8 @@
           ],
           "force_paragraphs": [
             "I never had a pleasanter— And the flowers, and everything. I just don’t know what to say. I’m the one that ought to thank you .”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She held out her hand, in a brown cotton glove. Anyway, worn cotton was easier to the touch than dry, corded flesh. It was the last moment of her. He scarcely minded looking at the long face on the red, red neck.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Well!” he said. “Well! Got everything? Well, good luck, again, Miss Wilmarth, and don’t forget us.”",
             "“Oh, I won’t,” she said. “I—oh, I won’t do that.”",
             "She turned from him and got quickly into the car, to sit upright against the pale gray cushions. The chauffeur placed her hat-box at her feet and the florist’s box on the seat beside her, closed the door smartly, and returned to his wheel. Gerald waved cheerily as the car slid away. Miss Wilmarth did not wave to him.",
@@ -2853,7 +2873,7 @@
             "Presently the car swerved, in a turn of the traffic. The florist’s box slipped against Miss Wilmarth’s knee. She looked down at it. Then she took it on her lap, raised the lid a little and peeped at the waxy white bouquet. It would have been all fair then for a chance spectator; Miss Wilmarth’s strange resemblance was not apparent, as she looked at her flowers. They were her flowers. A man had given them to her. She had been given flowers. They might not fade maybe for days. And she could keep the box."
           ],
           "word_count": 417,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 25,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3174,15 +3194,16 @@
           ],
           "force_paragraphs": [
             "And anyway it was my fault. Really it was. Truly. Well, you’re just being sweet, to say that. It really was all my fault.",
+            "I wonder what I’d better do—kill him this instant, with my naked hands, or wait and let him drop in his traces.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "I wonder what I’d better do—kill him this instant, with my naked hands, or wait and let him drop in his traces. Maybe it’s best not to make a scene. I guess I’ll just lie low, and watch the pace get him. He can’t keep this up indefinitely—he’s only flesh and blood. Die he must, and die he shall, for what he did to me. I don’t want to be of the over-sensitive type, but you can’t tell me that kick was unpremeditated. Freud says there are no accidents. I’ve led no cloistered life, I’ve known dancing partners who have spoiled my slippers and torn my dress; but when it comes to kicking, I am Outraged Womanhood. When you kick me in the shin, smile .",
+            "Maybe it’s best not to make a scene. I guess I’ll just lie low, and watch the pace get him. He can’t keep this up indefinitely—he’s only flesh and blood. Die he must, and die he shall, for what he did to me. I don’t want to be of the over-sensitive type, but you can’t tell me that kick was unpremeditated. Freud says there are no accidents. I’ve led no cloistered life, I’ve known dancing partners who have spoiled my slippers and torn my dress; but when it comes to kicking, I am Outraged Womanhood. When you kick me in the shin, smile .",
             "Maybe he didn’t do it maliciously. Maybe it’s just his way of showing his high spirits. I suppose I ought to be glad that one of us is having such a good time. I suppose I ought to think myself lucky if he brings me back alive. Maybe it’s captious to demand of a practically strange man that he leave your shins as he found them. After all, the poor boy’s doing the best he can. Probably he grew up in the hill country, and never had no larnin’. I bet they had to throw him on his back to get shoes on him.",
             "Yes, it’s lovely, isn’t it? It’s simply lovely. It’s the loveliest waltz. Isn’t it? Oh, I think it’s lovely, too.",
             "Why, I’m getting positively drawn to the Triple Threat here. He’s my hero. He has the heart of a lion, and the sinews of a buffalo. Look at him—never a thought of the consequences, never afraid of his face, hurling himself into every scrimmage, eyes shining, cheeks ablaze. And shall it be said that I hung back? No, a thousand times no. What’s it to me if I have to spend the next couple of years in a plaster cast? Come on, Butch, right through them! Who wants to live forever?",
             "Oh. Oh, dear. Oh, he’s all right, thank goodness. For a while I thought they’d have to carry him off the field. Ah, I couldn’t bear to have anything happen to him. I love him. I love him better than anybody in the world."
           ],
           "word_count": 411,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 24,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3222,8 +3243,9 @@
           ],
           "force_paragraphs": [
             "Tired? I should say I’m not tired. I’d like to go on like this forever.",
+            "I should say I’m not tired. I’m dead, that’s all I am. Dead, and in what a cause! And the music is never going to stop playing, and we’re going on like this, Double-Time Charlie and I, throughout eternity. I suppose I won’t care any more, after the first hundred thousand years.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "I should say I’m not tired. I’m dead, that’s all I am. Dead, and in what a cause! And the music is never going to stop playing, and we’re going on like this, Double-Time Charlie and I, throughout eternity. I suppose I won’t care any more, after the first hundred thousand years. I suppose nothing will matter then, not heat nor pain nor broken heart nor cruel, aching weariness. Well. It can’t come too soon for me.",
+            "I suppose nothing will matter then, not heat nor pain nor broken heart nor cruel, aching weariness. Well. It can’t come too soon for me.",
             "I wonder why I didn’t tell him I was tired. I wonder why I didn’t suggest going back to the table. I could have said let’s just listen to the music. Yes, and if he would, that would be the first bit of attention he has given it all evening. George Jean Nathan said that the lovely rhythms of the waltz should be listened to in stillness and not be accompanied by strange gyrations of the human body. I think that’s what he said. I think it was George Jean Nathan. Anyhow, whatever he said and whoever he was and whatever he’s doing now, he’s better off than I am. That’s safe. Anybody who isn’t waltzing with this Mrs. O’Leary’s cow I’ve got here is having a good time.",
             "Still if we were back at the table, I’d probably have to talk to him. Look at him—what could you say to a thing like that! Did you go to the circus this year, what’s your favorite kind of ice cream, how do you spell cat? I guess I’m as well off here. As well off as if I were in a cement mixer in full action.",
             "I’m past all feeling now. The only way I can tell when he steps on me is that I can hear the splintering of bones. And all the events of my life are passing before my eyes. There was the time I was in a hurricane in the West Indies, there was the day I got my head cut open in the taxi smash, there was the night the drunken lady threw a bronze ash-tray at her own true love and got me instead, there was that summer that the sailboat kept capsizing.",
@@ -3232,7 +3254,7 @@
             "Oh, they’ve stopped, the mean things. They’re not going to play any more. Oh, darn. Oh, do you think they would? Do you really think so, if you gave them twenty dollars? Oh, that would be lovely. And look, do tell them to play this same thing. I’d simply adore to go on waltzing."
           ],
           "word_count": 509,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 15,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3463,12 +3485,12 @@
           ],
           "force_paragraphs": [
             "Mrs. Matson trusted her guests not to regard them as favors and take them home.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "The conversation dealt, and favorably, with the weather. Mrs. Kerley and Mrs. Swan vied with each other in paying compliments to the day.",
             "“So clear,” said Mrs. Kerley.",
             "“Not a cloud in the sky,” augmented Mrs. Swan. “Not a one.”",
             "“The air was just lovely this morning,” reported Mrs. Kerley. “I said to myself, ‘Well, this is a beautiful day if there ever was one.’ ”",
             "“There’s something so balmy about it,” said Mrs. Swan.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mrs. Cook spoke suddenly and overloudly, in the untrustworthy voice of the deaf.",
             "“Phew, this is a scorcher!” she said. “Something terrible out.”",
             "The conversation went immediately to literature. It developed that Mrs. Kerley had been reading a lovely book. Its name and that of its author escaped her at the moment, but her enjoyment of it was so keen that she had lingered over it till ’way past ten o’clock the night before. Particularly did she commend its descriptions of some of those Italian places; they were, she affirmed, just like a picture. The book had been drawn to her attention by the young woman at the Little Booke Nooke. It was, on her authority, one of the new ones.",
@@ -3476,7 +3498,7 @@
             "“I haven’t any use for all these new books,” she said. “I wouldn’t give them house-room. I don’t see why a person wants to sit down and write any such stuff. I often think, I don’t believe they know what they’re writing about themselves half the time. I don’t know who they think wants to read those kind of things. I’m sure I don’t.”"
           ],
           "word_count": 295,
-          "airlock_index": 1,
+          "airlock_index": 6,
           "pre_airlock_words": 15,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3541,8 +3563,9 @@
           ],
           "force_paragraphs": [
             "“Oh, yes,” said Mrs. Swan. “Carrie told me. Now, wasn’t that lovely of you!”",
+            "Mrs. Matson shrugged. “Yes,” she said, “I went right to the best place for him. Miss Codman’s nursery—it’s absolutely reliable. You can get awfully nice children there.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Mrs. Matson shrugged. “Yes,” she said, “I went right to the best place for him. Miss Codman’s nursery—it’s absolutely reliable. You can get awfully nice children there. There’s quite a long waiting-list, they tell me.”",
+            "There’s quite a long waiting-list, they tell me.”",
             "“Goodness, just think how it must seem to him to be up here,” said Mrs. Swan, “with this big house, and that lovely, smooth lawn, and everything.”",
             "Mrs. Matson laughed slightly. “Oh—well,” she said.",
             "“I hope he appreciates it,” remarked Mrs. Swan.",
@@ -3555,7 +3578,7 @@
             "“Why, certainly,” said Mrs. Matson. “He’s to go right straight into Mr. Matson’s business. My husband,” she informed Mrs. Swan, “is the Matson Adding Machines.”"
           ],
           "word_count": 285,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 14,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3610,9 +3633,9 @@
           ],
           "force_paragraphs": [
             "“Do you think you’ll ever tell him that you aren’t—that he isn’t—tell him about it?” inquired Mrs. Kerley.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Dear me, yes, just as soon as he’s a little older,” Mrs. Matson answered. “I think it’s so much nicer for him to know. He’ll appreciate everything so much more.”",
             "“Does the little thing remember his father and mother at all?” Mrs. Swan asked.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“I really don’t know if he does or not,” said Mrs. Matson.",
             "“Tea,” announced the maid, appearing abruptly at the door.",
             "“Tea is served, Mrs. Matson,” said Mrs. Matson, her voice lifted.",
@@ -3628,7 +3651,7 @@
             "“Well, it’s been just too lovely,” Mrs. Swan declared, clasping her hand."
           ],
           "word_count": 314,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 20,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3654,9 +3677,9 @@
           ],
           "force_paragraphs": [
             "“I can’t tell you how much I’ve enjoyed it, hearing about the dear little boy, and all. I hope you’re going to let me see him some time.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Why, you can see him now, if you’d like,” said Mrs. Matson. She went to the foot of the stairs and sang, “ Cur -tis, Cur -tis.”",
             "Curtis appeared in the hall above, clean in the gray percale sailor-suit that had been selected in the thrifty expectation of his “growing into it.” He looked down at them, caught sight of Mrs. Cook’s speaking-tube, and watched it intently, his eyes wide open.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Come down and see the ladies, Curtis,” commanded Mrs. Matson.",
             "Curtis came down, his warm hand squeaking along the banister. He placed his right foot upon a step, brought his left foot carefully down to it, then started his right one off again. Eventually he reached them.",
             "“Can’t you say how-do-you-do to the ladies?” asked Mrs. Matson.",
@@ -3672,7 +3695,7 @@
             "“No,” Mrs. Matson said, “they had him called something else. But I named him as soon as I got him. My mother was a Curtis.”"
           ],
           "word_count": 308,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 28,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3838,14 +3861,15 @@
           ],
           "force_paragraphs": [
             "I’ve got enough trouble with that lovable old cynic, La Rochefoucauld—him and the misfortunes of his dearest friends!",
+            "The first thing I’ve got to do is get out and whip me up a complete new set of dearest friends; that’s the first thing. Everything else can wait. And will somebody please kindly be so good as to inform me how I am ever going to meet up with any new people when my entire scheme of living is out of joint—when I’m the only living being awake while the rest of the world lies sleeping? I’ve got to get this thing adjusted.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "The first thing I’ve got to do is get out and whip me up a complete new set of dearest friends; that’s the first thing. Everything else can wait. And will somebody please kindly be so good as to inform me how I am ever going to meet up with any new people when my entire scheme of living is out of joint—when I’m the only living being awake while the rest of the world lies sleeping? I’ve got to get this thing adjusted. I must try to get back to sleep right now. I’ve got to conform to the rotten little standards of this sluggard civilization. People needn’t feel that they have to change their ruinous habits and come my way. Oh, no, no; no, indeed. Not at all. I’ll go theirs. If that isn’t the woman of it for you!",
+            "I must try to get back to sleep right now. I’ve got to conform to the rotten little standards of this sluggard civilization. People needn’t feel that they have to change their ruinous habits and come my way. Oh, no, no; no, indeed. Not at all. I’ll go theirs. If that isn’t the woman of it for you!",
             "Always having to do what somebody else wants, like it or not. Never able to murmur a suggestion of her own.",
             "And what suggestion has anyone to murmur as to how I am going to drift lightly back to slumber? Here I am, awake as high noon what with all this milling and pitching around with La Rochefoucauld. I really can’t be expected to drop everything and start counting sheep, at my age. I hate sheep. Untender it may be in me, but all my life I’ve hated sheep. It amounts to a phobia, the way I hate them. I can tell the minute there’s one in the room. They needn’t think that I am going to lie here in the dark and count their unpleasant little faces for them; I wouldn’t do it if I didn’t fall asleep again until the middle of next August. Suppose they never get counted—what’s the worst that can happen?",
             "If the number of imaginary sheep in this world remains a matter of guesswork, who is richer or poorer for it? No, sir; I’m not their scorekeeper."
           ],
           "word_count": 346,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -3952,14 +3976,14 @@
           ],
           "force_paragraphs": [
             "He drank largely; she found that entertaining. Her habitual greeting to him was an allusion to his state of the previous night.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, what a peach you had,” she used to say, through her easy laugh. “I thought I’d die, the way you kept asking the waiter to dance with you.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She liked him immediately upon their meeting. She was enormously amused at his fast, slurred sentences, his interpolations of apt phrases from vaudeville acts and comic strips; she thrilled at the feel of his lean arm tucked firm beneath the sleeve of her coat; she wanted to touch the wet, flat surface of his hair. He was as promptly drawn to her. They were married six weeks after they had met.",
             "She was delighted at the idea of being a bride; coquetted with it, played upon it. Other offers of marriage she had had, and not a few of them, but it happened that they were all from stout, serious men who had visited the dress establishment as buyers; men from Des Moines and Houston and Chicago and, in her phrase, even funnier places. There was always something immensely comic to her in the thought of living elsewhere than New York. She could not regard as serious proposals that she share a western residence.",
             "She wanted to be married. She was nearing thirty now, and she did not take the years well. She spread and softened, and her darkening hair turned her to inexpert dabblings with peroxide. There were times when she had little flashes of fear about her job. And she had had a couple of thousand evenings of being a good sport among her male acquaintances. She had come to be more conscientious than spontaneous about it."
           ],
           "word_count": 290,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 22,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4004,9 +4028,9 @@
           ],
           "force_paragraphs": [
             "“Honestly,” she would say to Herbie, “all the sadness there is in the world when you stop to think about it!”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Yeah,” Herbie would say.",
             "She missed nobody. The old crowd, the people who had brought her and Herbie together, dropped from their lives, lingeringly at first. When she thought of this at all, it was only to consider it fitting. This was marriage. This was peace.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "But the thing was that Herbie was not amused.",
             "For a time, he had enjoyed being alone with her. He found the voluntary isolation novel and sweet. Then it palled with a ferocious suddenness. It was as if one night, sitting with her in the steam-heated living-room, he would ask no more; and the next night he was through and done with the whole thing.",
             "He became annoyed by her misty melancholies. At first, when he came home to find her softly tired and moody, he kissed her neck and patted her shoulder and begged her to tell her Herbie what was wrong. She loved that. But time slid by, and he found that there was never anything really, personally, the matter.",
@@ -4017,7 +4041,7 @@
             "He was too nervous, he said, to sit and do nothing for an evening."
           ],
           "word_count": 382,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 21,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4036,10 +4060,11 @@
           ],
           "force_paragraphs": [
             "He boasted, probably not in all truth, that he had never read a book in his life.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“What am I expected to do—sit around this dump on my tail all night?” he would ask, rhetorically. And again he would slam out.",
             "She did not know what to do. She could not manage him. She could not meet him.",
-            "She fought him furiously. A terrific domesticity had come upon her, and she would bite and scratch to guard it. She wanted what she called “a nice home.” She wanted a sober, tender husband, prompt at dinner, punctual at work. She wanted sweet, comforting evenings. The idea of intimacy with other men was terrible to her; the thought that Herbie might be seeking entertainment in other women set her frantic.",
+            "She fought him furiously. A terrific domesticity had come upon her, and she would bite and scratch to guard it. She wanted what she called “a nice home.” She wanted a sober, tender husband, prompt at dinner, punctual at work. She wanted sweet, comforting evenings.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "The idea of intimacy with other men was terrible to her; the thought that Herbie might be seeking entertainment in other women set her frantic.",
             "It seemed to her that almost everything she read—novels from the drug-store lending library, magazine stories, women’s pages in the papers—dealt with wives who lost their husbands’ love. She could bear those, at that, better than accounts of neat, companionable marriage and living happily ever after.",
             "She was frightened. Several times when Herbie came home in the evening, he found her determinedly dressed—she had had to alter those of her clothes that were not new, to make them fasten—and rouged.",
             "“Let’s go wild tonight, what do you say?” she would hail him. “A person’s got lots of time to hang around and do nothing when they’re dead.”",
@@ -4047,7 +4072,7 @@
             "He would be immediately enraged. All right, crab; crab, crab, crab, crab, that was all she ever did."
           ],
           "word_count": 325,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 17,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4065,8 +4090,9 @@
           ],
           "force_paragraphs": [
             "What a lousy sport she was! There would be scenes, and one or the other of them would rise and stalk out in fury.",
+            "She could not recall the definite day that she started drinking, herself.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "She could not recall the definite day that she started drinking, herself. There was nothing separate about her days. Like drops upon a window-pane, they ran together and trickled away. She had been married six months; then a year; then three years.",
+            "There was nothing separate about her days. Like drops upon a window-pane, they ran together and trickled away. She had been married six months; then a year; then three years.",
             "She had never needed to drink, formerly. She could sit for most of a night at a table where the others were imbibing earnestly and never droop in looks or spirits, nor be bored by the doings of those about her. If she took a cocktail, it was so unusual as to cause twenty minutes or so of jocular comment. But now anguish was in her. Frequently, after a quarrel, Herbie would stay out for the night, and she could not learn from him where the time had been spent. Her heart felt tight and sore in her breast, and her mind turned like an electric fan.",
             "She hated the taste of liquor. Gin, plain or in mixtures, made her promptly sick. After experiment, she found that Scotch whisky was best for her. She took it without water, because that was the quickest way to its effect.",
             "Herbie pressed it on her. He was glad to see her drink. They both felt it might restore her high spirits, and their good times together might again be possible.",
@@ -4075,7 +4101,7 @@
             "There had been a time when they had made up their quarrels, usually in bed."
           ],
           "word_count": 338,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 24,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4113,15 +4139,16 @@
           ],
           "force_paragraphs": [
             "Alone, it blurred sharp things for her. She lived in a haze of it. Her life took on a dream-like quality. Nothing was astonishing.",
+            "A Mrs. Martin moved into the flat across the hall. She was a great blonde woman of forty, a promise in looks of what Mrs. Morse was to be. They made acquaintance, quickly became inseparable. Mrs. Morse spent her days in the opposite apartment.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "A Mrs. Martin moved into the flat across the hall. She was a great blonde woman of forty, a promise in looks of what Mrs. Morse was to be. They made acquaintance, quickly became inseparable. Mrs. Morse spent her days in the opposite apartment. They drank together, to brace themselves after the drinks of the nights before.",
+            "They drank together, to brace themselves after the drinks of the nights before.",
             "She never confided her troubles about Herbie to Mrs. Martin. The subject was too bewildering to her to find comfort in talk. She let it be assumed that her husband’s business kept him much away. It was not regarded as important; husbands, as such, played but shadowy parts in Mrs. Martin’s circle.",
             "Mrs. Martin had no visible spouse; you were left to decide for yourself whether he was or was not dead. She had an admirer, Joe, who came to see her almost nightly. Often he brought several friends with him—“The Boys,” they were called. The Boys were big, red, good-humored men, perhaps forty-five, perhaps fifty. Mrs. Morse was glad of invitations to join the parties—Herbie was scarcely ever at home at night now. If he did come home, she did not visit Mrs. Martin. An evening alone with Herbie meant inevitably a quarrel, yet she would stay with him. There was always her thin and wordless idea that, maybe, this night, things would begin to be all right.",
             "The Boys brought plenty of liquor along with them whenever they came to Mrs. Martin’s. Drinking with them, Mrs. Morse became lively and good-natured and audacious. She was quickly popular. When she had drunk enough to cloud her most recent battle with Herbie, she was excited by their approbation. Crab, was she? Rotten sport, was she? Well, there were some that thought different.",
             "Ed was one of The Boys. He lived in Utica—had “his own business” there, was the awed report—but he came to New York almost every week."
           ],
           "word_count": 343,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 24,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4177,11 +4204,11 @@
           ],
           "force_paragraphs": [
             "“I’m blowing,” he said. “I’m through with the whole works. I got a job in Detroit.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She sat down on the edge of the bed. She had drunk much the night before, and the four Scotches she had had with Mrs. Martin had only increased her fogginess.",
             "“Good job?” she said.",
             "“Oh, yeah,” he said. “Looks all right.”",
             "He closed a suitcase with difficulty, swearing at it in whispers.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“There’s some dough in the bank,” he said. “The bank book’s in your top drawer. You can have the furniture and stuff.”",
             "He looked at her, and his forehead twitched.",
             "“God damn it, I’m through, I’m telling you,” he cried. “I’m through.”",
@@ -4197,7 +4224,7 @@
             "They drank. He put down his glass and took up the heavy suitcases."
           ],
           "word_count": 286,
-          "airlock_index": 1,
+          "airlock_index": 5,
           "pre_airlock_words": 16,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4231,7 +4258,6 @@
           "force_paragraphs": [
             "“Got to get a train around six,” he said.",
             "She followed him down the hall. There was a song, a song that Mrs.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Martin played doggedly on the phonograph, running loudly through her mind. She had never liked the thing.",
             "“ Night and daytime,",
             "Always playtime.",
@@ -4239,6 +4265,7 @@
             "At the door he put down the bags and faced her.",
             "“Well,” he said. “Well, take care of yourself. You’ll be all right, will you?”",
             "“Oh, sure,” she said.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "He opened the door, then came back to her, holding out his hand.",
             "“ ’By, Haze,” he said. “Good luck to you.”",
             "She took his hand and shook it.",
@@ -4256,7 +4283,7 @@
             "She won forty-three dollars at poker. When the game broke up, Ed took her back to her apartment."
           ],
           "word_count": 294,
-          "airlock_index": 2,
+          "airlock_index": 9,
           "pre_airlock_words": 23,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4388,9 +4415,9 @@
           ],
           "force_paragraphs": [
             "The still admiring Joe, while on a business trip, had seen Herbie. He had settled in Chicago, he looked fine, he was living with some woman—seemed to be crazy about her. Mrs. Morse had been drinking vastly that day. She took the news with mild interest, as one hearing of the sex peccadilloes of somebody whose name is, after a moment’s groping, familiar.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Must be damn near seven years since I saw him,” she commented. “Gee. Seven years.”",
             "More and more, her days lost their individuality. She never knew dates, nor was sure of the day of the week.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“My God, was that a year ago!” she would exclaim, when an event was recalled in conversation.",
             "She was tired so much of the time. Tired and blue. Almost everything could give her the blues. Those old horses she saw on Sixth Avenue—struggling and slipping along the car-tracks, or standing at the curb, their heads dropped level with their worn knees. The tightly stored tears would squeeze from her eyes as she teetered past on her aching feet in the stubby, champagne-colored slippers.",
             "The thought of death came and stayed with her and lent her a sort of drowsy cheer. It would be nice, nice and restful, to be dead.",
@@ -4398,7 +4425,7 @@
             "She slept, aided by whisky, till deep into the afternoons, then lay abed, a bottle and glass at her hand, until it was time to dress to go out for dinner. She was beginning to feel towards alcohol a little puzzled distrust, as toward an old friend who has refused a simple favor."
           ],
           "word_count": 347,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 64,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4439,10 +4466,10 @@
           ],
           "force_paragraphs": [
             "“The best sport in the world,” he would murmur, deep in her neck. “The best sport in the world.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "One night, when he had taken her to Jimmy’s, she went into the dressing-room with Mrs. Florence Miller. There, while designing curly mouths on their faces with lip-rouge, they compared experiences of insomnia.",
             "“Honestly,” Mrs. Morse said, “I wouldn’t close an eye if I didn’t go to bed full of Scotch. I lie there and toss and turn and toss and turn. Blue! Does a person get blue lying awake that way!”",
             "“Say, listen, Hazel,” Mrs. Miller said, impressively, “I’m telling you I’d be awake for a year if I didn’t take veronal. That stuff makes you sleep like a fool.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Isn’t it poison, or something?” Mrs. Morse asked.",
             "“Oh, you take too much and you’re out for the count,” said Mrs. Miller. “I just take five grains—they come in tablets. I’d be scared to fool around with it. But five grains, and you cork off pretty.”",
             "“Can you get it anywhere?” Mrs. Morse felt superbly Machiavellian.",
@@ -4452,7 +4479,7 @@
             "In Newark, in the first drug-store she came to, she asked for a tin of talcum powder, a nailbrush, and a box of veronal tablets."
           ],
           "word_count": 347,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4543,10 +4570,11 @@
           ],
           "force_paragraphs": [
             "Suddenly she bowed graciously to her reflection, and raised the glass to it.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Well, here’s mud in your eye,” she said.",
             "The tablets were unpleasant to take, dry and powdery and sticking obstinately half-way down her throat. It took her a long time to swallow all twenty of them. She stood watching her reflection with deep, impersonal interest, studying the movements of the gulping throat. Once more she spoke aloud.",
-            "“For God’s sake, try and cheer up by Thursday, will you?” she said. “Well, you know what he can do. He and the whole lot of them.”",
+            "“For God’s sake, try and cheer up by Thursday, will you?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "she said. “Well, you know what he can do. He and the whole lot of them.”",
             "She had no idea how quickly to expect effect from the veronal. When she had taken the last tablet, she stood uncertainly, wondering, still with a courteous, vicarious interest, if death would strike her down then and there. She felt in no way strange, save for a slight stirring of sickness from, the effort of swallowing the tablets, nor did her reflected face look at all different. It would not be immediate, then; it might even take an hour or so.",
             "She stretched her arms high and gave a vast yawn.",
             "“Guess I’ll go to bed,” she said. “Gee, I’m nearly dead.”",
@@ -4556,7 +4584,7 @@
             "But when she had done the living-room and stolen in to tidy the little square bedroom, she could not avoid a tiny clatter as she arranged the objects on the dressing-table."
           ],
           "word_count": 322,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 13,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4611,10 +4639,11 @@
           ],
           "force_paragraphs": [
             "Half-emptied highball glasses stood beside them, and her coat and hat were neatly hung up with the comfortable implication of a long stay.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Always something, the doctor grumbled. Couldn’t let anybody alone after a hard day. But he put some bottles and instruments into a case, changed his dressing-gown for his coat and started out with the Negroes.",
             "“Snap it up there, big boy,” the girl called after him. “Don’t be all night.”",
-            "The doctor strode loudly into Mrs. Morse’s flat and on to the bedroom, Nettie and the boy right behind him. Mrs. Morse had not moved; her sleep was as deep, but soundless, now. The doctor looked sharply at her, then plunged his thumbs into the lidded pits above her eyeballs and threw his weight upon them. A high, sickened cry broke from Nettie.",
+            "The doctor strode loudly into Mrs. Morse’s flat and on to the bedroom, Nettie and the boy right behind him.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "Mrs. Morse had not moved; her sleep was as deep, but soundless, now. The doctor looked sharply at her, then plunged his thumbs into the lidded pits above her eyeballs and threw his weight upon them. A high, sickened cry broke from Nettie.",
             "“Look like he tryin’ to push her right on th’ough the bed,” said the boy. He chuckled.",
             "Mrs. Morse gave no sign under the pressure. Abruptly the doctor abandoned it, and with one quick movement swept the covers down to the foot of the bed. With another he flung her nightgown back and lifted the thick, white legs, cross-hatched with blocks of tiny, iris-colored veins. He pinched them repeatedly, with long, cruel nips, back of the knees. She did not awaken.",
             "“What’s she been drinking?” he asked Nettie, over his shoulder.",
@@ -4622,7 +4651,7 @@
             "“Oh, for the Lord Almighty’s sweet sake!” he said. He dropped Mrs. Morse’s legs, and pushed them impatiently across the bed. “What did she want to go taking that tripe for? Rotten yellow trick, that’s what a thing like that is. Now we’ll have to pump her out, and all that stuff. Nuisance, a thing like that is; that’s what it amounts to. Here, George, take me down in the elevator. You wait here, maid. She won’t do anything.”"
           ],
           "word_count": 363,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 23,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -4691,10 +4720,10 @@
           ],
           "force_paragraphs": [
             "I couldn’t help it. I just got sunk. Didn’t you ever feel like doing it? When everything looks just lousy to you?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“I wouldn’ think o’ no such thing,” declared Nettie. “You got to cheer up. Tha’s what you got to do. Everybody’s got their troubles.”",
             "“Yeah,” said Mrs. Morse. “I know.”",
             "“Come a pretty picture card for you,” Nettie said. “Maybe that will cheer you up.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "She handed Mrs. Morse a post-card. Mrs. Morse had to cover one eye with her hand, in order to read the message; her eyes were not yet focusing correctly.",
             "It was from Art. On the back of a view of the Detroit Athletic Club he had written: “Greeting and salutations. Hope you have lost that gloom. Cheer up and don’t take any rubber nickles. See you on Thursday.”",
             "She dropped the card to the floor. Misery crushed her as if she were between great smooth stones. There passed before her a slow, slow pageant of days spent lying in her flat, of evenings at Jimmy’s being a good sport, making herself laugh and coo at Art and other Arts; she saw a long parade of weary horses and shivering beggars and all beaten, driven, stumbling things. Her feet throbbed as if she had crammed them into the stubby champagne-colored slippers. Her heart seemed to swell and harden.",
@@ -4712,7 +4741,7 @@
             "“Yeah,” said Mrs. Morse. “Sure.”"
           ],
           "word_count": 409,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 22,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5154,15 +5183,16 @@
           ],
           "force_paragraphs": [
             "“Well, she was,” he said, “but then she more or less said she wouldn’t.”",
+            "“Oh, she will,” she said. “You get right down out of that fool’s paradise you’re in. She’ll shoot out of Greenwich like a bat out of hell, if she thinks there’s a chance of seeing you. Ah, Hobie, you don’t really want to see that old thing, do you? Do you? Because if you do—Well, I suppose maybe you do.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "“Oh, she will,” she said. “You get right down out of that fool’s paradise you’re in. She’ll shoot out of Greenwich like a bat out of hell, if she thinks there’s a chance of seeing you. Ah, Hobie, you don’t really want to see that old thing, do you? Do you? Because if you do—Well, I suppose maybe you do. Naturally, if she has something she must tell you right away, you want to see her. Look, Hobie, you know you can see me any time. It isn’t a bit important, seeing me tonight. Why don’t you call up Mrs. Holt and tell her to take the next train in? She’d get here quicker by train than by motor, wouldn’t she? Please go ahead and do it. It’s quite all right about me. Really.”",
+            "Naturally, if she has something she must tell you right away, you want to see her. Look, Hobie, you know you can see me any time. It isn’t a bit important, seeing me tonight. Why don’t you call up Mrs. Holt and tell her to take the next train in? She’d get here quicker by train than by motor, wouldn’t she? Please go ahead and do it. It’s quite all right about me. Really.”",
             "“You know,” he said, “I knew that was coming. I could tell it by the way you were when I came back from the telephone. Oh, Kit, what makes you want to talk like that? You know damned well the last thing I want to do is see Connie Holt. You know how I want to be with you. Why do you want to work up all this? I watched you just sit there and deliberately talk yourself into it, starting right out of nothing. Now what’s the idea of that? Oh, good Lord, what’s the matter with women, anyway?”",
             "“Please don’t call me ‘women,’ ” she said.",
             "“I’m sorry, darling,” he said. “I didn’t mean to use bad words.” He smiled at her. She felt her heart go liquid, but she did her best to be harder won.",
             "“Doubtless,” she said, and her words fell like snow when there is no wind, “I spoke ill-advisedly. If I said, as I must have, something to distress you, I can only beg you to believe that that was my misfortune, and not my intention. It seemed to me as if I were doing only a courteous thing in suggesting that you need feel no obligation about spending the evening with me, when you would naturally wish to be with Mrs. Holt. I simply felt that—Oh, the hell with it! I’m no good at this. Of course I didn’t mean it, dearest."
           ],
           "word_count": 389,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 14,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5209,10 +5239,11 @@
           ],
           "force_paragraphs": [
             "“Exactly what,” she said, “is Mrs. Holt to you and you to her that she may make a scene if she learns that you have an engagement with another woman?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, God!” he said. “I told you I don’t give a damn about Connie Holt. She’s nothing to me. Now will you for God’s sake let it drop?”",
             "“Oh, she’s nothing to you,” she said. “I see. Naturally, that would be why you called her ‘dear’ every other word.”",
-            "“If I did,” he said, “I never knew I was saying it. Good Lord, that doesn’t mean anything. It’s simply a—a form of nervousness, I suppose. I say it when I can’t think what to call people. Why, I call telephone operators ‘dear.’ ”",
+            "“If I did,” he said, “I never knew I was saying it. Good Lord, that doesn’t mean anything.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "It’s simply a—a form of nervousness, I suppose. I say it when I can’t think what to call people. Why, I call telephone operators ‘dear.’ ”",
             "“I’m sure you do!” she said.",
             "They glared. It was the young man who gave first. He went and sat close to her on the sofa, and for a while there were only murmurs. Then he said, “Will you stop? Will you stop it? Will you always be just like this—just sweet and the way you’re meant to be and no fighting?”",
             "“I will,” she said. “Honest, I mean to. Let’s not let anything come between us again ever. Mrs. Holt, indeed! Hell with her.”",
@@ -5222,7 +5253,7 @@
             "“Oh, my Lord,” he said. “Oh, my dear, sweet Lord. Just when everything was all right. Ah, stop it, will you, baby? Let’s just be quiet. Like this. See?”"
           ],
           "word_count": 309,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 30,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5240,9 +5271,9 @@
           ],
           "force_paragraphs": [
             "A little later he said, “Look, sweet, how about a cocktail? Mightn’t that be an idea? I’ll go make them. And would you like the lights lighted?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, no,” she said. “I like it better in the dusk, like this. It’s sweet. Dusk is so personal, somehow. And this way you can’t see those lampshades. Hobie, if you knew how I hate your lampshades!”",
             "“Honestly?” he said, with less injury than bewilderment in his voice. He looked at the shades as if he saw them for the first time. They were of vellum, or some substance near it, and upon each was painted a panorama of the right bank of the Seine, with the minute windows of the buildings cut out, under the direction of a superior mind, so that light might come through. “What’s the matter with them, Kit?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Dearest, if you don’t know, I can’t ever explain it to you,” she said. “Among other things, they’re banal, inappropriate, and unbeautiful. They’re exactly what Evie Maynard would have chosen. She thinks, just because they show views of Paris, that they’re pretty darned sophisticated. She is that not uncommon type of woman that thinks any reference to la belle France is an invitation to the waltz. ‘Not uncommon.’ If that isn’t the mildest word-picture that ever was painted of that——”",
             "“Don’t you like the way she decorated the apartment?” he said.",
             "“Sweetheart,” she said, “I think it’s poisonous. You know that.”",
@@ -5250,7 +5281,7 @@
             "“I should say not,” she said. “Look, Hobie, don’t you remember me? I’m the one that doesn’t want to decorate your flat. Now do you place me? But if I ever did , the first thing I should do would be to paint these walls putty color—no, I guess first I’d tear off all this chintz and fling it to the winds, and then I’d——”"
           ],
           "word_count": 315,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 27,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5307,8 +5338,8 @@
           ],
           "force_paragraphs": [
             "“No, that was the funniest thing,” he said. “That was Evie Maynard. Just when we were talking about her.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Well, well, well,” she said. “Isn’t it a small world? And what’s on her mind, if I may so flatter her? Is her butler tight, too?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Evie hasn’t got a butler,” he said. He tried smiling again, but found it better to abandon the idea and concentrate on refilling the young woman’s glass. “No, she’s just dizzy, the same as usual. She’s got a cocktail party at her apartment, and they all want to go out on the town, that’s all.”",
             "“Luckily,” she said, “you had to go out with these friends of your sister’s. You were just going out the door when she called.”",
             "“I never told her any such thing!” he said. “I said I had a date I’d been looking forward to all week.”",
@@ -5320,7 +5351,7 @@
             "“Great,” he said. “And if I may say so, you’re doing everything you can to make it harder, you little sweet."
           ],
           "word_count": 345,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5340,8 +5371,9 @@
           ],
           "force_paragraphs": [
             "He poured more cocktails. “Oh, Kit, why are you being so nasty? Don’t do it, darling. It’s not like you. It’s so unbecoming to you.”",
+            "“I know it’s horrible,” she said. “It’s—well, I do it in defense, I suppose, Hobie. If I didn’t say nasty things, I’d cry. I’m afraid to cry; it would take me so long to stop. I—oh, I’m so hurt, dear. I don’t know what to think. All these women. All these awful women. If they were fine, if they were sweet and gentle and intelligent, I shouldn’t mind. Or maybe I should. I don’t know.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "“I know it’s horrible,” she said. “It’s—well, I do it in defense, I suppose, Hobie. If I didn’t say nasty things, I’d cry. I’m afraid to cry; it would take me so long to stop. I—oh, I’m so hurt, dear. I don’t know what to think. All these women. All these awful women. If they were fine, if they were sweet and gentle and intelligent, I shouldn’t mind. Or maybe I should. I don’t know. I don’t know much of anything, any more. My mind goes round and round. I thought what we had was so different. Well—it wasn’t. Sometimes I think it would be better never to see you any more. But then I know I couldn’t stand that. I’m too far gone now. I’d do anything to be with you! And so I’m just another of those women to you.",
+            "I don’t know much of anything, any more. My mind goes round and round. I thought what we had was so different. Well—it wasn’t. Sometimes I think it would be better never to see you any more. But then I know I couldn’t stand that. I’m too far gone now. I’d do anything to be with you! And so I’m just another of those women to you.",
             "And I used to come first, Hobie—oh, I did! I did!”",
             "“You did!” he said. “And you do!”",
             "“And I always will?” she said.",
@@ -5352,7 +5384,7 @@
             "“You know,” she said, musingly, “this is my fault. I did this. It was me. I was the one that said let’s meet here, and not at my house. I said it would be quieter, and I had so much I wanted to talk to you about. I said we could be quiet and alone here. Yes. I said that.”"
           ],
           "word_count": 311,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 25,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5367,14 +5399,15 @@
           ],
           "force_paragraphs": [
             "“I give you my word,” he said, “that damn thing hasn’t rung in a week.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“It was lucky for me, wasn’t it?” she said, “that I happened to be here the last time it did. I am known as Little Miss Horseshoes. Well. Oh, please do answer it, Hobie. It drives me even crazier to have it ring like this.”",
-            "“I hope to God,” the young man said, “that it’s a wrong number.” He held her to him, hard. “Darling,” he said. Then he went to the telephone.",
+            "“I hope to God,” the young man said, “that it’s a wrong number.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "He held her to him, hard. “Darling,” he said. Then he went to the telephone.",
             "“Hello,” he said into the receiver. “Yes? Oh, hello there. How are you, dear—how are you? Oh, did you? Ah, that’s too bad. Why, you see I was out with these friends of my—I was out till quite late. Oh, you did? Oh, that’s too bad, dear, you waited up all that time. No, I did not say that, Margot, I said I’d come if I possibly could. That’s exactly what I said. I did so. Well, then you misunderstood me. Well, you must have. Now, there’s no need to be unreasonable about it. Listen, what I said, I said I’d come if it was possible, but I didn’t think there was a chance. If you think hard, you’ll remember, dear. Well, I’m terribly sorry, but I don’t see what you’re making so much fuss about. It was just a misunderstanding, that’s all.",
             "Why don’t you calm down and be a good little girl? Won’t you? Why, I can’t tonight, dear. Because I can’t . Well, I have a date I’ve had for a long time. Yes. Oh, no, it isn’t anything like that! Oh, now, please, Margot! Margot, please don’t! Now don’t do that! I tell you I won’t be here. All right, come ahead, but I won’t be in. Listen, I can’t talk to you when you’re like this. I’ll call you tomorrow, dear. I tell you I won’t be IN , dear! Please be good. Certainly I do. Look. I have to run now. I’ll call you, dear. ’By.”"
           ],
           "word_count": 340,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 15,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5396,11 +5429,11 @@
           ],
           "force_paragraphs": [
             "The young man came back to the living-room, and sent his somewhat shaken voice ahead of him.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“How about another cocktail, sweet?” he said. “Don’t you think we really ought—” Through the thickening dark, he saw the young woman. She stood straight and tense. Her fur scarf was knotted about her shoulders, and she was drawing on her second glove.",
             "“What’s this about?” the young man said.",
             "“I’m so sorry,” the young woman, said, “but I truly must go home.”",
             "“Oh, really?” he said. “May I ask why?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“It’s sweet of you,” she said, “to be interested enough to want to know. Thank you so much. Well, it just happens, I can’t stand any more of this. There is somewhere, I think, some proverb about a worm’s eventually turning. It is doubtless from the Arabic. They so often are. Well, good night, Hobie, and thank you so much for those delicious cocktails. They’ve cheered me up wonderfully.”",
             "She held out her hand. He caught it tight in both of his.",
             "“Ah, now listen,” he said. “Please don’t do this, Kit. Please, don’t, darling. Please. This is just the way you were last Wednesday.”",
@@ -5410,7 +5443,7 @@
             "“My Lord, do you think I want to talk to those fools?” he said. “What can I do? Take the telephone receiver off? Is that what you want me to do?”"
           ],
           "word_count": 301,
-          "airlock_index": 1,
+          "airlock_index": 5,
           "pre_airlock_words": 17,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5572,10 +5605,11 @@
           ],
           "force_paragraphs": [
             "“Honestly, I haven’t had a second,” he said. “I’ve been working like a fool. God, I’ve been rushed.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Ah, have you?” she said. “I’m sorry, dear. I’ve been silly. But it was just—oh, it was just hell, never hearing a word. I thought maybe you’d telephone to say good night, sometimes,—you know, the way you used to, when you were away.”",
             "“Why, I was going to, a lot of times,” he said, “but I thought you’d probably be out, or something.”",
-            "“I haven’t been out,” she said. “I’ve been staying here, all by myself. It’s—it’s sort of better, that way. I don’t want to see people. Everybody says, ‘When’s Jack coming back?’ and ‘What do you hear from Jack?’ and I’m afraid I’ll cry in front of them. Darling, it hurts so terribly when they ask me about you, and I have to say I don’t——”",
+            "“I haven’t been out,” she said. “I’ve been staying here, all by myself. It’s—it’s sort of better, that way. I don’t want to see people. Everybody says, ‘When’s Jack coming back?’ and ‘What do you hear from Jack?’",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "and I’m afraid I’ll cry in front of them. Darling, it hurts so terribly when they ask me about you, and I have to say I don’t——”",
             "“This is the damnedest, lousiest connection I ever saw in my life,” he said. “What hurts? What’s the matter?”",
             "“I said, it hurts so terribly when people ask me about you,” she said, “and I have to say—Oh, never mind. Never mind. How are you, dear? Tell me how you are.”",
             "“Oh, pretty good,” he said. “Tired as the devil. You all right?”",
@@ -5585,7 +5619,7 @@
             "“I give up,” he said. “First you mumble, and then you yell."
           ],
           "word_count": 309,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5717,19 +5751,19 @@
           ],
           "force_paragraphs": [
             "“Oh, Jim,” she cried. “Oh, what do you think! Hallie Noyes asked me to tea tomorrow to meet Lily Wynton!”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Who’s Lily Wynton?” he said.",
             "“Ah, Jim,” she said. “Ah, really, Jim. Who’s Lily Wynton! Who’s Greta Garbo, I suppose!”",
             "“She some actress or something?” he said.",
             "Mrs. Murdock’s shoulders sagged. “Yes, Jim,” she said. “Yes. Lily Wynton’s an actress.”",
             "She picked up her purse and started slowly toward the door. But before she had taken three steps, she was again caught up in her sparkling swirl. She turned to him, and her eyes were shining.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Honestly,” she said, “it was the funniest thing you ever heard in your life. We’d just finished the last rubber—oh, I forgot to tell you, I won three dollars, isn’t that pretty good for me?—and Hallie Noyes said to me, ‘Come on in to tea tomorrow. Lily Wynton’s going to drop up,’ she said. Just like that, she said it. Just as if it was anybody.”",
             "“Drop up?” he said. “How can you drop up ?”",
             "“Honestly, I don’t know what I said when she asked me,” Mrs. Murdock said. “I suppose I said I’d love to—I guess I must have. But I was so simply— Well, you know how I’ve always felt about Lily Wynton. Why, when I was a little girl, I used to collect her pictures. And I’ve seen her in, oh, everything she’s ever been in, I should think, and I’ve read every word about her, and interviews and all. Really and truly, when I think of meeting her— Oh, I’ll simply die. What on earth shall I say to her?”",
             "“You might ask her how she’d like to try dropping down, for a change,” Mr. Murdock said."
           ],
           "word_count": 290,
-          "airlock_index": 1,
+          "airlock_index": 6,
           "pre_airlock_words": 20,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5748,8 +5782,8 @@
           ],
           "force_paragraphs": [
             "“All right, Jim,” Mrs. Murdock said. “If that’s the way you want to be.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Wearily she went toward the door, and this time she reached it before she turned to him. There were no lights in her eyes.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“It—it isn’t so awfully nice,” she said, “to spoil somebody’s pleasure in something. I was so thrilled about this. You don’t see what it is to me, to meet Lily Wynton. To meet somebody like that, and see what they’re like, and hear what they say, and maybe get to know them. People like that mean—well, they mean something different to me. They’re not like this. They’re not like me. Who do I ever see? What do I ever hear? All my whole life, I’ve wanted to know—I’ve almost prayed that some day I could meet— Well. All right, Jim.”",
             "She went out, and on to her bedroom.",
             "Mr. Murdock was left with only his newspaper and his bitterness for company. But he spoke aloud.",
@@ -5759,7 +5793,7 @@
             "The next morning, Mr. Murdock had left for his office before Mrs. Murdock rose. This had happened several times before, but not often. Mrs. Murdock felt a little queer about it."
           ],
           "word_count": 412,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 14,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5851,15 +5885,15 @@
           ],
           "force_paragraphs": [
             "As she passed Mrs. Murdock, she stooped suddenly, cupped her guest’s round chin, and quickly, lightly kissed her mouth.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Don’t tell Lily,” she murmured, very low.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Mrs. Murdock puzzled. Don’t tell Lily what? Could Hallie Noyes think that she might babble to the Lily Wynton of these strange confidences about the actress’s life? Or did she mean— But she had no more time for puzzling. Lily Wynton stood in the archway. There she stood, one hand resting on the wooden molding and her body swayed toward it, exactly as she stood for her third-act entrance of her latest play, and for a like half-minute.",
             "You would have known her anywhere, Mrs. Murdock thought. Oh, yes, anywhere. Or at least you would have exclaimed, “That woman looks something like Lily Wynton.” For she was somehow different in the daylight. Her figure looked heavier, thicker, and her face—there was so much of her face that the surplus sagged from the strong, fine bones. And her eyes, those famous dark, liquid eyes. They were dark, yes, and certainly liquid, but they were set in little hammocks of folded flesh, and seemed to be set but loosely, so readily did they roll. Their whites, that were visible all around the irises, were threaded with tiny scarlet veins.",
             "“I suppose footlights are an awful strain on their eyes,” thought little Mrs. Murdock.",
             "Lily Wynton wore, just as she should have, black satin and sables, and long white gloves were wrinkled luxuriously about her wrists. But there were delicate streaks of grime in the folds of her gloves, and down the shining length of her gown there were small, irregularly shaped dull patches; bits of food or drops of drink, or perhaps both, sometime must have slipped their carriers and found brief sanctuary there. Her hat—oh, her hat. It was romance, it was mystery, it was strange, sweet sorrow; it was Lily Wynton’s hat, of all the world, and no other could dare it. Black it was, and tilted, and a great, soft plume drooped from it to follow her cheek and curl across her throat. Beneath it, her hair had the various hues of neglected brass. But, oh, her hat."
           ],
           "word_count": 367,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -5961,8 +5995,9 @@
           "force_paragraphs": [
             "“I’m terribly sorry,” Mrs. Murdock said.",
             "“Nobody knows the anguish,” Lily Wynton said. “The agony.”",
+            "The maid appeared, bearing a triangular tray upon which was set an heroic-sized tea service of bright white china, each piece a hectagon.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "The maid appeared, bearing a triangular tray upon which was set an heroic-sized tea service of bright white china, each piece a hectagon. She set it down on a table within the long reach of Miss Noyes and retired, as she had come, bashfully.",
+            "She set it down on a table within the long reach of Miss Noyes and retired, as she had come, bashfully.",
             "“Sweet Hallie,” Lily Wynton said, “my sweet. Tea—I adore it. I worship it. But my distress turns it to gall and wormwood in me. Gall and wormwood. For hours, I should have no peace. Let me have a little, tiny bit of your beautiful, beautiful brandy, instead.”",
             "“You really think you should, darling?” Miss Noyes said. “You know——”",
             "“My angel,” said Lily Wynton, “it’s the only thing for acidity.”",
@@ -5976,7 +6011,7 @@
             "The maid vanished, fluttering. Lily Wynton lay back in her chair, holding in her gloved hand the wide, squat glass, colored brown to the brim. Little Mrs."
           ],
           "word_count": 338,
-          "airlock_index": 2,
+          "airlock_index": 3,
           "pre_airlock_words": 15,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6026,11 +6061,11 @@
           ],
           "force_paragraphs": [
             "“Good Lord, Lily,” Miss Noyes said. “Watch yourself. You’ve got to walk on that stage tonight, my girl.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“All the world’s a stage,” said Lily Wynton. “And all the men and women merely players. They have their entrance and their exitses, and each man in his time plays many parts, his act being seven ages. At first, the infant, mewling and puking——”",
             "“How’s the play doing?” Miss Noyes said.",
             "“Oh, lousily,” Lily Wynton said. “Lousily, lousily, lousily. But what isn’t? What isn’t, in this terrible, terrible world? Answer me that.” She reached for the decanter.",
             "“Lily, listen,” said Miss Noyes. “Stop that. Do you hear?”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Please, sweet Hallie,” Lily Wynton said. “Pretty please. Poor, poor Lily.”",
             "“Do you want me to do what I had to do last time?” Miss Noyes said. “Do you want me to strike you, in front of tiny one, here?”",
             "Lily Wynton drew herself high. “You do not realize,” she said, icily, “what acidity is.” She filled the glass and held it, regarding it as though through a lorgnon. Suddenly her manner changed, and she looked up and smiled at little Mrs. Murdock.",
@@ -6040,7 +6075,7 @@
             "Mrs. Murdock craned her neck shyly, and caught a glimpse of shining gold."
           ],
           "word_count": 290,
-          "airlock_index": 1,
+          "airlock_index": 5,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6096,8 +6131,8 @@
           ],
           "force_paragraphs": [
             "“Oh, dear,” said little Mrs. Murdock. “I—I’m afraid it’s really terribly late.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "There was only the sound of rhythmic breathing from the chair where Lily Wynton lay. The purple voice rolled along the air no longer.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Little Mrs. Murdock stole to the chair upon which she had left her coat. Carefully she smoothed her white muslin frills, so that they would be fresh beneath the jacket. She felt a tenderness for her frock; she wanted to protect it. Blue serge and little ruffles—they were her own.",
             "When she reached the outer door of Miss Noyes’s apartment, she stopped a moment and her manners conquered her. Bravely she called in the direction of Miss Noyes’s bedroom.",
             "“Good-by, Miss Noyes,” she said. “I’ve simply got to run. I didn’t realize it was so late. I had a lovely time—thank you ever so much.”",
@@ -6107,7 +6142,7 @@
             "Darling Jim. Mrs. Murdock turned in her course, and entered an enormous shop where the most delicate and esoteric of foods were sold for heavy sums. Jim liked red caviar. Mrs. Murdock bought a jar of the shiny, glutinous eggs. They would have cocktails that night, though they had no guests, and the red caviar would be served with them for a surprise, and it would be a little, secret party to celebrate her return to contentment with her Jim, a party to mark her happy renunciation of all the glory of the world."
           ],
           "word_count": 392,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 13,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6137,8 +6172,9 @@
           ],
           "force_paragraphs": [
             "She bought, too, a large, foreign cheese. It would give a needed touch to dinner. Mrs. Murdock had not given much attention to ordering dinner, that morning. “Oh, anything you want, Signe,” she had said to the maid. She did not want to think of that. She went on home with her packages.",
+            "Mr. Murdock was already there when she arrived. He was sitting with his newspaper opened to the financial page. Little Mrs. Murdock ran in to him with her eyes a-light.",
             "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
-            "Mr. Murdock was already there when she arrived. He was sitting with his newspaper opened to the financial page. Little Mrs. Murdock ran in to him with her eyes a-light. It is too bad that the light in a person’s eyes is only the light in a person’s eyes, and you cannot tell at a look what causes it. You do not know if it is excitement about you, or about something else. The evening before, Mrs. Murdock had run in to Mr. Murdock with her eyes a-light.",
+            "It is too bad that the light in a person’s eyes is only the light in a person’s eyes, and you cannot tell at a look what causes it. You do not know if it is excitement about you, or about something else. The evening before, Mrs. Murdock had run in to Mr. Murdock with her eyes a-light.",
             "“Oh, hello,” he said to her. He looked back at his paper, and kept his eyes there. “What did you do? Did you drop up to Hank Noyes’s?”",
             "Little Mrs. Murdock stopped right where she was.",
             "“You know perfectly well, Jim,” she said, “that Hallie Noyes’s first name is Hallie.”",
@@ -6159,7 +6195,7 @@
             "Wearily little Mrs. Murdock went on down the hall to her bedroom."
           ],
           "word_count": 433,
-          "airlock_index": 1,
+          "airlock_index": 2,
           "pre_airlock_words": 53,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6191,9 +6227,9 @@
           ],
           "force_paragraphs": [
             "The young man in the chocolate-brown suit sat down at the table, where the girl with the artificial camellia had been sitting for forty minutes.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Guess I must be late,” he said. “Sorry you been waiting.”",
             "“Oh, goodness!” she said. “I just got here myself, just about a second ago. I simply went ahead and ordered because I was dying for a cup of tea. I was late, myself. I haven’t been here more than a minute.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“That’s good,” he said. “Hey, hey, easy on the sugar—one lump is fair enough. And take away those cakes. Terrible! Do I feel terrible!”",
             "“Ah,” she said, “you do? Ah. Whadda matter?”",
             "“Oh, I’m ruined,” he said. “I’m in terrible shape.”",
@@ -6205,7 +6241,7 @@
             "“Yeah, I know,” he said. “But it gave me the jumps, thinking about going down there and sitting at that desk."
           ],
           "word_count": 307,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 25,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6228,10 +6264,11 @@
           ],
           "force_paragraphs": [
             "I went up to May’s—she was throwing a party. Say, there was somebody there said they knew you.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Honestly?” she said. “Man or woman?”",
             "“Dame,” he said. “Name’s Carol McCall. Say, why haven’t I been told about her before? That’s what I call a girl. What a looker she is!”",
-            "“Oh, really?” she said. “That’s funny—I never heard of anyone that thought that. I’ve heard people say she was sort of nice-looking, if she wouldn’t make up so much. But I never heard of anyone that thought she was pretty.”",
+            "“Oh, really?” she said. “That’s funny—I never heard of anyone that thought that.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "I’ve heard people say she was sort of nice-looking, if she wouldn’t make up so much. But I never heard of anyone that thought she was pretty.”",
             "“Pretty is right,” he said. “What a couple of eyes she’s got on her!”",
             "“Really?” she said. “I never noticed them particularly. But I haven’t seen her for a long time—sometimes people change, or something.”",
             "“She says she used to go to school with you,” he said.",
@@ -6243,7 +6280,7 @@
             "“He’s all right,” he said. “Say, this little McCall girl, she’s had all kinds of offers to go into moving pictures."
           ],
           "word_count": 365,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 19,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6263,9 +6300,9 @@
           ],
           "force_paragraphs": [
             "‘Why don’t you go ahead and go?’ I told her. But she says she doesn’t feel like it.”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“There was a man up at the lake, two summers ago,” she said. “He was a director or something with one of the big moving-picture people—oh, he had all kinds of influence!—and he used to keep insisting and insisting that I ought to be in the movies. Said I ought to be doing sort of Garbo parts. I used to just laugh at him. Imagine!”",
             "“She’s had about a million offers,” he said. “I told her to go ahead and go. She keeps getting these offers all the time.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, really?” she said. “Oh, listen, I knew I had something to ask you. Did you call me up last night, by any chance?”",
             "“Me?” he said. “No, I didn’t call you.”",
             "“While I was out, Mother said this man’s voice kept calling up,” she said. “I thought maybe it might be you, by some chance. I wonder who it could have been. Oh—I guess I know who it was. Yes, that’s who it was!”",
@@ -6275,7 +6312,7 @@
             "“Of course, if you’d rather be some place, drinking, with I don’t know what kinds of people,” she said, “I’m sure I don’t see how I can help that."
           ],
           "word_count": 371,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6554,11 +6591,11 @@
           ],
           "force_paragraphs": [
             "The pale young man eased himself carefully into the low chair, and rolled his head to the side, so that the cool chintz comforted his cheek and temple.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, dear,” he said. “Oh, dear, oh, dear, oh, dear. Oh.”",
             "The clear-eyed girl, sitting light and erect on the couch, smiled brightly at him.",
             "“Not feeling so well today?” she said.",
             "“Oh, I’m great,” he said. “Corking, I am. Know what time I got up? Four o’clock this afternoon, sharp. I kept trying to make it, and every time I took my head off the pillow, it would roll under the bed. This isn’t my head I’ve got on now. I think this is something that used to belong to Walt Whitman. Oh, dear, oh, dear, oh, dear.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Do you think maybe a drink would make you feel better?” she said.",
             "“The hair of the mastiff that bit me?” he said. “Oh, no, thank you. Please never speak of anything like that again. I’m through. I’m all, all through. Look at that hand; steady as a humming-bird. Tell me, was I very terrible last night?”",
             "“Oh, goodness,” she said, “everybody was feeling pretty high. You were all right.”",
@@ -6568,7 +6605,7 @@
             "“Why, you didn’t do a thing,” she said. “You were perfectly fine. But you know how silly Jim gets, when he thinks anybody is making too much fuss over Elinor.”"
           ],
           "word_count": 310,
-          "airlock_index": 1,
+          "airlock_index": 5,
           "pre_airlock_words": 28,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6586,17 +6623,17 @@
           ],
           "force_paragraphs": [
             "“Was I making a pass at Elinor?” he said. “Did I do that?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Of course you didn’t,” she said. “You were only fooling, that’s all. She thought you were awfully amusing. She was having a marvelous time. She only got a little tiny bit annoyed just once, when you poured the clam-juice down her back.”",
             "“My God,” he said. “Clam-juice down that back. And every vertebra a little Cabot. Dear God. What’ll I ever do?”",
             "“Oh, she’ll be all right,” she said. “Just send her some flowers, or something. Don’t worry about it. It isn’t anything.”",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“No, I won’t worry,” he said. “I haven’t got a care in the world. I’m sitting pretty. Oh, dear, oh, dear. Did I do any other fascinating tricks at dinner?”",
             "“You were fine,” she said. “Don’t be so foolish about it. Everybody was crazy about you. The maître d’hôtel was a little worried because you wouldn’t stop singing, but he really didn’t mind. All he said was, he was afraid they’d close the place again, if there was so much noise. But he didn’t care a bit, himself. I think he loved seeing you have such a good rime. Oh, you were just singing away, there, for about an hour. It wasn’t so terribly loud, at all.”",
             "“So I sang,” he said. “That must have been a treat. I sang.”",
             "“Don’t you remember?” she said. “You just sang one song after another. Everybody in the place was listening. They loved it. Only you kept insisting that you wanted to sing some song about some kind of fusiliers or other, and everybody kept shushing you, and you’d keep trying to start it again. You were wonderful. We were all trying to make you stop singing for a minute, and eat something, but you wouldn’t hear of it. My, you were funny.”"
           ],
           "word_count": 306,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 13,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6652,10 +6689,11 @@
           ],
           "force_paragraphs": [
             "“Oh, yes,” he said. “Riding in the taxi. Oh, yes, sure. Pretty long ride, hmm?”",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Round and round and round the park,” she said. “Oh, and the trees were shining so in the moonlight. And you said you never knew before that you really had a soul.”",
             "“Yes,” he said. “I said that. That was me.”",
-            "“You said such lovely, lovely things,” she said. “And I’d never known, all this time, how you had been feeling about me, and I’d never dared to let you see how I felt about you. And then last night—oh, Peter dear, I think that taxi ride was the most important thing that ever happened to us in our lives.”",
+            "“You said such lovely, lovely things,” she said. “And I’d never known, all this time, how you had been feeling about me, and I’d never dared to let you see how I felt about you.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "And then last night—oh, Peter dear, I think that taxi ride was the most important thing that ever happened to us in our lives.”",
             "“Yes,” he said. “I guess it must have been.”",
             "“And we’re going to be so happy,” she said. “Oh, I just want to tell everybody! But I don’t know—I think maybe it would be sweeter to keep it all to ourselves.”",
             "“I think it would be,” he said.",
@@ -6671,7 +6709,7 @@
             "“Oh, dear,” he said. “Oh, dear, oh, dear, oh, dear.”"
           ],
           "word_count": 351,
-          "airlock_index": 1,
+          "airlock_index": 4,
           "pre_airlock_words": 15,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6717,15 +6755,16 @@
           ],
           "force_paragraphs": [
             "She wore them, and listened in shy surprise to the resulting comparisons to daffodils, and butterflies in the sunshine, and such; but she knew.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“It just isn’t me,” she sighed at last, and returned to her lily draperies. Picasso had his blue period, and Mrs. Lanier her yellow one. They both knew when to stop.",
-            "In the afternoons, Mrs. Lanier wore black, thin and fragrant, with the great pearls weeping on her breast. What her attire was by morning, only Gwennie, the maid who brought her breakfast tray, could know; but it must, of course, have been exquisite. Mr. Lanier—certainly there was a Mr. Lanier; he had even been seen—stole past her door on his way out to his office, and the servants glided and murmured, so that Mrs. Lanier might be spared as long as possible from the bright new cruelty of the day. Only when the littler, kinder hours had succeeded noon could she bring herself to come forth and face the recurrent sorrows of living.",
+            "In the afternoons, Mrs. Lanier wore black, thin and fragrant, with the great pearls weeping on her breast. What her attire was by morning, only Gwennie, the maid who brought her breakfast tray, could know; but it must, of course, have been exquisite.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "Mr. Lanier—certainly there was a Mr. Lanier; he had even been seen—stole past her door on his way out to his office, and the servants glided and murmured, so that Mrs. Lanier might be spared as long as possible from the bright new cruelty of the day. Only when the littler, kinder hours had succeeded noon could she bring herself to come forth and face the recurrent sorrows of living.",
             "There was duty to be done, almost daily, and Mrs. Lanier made herself brave for it. She must go in her town car to select new clothes and to have fitted to her perfection those she had ordered before. Such garments as hers did not just occur; like great poetry, they required labor. But she shrank from leaving the shelter of her house, for everywhere without were the unlovely and the sad, to assail her eyes and her heart. Often she stood shrinking for several minutes by the baroque mirror in her hall before she could manage to hold her head high and brave, and go on.",
             "There is no safety for the tender, no matter how straight their route, how innocent their destination. Sometimes, even in front of Mrs. Lanier’s dressmaker’s or her furrier’s or her lingère’s or her milliner’s, there would be a file of thin girls and small, shabby men, who held placards in their cold hands and paced up and down and up and down with slow, measured steps. Their faces would be blue and rough from the wind, and blank with the monotony of their treadmill. They looked so little and poor and strained that Mrs. Lanier’s hands would fly to her heart in pity. Her eyes would be luminous with sympathy and her sweet lips would part as if on a whisper of cheer, as she passed through the draggled line into the shop.",
             "Often there would be pencil-sellers in her path, a half of a creature set upon a sort of roller-skate thrusting himself along the pavement by his hands, or a blind man shuffling after his wavering cane."
           ],
           "word_count": 446,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 24,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6767,15 +6806,16 @@
           ],
           "force_paragraphs": [
             "Lanier. All those who came to her drawing-room came in one cause: to shield her heart from hurt.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Here in her drawing-room, in the lovely blue of the late day, Mrs. Lanier sat upon opalescent taffeta and was wistful. And here to her drawing-room, the young men came and tried to help her bear her life.",
-            "There was a pattern to the visits of the young men. They would come in groups of three or four or six, for a while; and then there would be one of them who would stay a little after the rest had gone, who presently would come a little earlier than the others. Then there would be days when Mrs. Lanier would cease to be at home to the other young men, and that one young man would be alone with her in the lovely blue. And then Mrs. Lanier would no longer be at home to that one young man, and Gwennie would have to tell him and tell him, over the telephone, that Mrs. Lanier was out, that Mrs. Lanier was ill, that Mrs. Lanier could not be disturbed. The groups of young men would come again; that one young man would not be with them.",
+            "There was a pattern to the visits of the young men. They would come in groups of three or four or six, for a while; and then there would be one of them who would stay a little after the rest had gone, who presently would come a little earlier than the others. Then there would be days when Mrs. Lanier would cease to be at home to the other young men, and that one young man would be alone with her in the lovely blue.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
+            "And then Mrs. Lanier would no longer be at home to that one young man, and Gwennie would have to tell him and tell him, over the telephone, that Mrs. Lanier was out, that Mrs. Lanier was ill, that Mrs. Lanier could not be disturbed. The groups of young men would come again; that one young man would not be with them.",
             "But there would be, among them, a new young man, who presently would stay a little later and come a little earlier, who eventually would plead with Gwennie over the telephone.",
             "Gwennie—her widowed mother had named her Gwendola, and then, as if realizing that no other dream would ever come true, had died—was little and compact and unnoticeable. She had been raised on an upstate farm by an uncle and aunt hard as the soil they fought for their lives. After their deaths, she had no relatives anywhere. She came to New York, because she had heard stories of jobs; her arrival was at the time when Mrs. Lanier’s cook needed a kitchen-maid. So in her own house, Mrs. Lanier had found her treasure.",
             "Gwennie’s hard little farm-girl’s fingers could set invisible stitches, could employ a flatiron as if it were a wand, could be as summer breezes in the robing of Mrs."
           ],
           "word_count": 359,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 18,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"
@@ -6861,9 +6901,9 @@
           ],
           "force_paragraphs": [
             "Lanier could scarcely bring herself to believe that such betrayal could exist. Her heart, soft and sweet as a perfectly made crème renversée, quivered in her breast, and in her eyes lay the far light of suffering.",
-            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "“Oh, how could he do this to me?” she asked piteously of Gwennie. “How could he do this to poor me?”",
             "There was no discussion of the defection of Kane; it was too painful a subject. If a caller heedlessly asked whatever had become of that nice-looking chauffeur, Mrs. Lanier would lay her hand over her closed lids and slowly wince. The caller would be suicidal that he had thus unconsciously added to her sorrows, and would strive his consecrated best to comfort her.",
+            "For no reason that seemed worth examining, “$$$” came to mind. It was one of those thoughts that arrive without being invited and remain just long enough to be tiresome. Then it went away. As they all do.",
             "Gwennie’s cold lasted for an extraordinarily long time. The weeks went by, and still, every morning, her eyes were red and her face white and puffed. Mrs. Lanier often had to look away from her when she brought the breakfast tray.",
             "She tended Mrs. Lanier as carefully as ever; she gave no attention to her holidays, but stayed to do further service. She had always been quiet, and she became all but silent, and that was additionally soothing. She worked without stopping and seemed to thrive, for, save for the effects of the curious cold, she looked round and healthy.",
             "“See,” Mrs. Lanier said in tender raillery, as the girl attended the group in the drawing-room, “see how fat my little Gwennie’s getting! Isn’t that cute?”",
@@ -6871,7 +6911,7 @@
             "The exquisite face Mrs. Lanier saw in the mirror drew her closer attention, and she put down the perfume and leaned toward it."
           ],
           "word_count": 336,
-          "airlock_index": 1,
+          "airlock_index": 3,
           "pre_airlock_words": 37,
           "story_state": "P",
           "airlock_module": "P_NARRATOR"

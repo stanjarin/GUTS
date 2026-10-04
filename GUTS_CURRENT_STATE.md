@@ -250,3 +250,18 @@ Fresh-ewe next action:
 3. do not rerun the old word-count sweep;
 4. do not repair corpus until Stanley approves final visual safe bands / repair law;
 5. after GO, repair prepared layer only against rendered-line geometry, re-audit, then actual-phone visual spot-check.
+
+
+## Formatted placement repair — 5 Oct 2026
+
+Stanley explicitly authorised **backup, then execute to main; phone check afterwards**.
+
+Rollback: `rollback-pre-formatted-repair-2026-10-05` @ `64dfc21877abff262f91b15a845dbb9db4660d9c`.
+
+Promoted Reader STANdard: Georgia 15 CSS px / 1.45 line-height / fixed 329 CSS px centred text measure.
+
+Repair law: leave acceptable placements alone; repair sockets above 120px or below 450px; aim repairs into 135–420px; break 3-page retention bands within 32px where possible; permit prepared-layer sentence-boundary splits when paragraph boundaries cannot supply a safe position; never edit genuine `paragraphs`; vary target heights to avoid creating a new favourite altitude.
+
+Implementation QA on all **4,858** prepared pages: **1,272** placements changed, including **766** prepared sentence-boundary splits; malformed/multi-socket pages **0**. Conservative implementation-model flags: high **908 → 8**, low **208 → 2**, below-540 **179 → 0**, retention runs **208 → 5**. The canonical 4 Oct pre-repair audit remains 830 / 219 / 187 / 217; its glyph model differs slightly from the implementation estimator, so those pre-count sets are not interchangeable.
+
+**NEXT ACTION:** Stanley actual-phone visual QA. If accepted, freeze the placement layer. If rejected, the rollback branch restores exact pre-repair `main`.
