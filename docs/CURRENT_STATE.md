@@ -1,6 +1,6 @@
 # GUTS — CURRENT STATE
 
-**Authoritative checkpoint: 2 October 2026**
+**Authoritative checkpoint: 4 October 2026**
 
 ## Read first
 
@@ -192,3 +192,61 @@ Carousel first-arrival start is now **Jean Brodie**; return-to-jump-point remain
 Paired NoBo now has the back-room Corpus Workshop via reader EDIT or Library MORE → DATA. Read the latest NoBo handover before workshop changes.
 
 **NEXT ACTION:** representative phone/visual spot-check of repaired GUTS airlock placement/retention. Do not rerun the sweep.
+
+
+## Fixed-measure formatted-airlock audit — 4 Oct 2026
+
+**THIS SECTION OVERRIDES THE EARLIER “NEXT ACTION” FOR AIRLOCK VISUAL QA.**
+
+Stanley identified that the 2 Oct prepared-corpus sweep used raw word depth as a proxy for visual placement. That is not sufficient because actual line wrapping governs vertical socket position.
+
+New approved Reader geometry for cross-device consistency:
+- Georgia;
+- 15 CSS px;
+- line-height 1.45;
+- fixed text measure **329 CSS px**, centred;
+- wider normal phones gain side white space instead of wider lines/reflow;
+- variable phone height is secondary; ordinary white space below text is acceptable.
+
+Work branch:
+`fixed-measure-audit-2026-10-04`
+
+Base:
+`guts-browse-2026-10-03` @ `e0fe14f390d95122d5bf5d3bc70f8a562ef1f609`
+
+Branch-only Reader change:
+- `index.html`
+- `public/index.html`
+- `public/project_library/books/browse/index.html`
+
+Verified identical Reader blob after fixed-measure change:
+`d893eed842cb827eda0bf4df0279047dcf63efb4`
+
+No corpus files were changed.
+
+Canonical 4 Oct report:
+`docs/checkpoints/2026-10-04_fixed-measure-formatted-airlock-audit.md`
+(on branch `fixed-measure-audit-2026-10-04`)
+
+Formatted audit scope/result:
+- 18 active books / **4,858 prepared pages**;
+- TOO HIGH (<120px): **830**;
+- LOW (>450px): **219**;
+- below iPhone-8 first-screen reference (>540px): **187**;
+- prepared chapter-opening sockets inventoried: **463**;
+- maximal RETENTION runs (3+ consecutive pages within 32px rendered band): **217**.
+
+Interpretation:
+- old word-depth PASS does not prove formatted placement;
+- top proximity and rendered retention are genuine remaining defects;
+- Keys of the Kingdom is the major low-placement outlier;
+- report thresholds are diagnostic, not yet final repair law.
+
+**No corpus repair has been authorised or performed in this 4 Oct pass.**
+
+Fresh-ewe next action:
+1. read `GUTS_HANDOVER_2026-10-04.md`;
+2. verify `fixed-measure-audit-2026-10-04` and the checkpoint report;
+3. do not rerun the old word-count sweep;
+4. do not repair corpus until Stanley approves final visual safe bands / repair law;
+5. after GO, repair prepared layer only against rendered-line geometry, re-audit, then actual-phone visual spot-check.
