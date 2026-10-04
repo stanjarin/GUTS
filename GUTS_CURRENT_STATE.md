@@ -5,7 +5,7 @@
 ## Read first
 
 1. `GUTS_WORKFLOW_CONSTITUTION.md`
-2. `GUTS_HANDOVER_2026-10-02.md`
+2. `GUTS_HANDOVER_2026-10-04.md`
 3. this file
 4. `docs/CURRENT_STATE.md`
 5. relevant NoBo handover/README
