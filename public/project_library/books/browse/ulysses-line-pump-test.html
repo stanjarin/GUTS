@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GUTS Ulysses line-pump phone test</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#fbf8ef;color:#29261f;font-family:Georgia,serif}
+body{min-height:100vh}
+.top{position:sticky;top:0;z-index:5;background:#f3efe4;border-bottom:1px solid #b8ae99;padding:10px 12px;font:14px Georgia,serif}
+.status{padding:12px 15px 8px;font:14px/1.4 -apple-system,BlinkMacSystemFont,sans-serif}
+.results{display:flex;gap:8px;padding:0 15px 12px;flex-wrap:wrap}
+.chip{border:1px solid #b8ae99;border-radius:7px;padding:8px 10px;background:#fffdf7;font:14px/1.2 -apple-system,BlinkMacSystemFont,sans-serif}
+.chip b{font-size:18px}
+.controls{display:flex;gap:8px;padding:0 15px 12px}
+button{font:14px -apple-system,BlinkMacSystemFont,sans-serif;padding:8px 12px;border:1px solid #9c927d;border-radius:7px;background:#fffdf7;color:#29261f}
+.reader{position:relative;width:100%}
+.page{width:100%;padding:25px 15px 58px;font:15px/1.45 Georgia,serif;color:#29261f;background:#fbf8ef}
+.page p{width:329px;max-width:100%;margin:0 auto .72em}
+.page p:first-child{margin-top:2px}
+.page p+p{text-indent:1.5em}
+.marker{padding:0 15px 18px;font:12px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#5f594d}
+.measure{position:fixed;left:-10000px;top:0;width:100vw;visibility:hidden;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="top">GUTS · Ulysses actual Safari line-pump test</div>
+<div class="status" id="status">Measuring this device…</div>
+<div class="results" id="results"></div>
+<div class="controls">
+  <button onclick="showCase(0)">Page 1</button>
+  <button onclick="showCase(1)">Page 2</button>
+  <button onclick="showCase(2)">Page 3</button>
+</div>
+<div class="reader"><div class="page" id="visiblePage"></div></div>
+<div class="marker" id="detail"></div>
+<div class="measure" id="measure"></div>
+<script>
+const AIR='Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.';
+const TESTS=[
+ {name:'Ulysses · Ithaca test 1',target:8,donor:'Were there marks of hospitality which he contemplated but suppressed, reserving them for another and for himself on future occasions to complete the act begun? The reparation of a fissure of the length of 1 1/2 inches in the right side of his guest’s jacket. A gift to his guest of one of the four lady’s handkerchiefs, if and when ascertained to be in a presentable condition. Who drank more quickly? Bloom, having the advantage of ten seconds at the initiation and taking, from the concave surface of a spoon along the handle of which a steady flow of heat was conducted, three sips to his opponent’s one, six to two, nine to three. What cerebration accompanied his frequentative act? Concluding by inspection but erroneously that his silent companion was engaged in mental composition he reflected on the pleasures derived from literature of instruction rather than of amusement as he himself had applied to the works of William Shakespeare more than once for the solution of difficult problems in imaginary or real life. Had he found their solution? In spite of careful and repeated reading of certain classical passages, aided by a glossary, he had derived imperfect conviction from the text, the answers not bearing in all points.'},
+ {name:'Ulysses · Ithaca test 2',target:12,donor:'What lines concluded his first piece of original verse written by him, potential poet, at the age of 11 in 1877 on the occasion of the offering of three prizes of 10/-, 5/- and 2/6 respectively for competition by the Shamrock, a weekly newspaper? An ambition to squint At my verses in print Makes me hope that for these you’ll find room?. If you so condescend Then please place at the end The name of yours truly, L. Bloom. Did he find four separating forces between his temporary guest and him? Name, age, race, creed. What anagrams had he made on his name in youth? Leopold Bloom Ellpodbomool Molldopeloob Bollopedoom Old Ollebo, M. P. What acrostic upon the abbreviation of his first name had he (kinetic poet) sent to Miss Marion (Molly) Tweedy on the 14 February 1888? Poets oft have sung in rhyme Of music sweet their praise divine. Let them hymn it nine times nine. Dearer far than song or wine. You are mine. The world is mine.'},
+ {name:'Ulysses · Ithaca test 3',target:16,donor:'What relation existed between their ages? 16 years before in 1888 when Bloom was of Stephen’s present age Stephen was 6. 16 years after in 1920 when Stephen would be of Bloom’s present age Bloom would be 54. In 1936 when Bloom would be 70 and Stephen 54 their ages initially in the ratio of 16 to 0 would be as 17 1/2 to 13 1/2, the proportion increasing and the disparity diminishing according as arbitrary future years were added. What events might nullify these calculations? The cessation of existence of both or either, the inauguration of a new era or calendar, the annihilation of the world and consequent extermination of the human species, inevitable but impredictable. How many previous encounters proved their preexisting acquaintance? Two. The first in the lilacgarden of Matthew Dillon’s house, Medina Villa, Kimmage road, Roundtown, in 1887, in the company of Stephen’s mother, Stephen being then of the age of 5 and reluctant to give his hand in salutation. The second in the coffeeroom of Breslin’s hotel on a rainy Sunday in the January of 1892, in the company of Stephen’s father and Stephen’s granduncle, Stephen being then 5 years older.'}
+];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const wc=s=>(s.match(/\S+/g)||[]).length;
+function sentences(s){return s.trim().split(/(?<=[.!?])\s+(?=[“‘"'A-Z0-9])/).map(x=>x.trim()).filter(Boolean)}
+function lineStarts(page){
+  const ps=[...page.querySelectorAll('p')],rows=[];let global=0;
+  ps.forEach((p,pi)=>{const n=p.firstChild;if(!n||n.nodeType!==3)return;const tops=[];
+    for(let i=0;i<n.data.length;i++){if(/\s/.test(n.data[i]))continue;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+1);const top=r.getBoundingClientRect().top;if(!tops.some(t=>Math.abs(t-top)<0.75))tops.push(top)}
+    tops.sort((a,b)=>a-b).forEach((top,li)=>rows.push({line:++global,para:pi+1,paraLine:li+1,top}));
+  });return rows;
+}
+function measureCarry(carry){
+  const m=document.getElementById('measure');m.innerHTML='<div class="page"><p>'+esc(carry)+'</p><p>'+esc(AIR)+'</p></div>';
+  const rows=lineStarts(m.querySelector('.page'));const first=rows.find(x=>x.para===2&&x.paraLine===1);return first?first.line:null;
+}
+function solve(t){
+  const ss=sentences(t.donor),cand=[];
+  for(let cut=1;cut<ss.length;cut++){
+    const head=ss.slice(0,cut).join(' '),carry=ss.slice(cut).join(' ');
+    if(wc(head)<12||wc(carry)<12)continue;
+    const line=measureCarry(carry);if(line==null)continue;
+    cand.push({cut,head,carry,line,error:Math.abs(line-t.target)});
+  }
+  cand.sort((a,b)=>a.error-b.error||Math.abs(wc(a.carry)-80)-Math.abs(wc(b.carry)-80)||a.cut-b.cut);
+  return cand[0]||null;
+}
+const solved=TESTS.map(t=>({...t,best:solve(t)}));
+function renderResults(){
+ const el=document.getElementById('results');
+ el.innerHTML=solved.map((x,i)=>'<div class="chip" onclick="showCase('+i+')">'+(i+1)+': target '+x.target+' → <b>'+(x.best?x.best.line:'—')+'</b></div>').join('');
+ document.getElementById('status').textContent='This Safari measured: '+solved.map(x=>x.best?x.best.line:'—').join(' / ')+'. Tap a page to inspect the chosen carry.';
+}
+function showCase(i){
+ const x=solved[i],p=document.getElementById('visiblePage');
+ if(!x.best){p.innerHTML='<p>No legal split found.</p>';return}
+ p.innerHTML='<p>'+esc(x.best.carry)+'</p><p>'+esc(AIR)+'</p>';
+ document.getElementById('detail').textContent=x.name+' · target '+x.target+' · actual '+x.best.line+' · carried '+wc(x.best.carry)+' words · prefix retained for previous page '+wc(x.best.head)+' words.';
+ scrollTo(0,0);
+}
+requestAnimationFrame(()=>{renderResults();showCase(0)});
+</script>
+</body>
+</html>
