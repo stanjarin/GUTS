@@ -8,6 +8,13 @@ on:
       - tools/line_pump_repair.py
       - .github/workflows/line-pump-corpus-repair-2026-10-05.yml
 
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/line_pump_repair.py
+      - .github/workflows/line-pump-corpus-repair-2026-10-05.yml
+
 permissions:
   contents: write
 
