@@ -283,3 +283,25 @@ Canonical wall-hit detail:
 `docs/checkpoints/2026-10-05_wall-hit-residual-location-recovery.md`
 
 **NEXT ACTION:** no edits. Recover the exact 8 / 2 / 5 location list cheaply and read-only from current main, then Stanley actual-phone QA. Do not rerun the old word-count sweep.
+
+
+## Practical residual scouting — second wall-hit, 5 Oct 2026
+
+Stanley reduced the residual-location objective to the information actually needed for phone QA.
+
+HIGH scouting chapters:
+- Ulysses ch13 *Nausicaa*
+- Ulysses ch16 *Eumaeus*
+- Ulysses ch17 *Ithaca*
+- Gormenghast ch19
+- Gormenghast ch29
+
+LOW scouting chapter:
+- Ulysses ch17 *Ithaca*
+
+The exact implementation estimator still was not recovered, but that no longer blocks practical HIGH/LOW scouting.
+
+**Open item:** identify only the **books + chapters** containing the five residual RETENTION runs. No edits; no full sweep; no exact-page reconstruction unless trivial.
+
+Checkpoint:
+`docs/checkpoints/2026-10-05_wall-hit-scouting-handover.md`
