@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GUTS repaired-corpus phone QA</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#fbf8ef;color:#29261f;font-family:Georgia,serif}
+.top{position:sticky;top:0;z-index:5;background:#f3efe4;border-bottom:1px solid #b8ae99;padding:10px 12px;font:14px Georgia,serif}
+.status{padding:12px 15px 8px;font:14px/1.4 -apple-system,BlinkMacSystemFont,sans-serif}
+.results{display:flex;gap:8px;padding:0 15px 12px;flex-wrap:wrap}
+.chip{border:1px solid #b8ae99;border-radius:7px;padding:8px 10px;background:#fffdf7;font:13px/1.2 -apple-system,BlinkMacSystemFont,sans-serif}
+.chip b{font-size:18px}
+.controls{display:flex;gap:7px;padding:0 15px 12px;flex-wrap:wrap}
+button{font:13px -apple-system,BlinkMacSystemFont,sans-serif;padding:8px 10px;border:1px solid #9c927d;border-radius:7px;background:#fffdf7;color:#29261f}
+.page{width:100%;padding:25px 15px 58px;font:15px/1.45 Georgia,serif;color:#29261f;background:#fbf8ef}
+.page p{width:329px;max-width:100%;margin:0 auto .72em}
+.page p:first-child{margin-top:2px}
+.page p+p{text-indent:1.5em}
+.detail{padding:0 15px 20px;font:12px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#5f594d}
+</style>
+</head>
+<body>
+<div class="top">GUTS · repaired branch · actual Safari QA</div>
+<div class="status" id="status">Measuring repaired branch samples…</div>
+<div class="results" id="results"></div>
+<div class="controls" id="controls"></div>
+<div class="page" id="page"></div>
+<div class="detail" id="detail"></div>
+<script>
+const SAMPLES=[
+ {label:'Peake Ch2 p2',target:8,paras:[
+  "Of the others? The lesser breed? In order of social precedence, possibly the Prunesquallors first, that is, the Doctor and his closely-swathed and bone-protruding sister. The doctor with his hyena laugh, his bizarre and elegant body, his celluloid face. His main defects?",
+  "At that very time, in that dark forgotten corner of the castle, a ragged, shrivelled, ancient creature yet again mused over the faint scribble on the wall. “$$$…” he muttered, disappearing into the shadows of the hallway.",
+  "The unsufferable pitch of his voice; his maddening laughter and his affected gestures. His cardinal virtue? An undamaged brain. His sister Irma. Vain as a child; thin as a stork’s leg, and, in her black glasses, as blind as an owl in daylight. She misses her footing on the social ladder at least three times a week, only to start climbing again, wriggling her pelvis the while. She clasps her dead, white hands beneath her chin in the high hope of hiding the flatness of her chest. Who next? Socially, there is no one else. That is to say no one who, during",
+  "the first few years of Titus’ life, plays any part that bears upon the child’s future: unless it be the poet, a wedge-headed and uncomfortable figure little known to the hierophants of Gormenghast, though reputed to be the only man capable of holding the earl’s attention in conversation. An all-but-forgotten figure in his room above a precipice of stone. No one reads his poems, but he holds a remote status – a gentleman, as it were, by rumour. Blue blood aside, however, and a shoal of names floats forward."
+ ]},
+ {label:'Peake Ch2 p3',target:12,paras:[
+  "The lynchpin son of the dead Sourdust, by name Barquentine, Master of Ritual, is a stunted and cantankerous pedant of seventy, who stepped into his father’s shoes (or, to be exact, into his shoe, for this Barquentine is a one-legged thing who smites his way through ill-lit corridors on a grim and echoing crutch). Flay, who has already appeared as his own ghost, is very much alive in Gormenghast forest. Taciturn and cadaverous, he is no less than Barquentine a traditionalist of the old school. But, unlike Barquentine, his angers when the Law is flouted are uprisings of a hot loyalty that blinds him, and not the merciless and stony intolerance of the cripple.",
+  "At that very time, in that dark forgotten corner of the castle, a ragged, shrivelled, ancient creature yet again mused over the faint scribble on the wall. “$$$…” he muttered, disappearing into the shadows of the hallway.",
+  "To speak of Mrs Slagg at this late juncture seems unfair. That Titus himself, heir to Gormenghast, is her charge, as was Fuchsia in her childhood, is surely enough to place her at the head of any register. But she is so minute, so frightened, so old, so querulous, she neither could, nor would, head any procession, even on paper. Her peevish cry goes out: ‘Oh, my weak heart! how could they?’ and she hurries to Fuchsia either to smack the abstracted girl in order to ease herself, or to bury the wrinkled prune of her face in Fuchsia’s side."
+ ]},
+ {label:'Ulysses Ithaca p11',target:14,paras:[
+  "He had not risked, he did not expect, he had not been disappointed, he was satisfied. What satisfied him? To have sustained no positive loss. To have brought a positive gain to others. Light to the gentiles. How did Bloom prepare a collation for a gentile? He poured into two teacups two level spoonfuls, four in all, of Epps’s soluble cocoa and proceeded according to the directions for use printed on the label, to each adding after sufficient time for infusion the prescribed ingredients for diffusion in the manner and in the quantity prescribed.",
+  "Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.",
+  "What supererogatory marks of special hospitality did the host show his guest?"
+ ]},
+ {label:'Ulysses Ithaca p12',target:8,paras:[
+  "Had he found their solution? In spite of careful and repeated reading of certain classical passages, aided by a glossary, he had derived imperfect conviction from the text, the answers not bearing in all points.",
+  "Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.",
+  "What lines concluded his first piece of original verse written by him, potential poet, at the age of 11 in 1877 on the occasion of the offering of three prizes of 10/-, 5/-"
+ ]},
+ {label:'Ulysses Ithaca p13',target:12,paras:[
+  "Jackson and Cecil Hicks, costumes by Mrs and Miss Whelan under the personal supervision of Mrs Michael Gunn, ballets by Jessie Noir, harlequinade by Thomas Otto) and sung by Nelly Bouverist, principal girl? Firstly, oscillation between events of imperial and of local interest, the anticipated diamond jubilee of Queen Victoria (born 1820, acceded 1837) and the posticipated",
+  "Then $$$ came to him, suddenly and complete, a word out of nowhere. He held it there a moment and went on.",
+  "opening of the new municipal fish market: secondly, apprehension of opposition from extreme circles on the questions of the respective visits of Their Royal Highnesses the duke and duchess of York (real) and of His Majesty King Brian Boru (imaginary)"
+ ]}
+];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function lineRows(el){
+  const ps=[...el.querySelectorAll('p')], rows=[]; let global=0;
+  ps.forEach((p,pi)=>{
+    const n=p.firstChild;if(!n)return;
+    const tops=[];
+    for(let i=0;i<n.data.length;i++){
+      if(/\s/.test(n.data[i]))continue;
+      const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+1);
+      const top=r.getBoundingClientRect().top;
+      if(!tops.some(t=>Math.abs(t-top)<0.75))tops.push(top);
+    }
+    tops.sort((a,b)=>a-b).forEach((top,li)=>rows.push({line:++global,para:pi+1,paraLine:li+1,top}));
+  });
+  return rows;
+}
+function measureSample(s){
+  const box=document.createElement('div'); box.className='page'; box.style.position='fixed'; box.style.left='-10000px';
+  box.innerHTML=s.paras.map(x=>'<p>'+esc(x)+'</p>').join('');
+  document.body.appendChild(box);
+  const rows=lineRows(box);
+  const first=rows.find(x=>x.para===2&&x.paraLine===1);
+  box.remove();
+  return first?first.line:null;
+}
+const actual=SAMPLES.map(measureSample);
+function show(i){
+  const s=SAMPLES[i];
+  document.getElementById('page').innerHTML=s.paras.map(x=>'<p>'+esc(x)+'</p>').join('');
+  document.getElementById('detail').textContent=s.label+' · target '+s.target+' · actual Safari '+actual[i]+'. First paragraph is the carry-over fragment; airlock is paragraph 2.';
+  scrollTo(0,0);
+}
+function init(){
+  document.getElementById('status').textContent='Actual Safari: '+SAMPLES.map((s,i)=>s.target+'→'+actual[i]).join(' · ');
+  document.getElementById('results').innerHTML=SAMPLES.map((s,i)=>'<div class="chip">'+s.label+'<br>'+s.target+' → <b>'+actual[i]+'</b></div>').join('');
+  document.getElementById('controls').innerHTML=SAMPLES.map((s,i)=>'<button onclick="show('+i+')">'+(i+1)+'</button>').join('');
+  show(0);
+}
+requestAnimationFrame(init);
+</script>
+</body>
+</html>
