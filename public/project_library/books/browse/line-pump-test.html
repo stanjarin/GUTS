@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GUTS line-pump phone test</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#fbf8ef;color:#29261f;font-family:Georgia,serif}
+body{min-height:100vh}
+.top{position:sticky;top:0;z-index:5;background:#f3efe4;border-bottom:1px solid #b8ae99;padding:10px 12px;font:14px Georgia,serif}
+.status{padding:12px 15px 8px;font:14px/1.4 -apple-system,BlinkMacSystemFont,sans-serif}
+.results{display:flex;gap:8px;padding:0 15px 12px;flex-wrap:wrap}
+.chip{border:1px solid #b8ae99;border-radius:7px;padding:8px 10px;background:#fffdf7;font:14px/1.2 -apple-system,BlinkMacSystemFont,sans-serif}
+.chip b{font-size:18px}
+.controls{display:flex;gap:8px;padding:0 15px 12px}
+button{font:14px -apple-system,BlinkMacSystemFont,sans-serif;padding:8px 12px;border:1px solid #9c927d;border-radius:7px;background:#fffdf7;color:#29261f}
+.reader{position:relative;width:100%}
+.page{width:100%;padding:25px 15px 58px;font:15px/1.45 Georgia,serif;color:#29261f;background:#fbf8ef}
+.page p{width:329px;max-width:100%;margin:0 auto .72em}
+.page p:first-child{margin-top:2px}
+.page p+p{text-indent:1.5em}
+.marker{padding:0 15px 18px;font:12px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#5f594d}
+.measure{position:fixed;left:-10000px;top:0;width:100vw;visibility:hidden;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="top">GUTS · actual Safari line-pump test</div>
+<div class="status" id="status">Measuring this device…</div>
+<div class="results" id="results"></div>
+<div class="controls">
+  <button onclick="showCase(0)">Page 1</button>
+  <button onclick="showCase(1)">Page 2</button>
+  <button onclick="showCase(2)">Page 3</button>
+</div>
+<div class="reader"><div class="page" id="visiblePage"></div></div>
+<div class="marker" id="detail"></div>
+<div class="measure" id="measure"></div>
+<script>
+const AIR='At that very time, in that dark forgotten corner of the castle, a ragged, shrivelled, ancient creature yet again mused over the faint scribble on the wall. “$$$…” he muttered, disappearing into the shadows of the hallway.';
+const TESTS=[
+ {name:'Gormenghast Ch2 p1',target:8,donor:'What of the living? His mother, half asleep and half aware: with the awareness of anger, the detachment of trance. She saw him seven times in seven years. Then she forgot the halls that harboured him. But now she watches him from hidden windows. Her love for him is as heavy and as formless as loam. A furlong of white cats trails after her. A bullfinch has a nest in her red hair. She is the Countess Gertrude of huge clay.'},
+ {name:'Gormenghast Ch2 p2',target:12,donor:'Who else is there of the direct blood-line? Only the vacant Aunts, Cora and Clarice, the identical twins and sisters of Sepulchrave. So limp of brain that for them to conceive an idea is to risk a haemorrhage. So limp of body that their purple dresses appear no more indicative of housing nerves and sinews than when they hang suspended from their hooks. Of the others? The lesser breed? In order of social precedence, possibly the Prunesquallors first, that is, the Doctor and his closely-swathed and bone-protruding sister. The doctor with his hyena laugh, his bizarre and elegant body, his celluloid face. His main defects? The unsufferable pitch of his voice; his maddening laughter and his affected gestures. His cardinal virtue? An undamaged brain. His sister Irma. Vain as a child; thin as a stork’s leg, and, in her black glasses, as blind as an owl in daylight. She misses her footing on the social ladder at least three times a week, only to start climbing again, wriggling her pelvis the while. She clasps her dead, white hands beneath her chin in the high hope of hiding the flatness of her chest. Who next? Socially, there is no one else. That is to say no one who, during'},
+ {name:'Gormenghast Ch2 p3',target:16,donor:'The lynchpin son of the dead Sourdust, by name Barquentine, Master of Ritual, is a stunted and cantankerous pedant of seventy, who stepped into his father’s shoes (or, to be exact, into his shoe, for this Barquentine is a one-legged thing who smites his way through ill-lit corridors on a grim and echoing crutch). Flay, who has already appeared as his own ghost, is very much alive in Gormenghast forest. Taciturn and cadaverous, he is no less than Barquentine a traditionalist of the old school. But, unlike Barquentine, his angers when the Law is flouted are uprisings of a hot loyalty that blinds him, and not the merciless and stony intolerance of the cripple. To speak of Mrs Slagg at this late juncture seems unfair. That Titus himself, heir to Gormenghast, is her charge, as was Fuchsia in her childhood, is surely enough to place her at the head of any register. But she is so minute, so frightened, so old, so querulous, she neither could, nor would, head any procession, even on paper. Her peevish cry goes out: ‘Oh, my weak heart! how could they?’ and she hurries to Fuchsia either to smack the abstracted girl in order to ease herself, or to bury the wrinkled prune of her face in Fuchsia’s side.'}
+];
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const wc=s=>(s.match(/\S+/g)||[]).length;
+function sentences(s){
+  return s.trim().split(/(?<=[.!?])\s+(?=[“‘"'A-Z0-9])/).map(x=>x.trim()).filter(Boolean);
+}
+function lineStarts(page){
+  const ps=[...page.querySelectorAll('p')], rows=[];
+  let global=0;
+  ps.forEach((p,pi)=>{
+    const n=p.firstChild;if(!n||n.nodeType!==3)return;
+    const tops=[];
+    for(let i=0;i<n.data.length;i++){
+      if(/\s/.test(n.data[i]))continue;
+      const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+1);
+      const top=r.getBoundingClientRect().top;
+      if(!tops.some(t=>Math.abs(t-top)<0.75))tops.push(top);
+    }
+    tops.sort((a,b)=>a-b).forEach((top,li)=>rows.push({line:++global,para:pi+1,paraLine:li+1,top}));
+  });
+  return rows;
+}
+function measureCarry(carry){
+  const m=document.getElementById('measure');
+  m.innerHTML='<div class="page"><p>'+esc(carry)+'</p><p>'+esc(AIR)+'</p></div>';
+  const p=m.querySelector('.page');
+  const rows=lineStarts(p);
+  const first=rows.find(x=>x.para===2&&x.paraLine===1);
+  return first?first.line:null;
+}
+function solve(t){
+  const ss=sentences(t.donor), cand=[];
+  for(let cut=1;cut<ss.length;cut++){
+    const head=ss.slice(0,cut).join(' ');
+    const carry=ss.slice(cut).join(' ');
+    if(wc(head)<12||wc(carry)<12)continue;
+    const line=measureCarry(carry);
+    if(line==null)continue;
+    cand.push({cut,head,carry,line,error:Math.abs(line-t.target)});
+  }
+  cand.sort((a,b)=>a.error-b.error || Math.abs(wc(a.carry)-80)-Math.abs(wc(b.carry)-80) || a.cut-b.cut);
+  return cand[0]||null;
+}
+const solved=TESTS.map(t=>({...t,best:solve(t)}));
+function renderResults(){
+  const el=document.getElementById('results');
+  el.innerHTML=solved.map((x,i)=>{
+    const got=x.best?x.best.line:'—';
+    return '<div class="chip" onclick="showCase('+i+')">'+(i+1)+': target '+x.target+' → <b>'+got+'</b></div>';
+  }).join('');
+  const got=solved.map(x=>x.best?x.best.line:'—').join(' / ');
+  document.getElementById('status').textContent='This Safari measured: '+got+'. Tap a page to inspect the chosen carry.';
+}
+function showCase(i){
+  const x=solved[i], p=document.getElementById('visiblePage');
+  if(!x.best){p.innerHTML='<p>No legal split found.</p>';return}
+  p.innerHTML='<p>'+esc(x.best.carry)+'</p><p>'+esc(AIR)+'</p>';
+  document.getElementById('detail').textContent=x.name+' · target '+x.target+' · actual '+x.best.line+' · carried '+wc(x.best.carry)+' words · prefix retained for previous page '+wc(x.best.head)+' words.';
+  scrollTo(0,0);
+}
+requestAnimationFrame(()=>{renderResults();showCase(0)});
+</script>
+</body>
+</html>
