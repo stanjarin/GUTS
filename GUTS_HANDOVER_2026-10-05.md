@@ -145,7 +145,7 @@ Interpretation:
 - prepared-layer paragraphing may be reshaped to hit the target, but genuine prose words and order must not change;
 - if an exact target is impossible, choose the nearest legal rendered line;
 - never repeat the immediately previous prepared page's socket-start line when any legal alternative exists;
-- aim for at least **2 rendered lines** separation from the previous prepared page;
-- any run of 3 prepared pages within a **2-line band** is RETENTION and must be broken;
+- aim for at least **4 rendered lines** separation from the previous prepared page where a legal placement permits;
+- any run of 3 prepared pages whose socket-start lines fall within a **4-line band** is RETENTION and must be broken;
 - the line cycle is a design compass, not permission to violate the core page-pump law.
 
