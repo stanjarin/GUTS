@@ -22,16 +22,19 @@ CORPORA=[
 "PERFORMANCE10/perelman_performance.json","PERFORMANCE10/policeman_performance.json",
 "PERFORMANCE10/ripley_performance.json","PERFORMANCE10/ubu_performance.json"]
 
-JS_MEASURE=r"""carry => {
+JS_MEASURE_MANY=r"""carries => {
   const p=document.querySelector('.page');
-  p.innerHTML='';
-  const a=document.createElement('p'); a.textContent=carry; p.appendChild(a);
-  const b=document.createElement('p'); b.textContent='Then $$$ came to him.'; p.appendChild(b);
-  const range=document.createRange(); range.selectNodeContents(a);
-  const rects=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0);
-  const tops=[];
-  for(const r of rects) if(!tops.some(t=>Math.abs(t-r.top)<0.75)) tops.push(r.top);
-  return tops.length+1;
+  const out=[];
+  for(const carry of carries){
+    p.innerHTML='';
+    const a=document.createElement('p'); a.textContent=carry; p.appendChild(a);
+    const range=document.createRange(); range.selectNodeContents(a);
+    const rects=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0);
+    const tops=[];
+    for(const r of rects) if(!tops.some(t=>Math.abs(t-r.top)<0.75)) tops.push(r.top);
+    out.push(tops.length+1);
+  }
+  return out;
 }"""
 
 def words(s): return re.findall(r"\S+", str(s))
@@ -52,15 +55,42 @@ def extract_page(p):
     genuine=[x for i,x in enumerate(fp) if i!=ai]
     return {"genuine":genuine,"air":air,"old_ai":ai}
 
-def candidate_splits(genuine, measure, target, prev_line, history):
+def candidate_splits(genuine, measure_many, target, prev_line, history, protect_first=True):
     """
-    Choose only candidates that obey the hard line law.
-    The donor may run several genuine paragraphs together; this is prepared-layer
-    camouflage only. Genuine words/order remain unchanged.
+    Create the next page's carry from the *tail after the current page's own carry*.
+    This prevents the outgoing pump from moving the current page's socket.
+    First try sentence boundaries; if none obey the line law, use ordinary word
+    boundaries. Page breaks inside a paragraph are natural and preserve all
+    genuine words/order.
     """
-    cands=[]
-    max_tail=len(genuine)
-    for k in range(1,max_tail+1):
+    if not genuine:
+        return []
+    floor=1 if protect_first else 0
+    available=len(genuine)-floor
+    if available<=0:
+        return []
+
+    def score_raw(raw):
+        if not raw: return []
+        lines=measure_many([x["carry"] for x in raw])
+        cands=[]
+        for x,line in zip(raw,lines):
+            if line is None: continue
+            if prev_line is not None and abs(line-prev_line)<4:
+                continue
+            if len(history)>=2 and history[-2] is not None and history[-1] is not None:
+                vals=[history[-2],history[-1],line]
+                if max(vals)-min(vals)<=4:
+                    continue
+            score=abs(line-target)*10+abs(wc(x["carry"])-80)/20+x["k"]*.05
+            cands.append((score,x["k"],x["head"],x["carry"],line))
+        cands.sort(key=lambda x:x[0])
+        return cands
+
+    # Preferred editorial path: merge only the trailing prepared paragraphs and
+    # split at a sentence boundary.
+    raw=[]
+    for k in range(1,available+1):
         donor=" ".join(genuine[-k:]).strip()
         ss=split_sentences(donor)
         if len(ss)<2: continue
@@ -69,22 +99,29 @@ def candidate_splits(genuine, measure, target, prev_line, history):
         for cut in range(1,len(ss)):
             head=" ".join(ss[:cut]).strip()
             carry=" ".join(ss[cut:]).strip()
-            if wc(head)<8 or wc(carry)<8: continue
-            if wc(carry)>220: continue
-            remain=prefix_words+wc(head)
-            if remain<60: continue
-            line=measure(carry)
-            if line is None: continue
-            if prev_line is not None and abs(line-prev_line)<4:
-                continue
-            if len(history)>=2 and history[-2] is not None and history[-1] is not None:
-                vals=[history[-2],history[-1],line]
-                if max(vals)-min(vals)<=4:
-                    continue
-            score=abs(line-target)*10+abs(wc(carry)-80)/20+k*.05
-            cands.append((score,k,head,carry,line))
-    cands.sort(key=lambda x:x[0])
-    return cands
+            if wc(head)<8 or wc(carry)<8 or wc(carry)>220: continue
+            if prefix_words+wc(head)<45: continue
+            raw.append({"k":k,"head":head,"carry":carry})
+    got=score_raw(raw)
+    if got:
+        return got
+
+    # Mechanical fallback: a page break may occur between any two words inside
+    # a paragraph. This is not an editorial rewrite; it merely moves the page
+    # boundary. Use the entire legal trailing donor and sample every 2 words.
+    k=available
+    donor=" ".join(genuine[-k:]).strip()
+    toks=words(donor)
+    prefix_words=sum(wc(x) for x in genuine[:-k])
+    raw=[]
+    lo=max(8,45-prefix_words)
+    hi=len(toks)-8
+    for cut in range(lo,hi+1,2):
+        head=" ".join(toks[:cut]).strip()
+        carry=" ".join(toks[cut:]).strip()
+        if wc(carry)>220: continue
+        raw.append({"k":k,"head":head,"carry":carry})
+    return score_raw(raw)
 
 def rebuild_page(orig, genuine, air, forceable):
     q=copy.deepcopy(orig)
@@ -122,29 +159,32 @@ def repair_book(book,page,stats,failures):
             stats["chapters_skipped"]+=1
             continue
 
-        # Each boundary pumps a suffix of page pi-1 into the head of page pi.
-        # If no legal split exists, leave that boundary unchanged and flag HOLD.
         lines=[]
-        incoming_ok=[False]*len(prepared)
+        unresolved=[False]*len(prepared)
+
+        # Boundary pi-1 -> pi. The outgoing donor on pi-1 is restricted to text
+        # after its first genuine paragraph, because that first paragraph is the
+        # incoming carry that determines pi-1's own socket depth.
         for pi in range(1,len(prepared)):
             target=TARGETS[(pi-1)%len(TARGETS)]
             prev=prepared[pi-1]
             cur=prepared[pi]
             cands=candidate_splits(
                 prev["genuine"],
-                lambda s:page.evaluate(JS_MEASURE,s),
+                lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
                 target,
                 lines[-1] if lines else None,
-                lines
+                lines,
+                protect_first=(pi-1)>0
             )
             if not cands:
+                unresolved[pi]=True
                 stats["unresolved_pages"]+=1
                 lines.append(None)
                 continue
             _,k,head,carry,line=cands[0]
             prev["genuine"]=prev["genuine"][:-k]+[head]
             cur["genuine"]=[carry]+cur["genuine"]
-            incoming_ok[pi]=True
             lines.append(line)
             stats["forceable_pages"]+=1
             stats["line_abs_error"]+=abs(line-target)
@@ -153,31 +193,42 @@ def repair_book(book,page,stats,failures):
             elif abs(line-target)==2: stats["within2"]+=1
             else: stats["beyond2"]+=1
 
-        # Rebuild any page whose prepared genuine layer changed. This is crucial:
-        # a page may have received carry even if its own outgoing boundary later
-        # proved unresolved.
+        # Rebuild prepared layers. Every resolved non-opener page gets airlock
+        # immediately after the incoming carry.
+        final_lines=[]
         for pi,p in enumerate(pages):
-            changed = prepared[pi]["genuine"] != original_genuine[pi]
             q=copy.deepcopy(p)
-            if changed:
-                g=prepared[pi]["genuine"]
-                if g:
-                    q["force_paragraphs"]=[g[0],prepared[pi]["air"]]+g[1:]
-                    q["airlock_index"]=1
-                    q["pre_airlock_words"]=wc(g[0])
+            g=prepared[pi]["genuine"]
+            if pi>0 and not unresolved[pi] and g:
+                q["force_paragraphs"]=[g[0],prepared[pi]["air"]]+g[1:]
+                q["airlock_index"]=1
+                q["pre_airlock_words"]=wc(g[0])
+                final_line=page.evaluate(JS_MEASURE_MANY,[g[0]])[0]
+                final_lines.append(final_line)
+            else:
+                # Even if this page's incoming boundary is unresolved, preserve
+                # any outgoing boundary change so genuine chapter order survives.
+                if g!=original_genuine[pi] and g:
+                    oldai=prepared[pi]["old_ai"]
+                    ai=max(0,min(oldai,len(g)))
+                    fp=list(g); fp.insert(ai,prepared[pi]["air"])
+                    q["force_paragraphs"]=fp
+                    q["airlock_index"]=ai
+                final_lines.append(None)
+
             if q.get("force_paragraphs")!=p.get("force_paragraphs"):
                 stats["pages_changed"]+=1
             pages[pi]=q
             after_stream += norm_tokens([x for x in q.get("force_paragraphs",[]) if "$$$" not in str(x)])
 
-        # Hard post-checks on resolved incoming pages.
-        resolved_lines=[x for x in lines if x is not None]
-        for i in range(1,len(lines)):
-            if lines[i-1] is None or lines[i] is None: continue
-            if abs(lines[i]-lines[i-1])<4:
+        # Final rendered-line law is checked on rebuilt pages, not planning data.
+        for i in range(1,len(final_lines)):
+            a,b=final_lines[i-1],final_lines[i]
+            if a is None or b is None: continue
+            if abs(b-a)<4:
                 stats["spacing_violations"]+=1
-        for i in range(2,len(lines)):
-            tri=lines[i-2:i+1]
+        for i in range(2,len(final_lines)):
+            tri=final_lines[i-2:i+1]
             if any(x is None for x in tri): continue
             if max(tri)-min(tri)<=4:
                 stats["retention_windows"]+=1
@@ -205,10 +256,12 @@ def main():
     ap.add_argument("--write",action="store_true")
     ap.add_argument("--report",default="docs/checkpoints/2026-10-05_line-pump-corpus-repair.md")
     args=ap.parse_args()
-    roots=[]
-    for prefix in [Path("public"),Path(".")]:
-        found=[prefix/x for x in CORPORA if (prefix/x).exists()]
-        if found: roots.append((prefix,found))
+    authorities=[]
+    for rel in CORPORA:
+        pub=Path("public")/rel
+        root=Path(rel)
+        if pub.exists(): authorities.append((rel,pub,root if root.exists() else None))
+        elif root.exists(): authorities.append((rel,root,None))
     failures=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
@@ -218,10 +271,12 @@ def main():
         browser=pw.chromium.launch(headless=True)
         pg=browser.new_page(viewport={"width":414,"height":736},device_scale_factor=1)
         pg.set_content(f"<!doctype html><style>{CSS}</style><div class='page'></div>")
-        for prefix,files in roots:
-            for path in files:
-                st=process_copy(path,pg,args.write,totals,failures)
-                per.append((str(path),st))
+        for rel,path,mirror in authorities:
+            st=process_copy(path,pg,args.write,totals,failures)
+            per.append((str(path),st))
+            if args.write and mirror is not None:
+                mirror.parent.mkdir(parents=True,exist_ok=True)
+                mirror.write_bytes(path.read_bytes())
         browser.close()
 
     # parity check for root/public copies where both exist
