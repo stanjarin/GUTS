@@ -117,3 +117,19 @@ Do not rerun the old word-count sweep.
 Keep output tiny.
 
 After that Stanley will scout those chapters and the HIGH/LOW chapter set on the actual phone.
+
+
+## CORE DESIGN LAW — PAGE PUMP
+
+This is the governing illusion and outranks later implementation shorthand:
+
+- **Every prepared page must begin mid-paragraph**, carrying genuine prose forward from the previous page. A fresh non-$$$ paragraph at page top is a defect because it exposes the preparation logic.
+- Genuine prose words and order are inviolable.
+- Prepared-layer paragraph boundaries are flexible camouflage: paragraphs may be run together or split at sensible sentence boundaries if needed, provided genuine word order is preserved.
+- The previous page is the **pump** that creates the carry fragment for the next page.
+- The $$$ airlock must appear later at a deliberately varied **rendered line depth**.
+- Retention is therefore a **line-position** problem, not a word-count or pixel-model problem.
+- Browser-rendered lines on the real target device are authoritative. Word-depth targets such as 28/48/68/38/58 are historical implementation aids only and must not override the design law.
+- The intended chain is: **previous page creates carry → carry fixes next-page head → line pump shapes pre-socket depth → $$$ lands at a varied line.**
+
+For future handovers: carry this section forward verbatim or link to it; do not bulk-reload historical audits unless a defect requires them.
