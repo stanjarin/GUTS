@@ -269,8 +269,8 @@ Implementation QA on all **4,858** prepared pages: **1,272** placements changed,
 
 ## Wall-hit residual-location recovery — 5 Oct 2026
 
-The formatted placement repair remains promoted on `main` at
-`99a4d422dc69ae6ba07e81f4ee25f07e2e081273`.
+The formatted placement repair runtime/content anchor remains
+`99a4d422dc69ae6ba07e81f4ee25f07e2e081273`. Later 5 Oct commits are documentation-only handover/current-state writes.
 
 Exact rollback remains:
 `rollback-pre-formatted-repair-2026-10-05` @ `64dfc21877abff262f91b15a845dbb9db4660d9c`.
