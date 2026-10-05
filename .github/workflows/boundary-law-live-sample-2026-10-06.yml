@@ -7,6 +7,7 @@ on:
     paths:
       - tools/generate_boundary_live_sample.py
       - .github/workflows/boundary-law-live-sample-2026-10-06.yml
+      - .github/boundary-law-live-sample-trigger-2026-10-06
 
 permissions:
   contents: write
