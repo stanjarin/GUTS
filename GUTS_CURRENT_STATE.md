@@ -1,11 +1,11 @@
 # GUTS — CURRENT STATE
 
-**Authoritative checkpoint: 4 October 2026**
+**Authoritative checkpoint: 5 October 2026**
 
 ## Read first
 
 1. `GUTS_WORKFLOW_CONSTITUTION.md`
-2. `GUTS_HANDOVER_2026-10-04.md`
+2. `GUTS_HANDOVER_2026-10-05.md`
 3. this file
 4. `docs/CURRENT_STATE.md`
 5. relevant NoBo handover/README
@@ -265,3 +265,21 @@ Repair law: leave acceptable placements alone; repair sockets above 120px or bel
 Implementation QA on all **4,858** prepared pages: **1,272** placements changed, including **766** prepared sentence-boundary splits; malformed/multi-socket pages **0**. Conservative implementation-model flags: high **908 → 8**, low **208 → 2**, below-540 **179 → 0**, retention runs **208 → 5**. The canonical 4 Oct pre-repair audit remains 830 / 219 / 187 / 217; its glyph model differs slightly from the implementation estimator, so those pre-count sets are not interchangeable.
 
 **NEXT ACTION:** Stanley actual-phone visual QA. If accepted, freeze the placement layer. If rejected, the rollback branch restores exact pre-repair `main`.
+
+
+## Wall-hit residual-location recovery — 5 Oct 2026
+
+The formatted placement repair remains promoted on `main` at
+`99a4d422dc69ae6ba07e81f4ee25f07e2e081273`.
+
+Exact rollback remains:
+`rollback-pre-formatted-repair-2026-10-05` @ `64dfc21877abff262f91b15a845dbb9db4660d9c`.
+
+Stanley requested the exact locations of the residual **8 HIGH / 2 LOW / 5 RETENTION** cases. The 5 Oct repair checkpoint persisted the counts but not their location list.
+
+A narrow read-only recovery was started. Provisional strong high candidates and two strong low candidates were recovered; the five retention runs were not safely isolated before wall-hit. The exact implementation estimator was not found as a saved reusable script, so the provisional location list is not yet canonical.
+
+Canonical wall-hit detail:
+`docs/checkpoints/2026-10-05_wall-hit-residual-location-recovery.md`
+
+**NEXT ACTION:** no edits. Recover the exact 8 / 2 / 5 location list cheaply and read-only from current main, then Stanley actual-phone QA. Do not rerun the old word-count sweep.
