@@ -16,10 +16,10 @@
 
 ## Current canonical state
 
-`main` is:
+Formatted runtime/content repair anchor:
 `99a4d422dc69ae6ba07e81f4ee25f07e2e081273`
 
-The formatted repair is already on main. Do not revert or re-repair casually.
+The formatted repair is already on main. Later 5 Oct commits are documentation-only handover/current-state writes; do not mistake the newer docs head for another corpus/runtime change. Do not revert or re-repair casually.
 
 Exact rollback:
 `rollback-pre-formatted-repair-2026-10-05` @
