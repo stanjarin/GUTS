@@ -83,3 +83,37 @@ Do a narrow, read-only residual-location recovery from current `main`, returning
 Keep bandwidth low. Do not dump corpus text or giant diffs into chat.
 
 After that, Stanley performs actual-phone visual QA. If accepted, freeze formatted placement. If rejected materially, rollback exists.
+
+
+## SECOND WALL-HIT — practical scouting handover
+
+Stanley clarified that the residual-location exercise is for **phone scouting**, not for mathematical completeness.
+
+For HIGH scouting, the useful chapter map is now sufficient:
+- Ulysses ch13 *Nausicaa*
+- Ulysses ch16 *Eumaeus*
+- Ulysses ch17 *Ithaca*
+- Gormenghast ch19
+- Gormenghast ch29
+
+The two strong LOW cases are both Ulysses ch17 *Ithaca*.
+
+Do not burn bandwidth resolving the borderline Gormenghast ch48 high candidate unless phone QA reveals a real defect.
+
+The conversation then wall-hit while Stanley was asking for the equivalent **books + chapters only** for the five residual RETENTION runs.
+
+Newest checkpoint:
+`docs/checkpoints/2026-10-05_wall-hit-scouting-handover.md`
+
+### EXACT NEXT ACTION
+
+Read-only only.
+
+Return just the **books and chapters containing the five residual RETENTION runs**.
+
+Do not seek exact page runs unless trivial.
+Do not edit corpus/runtime.
+Do not rerun the old word-count sweep.
+Keep output tiny.
+
+After that Stanley will scout those chapters and the HIGH/LOW chapter set on the actual phone.
