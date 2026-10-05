@@ -27,23 +27,11 @@ JS_MEASURE=r"""carry => {
   p.innerHTML='';
   const a=document.createElement('p'); a.textContent=carry; p.appendChild(a);
   const b=document.createElement('p'); b.textContent='Then $$$ came to him.'; p.appendChild(b);
-  const ps=[...p.querySelectorAll('p')]; let global=0;
-  for(let pi=0;pi<ps.length;pi++){
-    const n=ps[pi].firstChild;if(!n)continue;
-    const tops=[];
-    for(let i=0;i<n.data.length;i++){
-      if(/\s/.test(n.data[i]))continue;
-      const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+1);
-      const top=r.getBoundingClientRect().top;
-      if(!tops.some(x=>Math.abs(x-top)<0.75)) tops.push(top);
-    }
-    tops.sort((x,y)=>x-y);
-    for(let li=0;li<tops.length;li++){
-      global++;
-      if(pi===1&&li===0) return global;
-    }
-  }
-  return null;
+  const range=document.createRange(); range.selectNodeContents(a);
+  const rects=[...range.getClientRects()].filter(r=>r.width>0&&r.height>0);
+  const tops=[];
+  for(const r of rects) if(!tops.some(t=>Math.abs(t-r.top)<0.75)) tops.push(r.top);
+  return tops.length+1;
 }"""
 
 def words(s): return re.findall(r"\S+", str(s))
