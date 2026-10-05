@@ -77,7 +77,7 @@ def candidate_splits(genuine, measure, target, prev_line, history):
             if line is None: continue
             if prev_line is not None and abs(line-prev_line)<4:
                 continue
-            if len(history)>=2:
+            if len(history)>=2 and history[-2] is not None and history[-1] is not None:
                 vals=[history[-2],history[-1],line]
                 if max(vals)-min(vals)<=4:
                     continue
