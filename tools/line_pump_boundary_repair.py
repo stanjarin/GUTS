@@ -58,13 +58,13 @@ def extract_page(p):
 def is_terminal_token(tok):
     t=str(tok).strip()
     if not t: return False
-    bare=re.sub(r'[”"’\\')\\]]+$','',t)
+    bare=re.sub(r"[”\\\"’')\\]]+$","",t)
     low=bare.lower()
     if low in {"mr.","mrs.","ms.","dr.","prof.","sr.","jr.","st.","vs.","etc.","e.g.","i.e.","no.","nos.","fig.","ch."}:
         return False
     if re.fullmatch(r"[A-Za-z]\\.",bare):
         return False
-    return bool(re.search(r"[.!?][”"’\\')\\]]*$",t))
+    return bool(re.search(r"[.!?][”\\\"’')\\]]*$",t))
 
 def candidate_splits(genuine, measure_many, target, prev_line, history, protect_first=True):
     """
