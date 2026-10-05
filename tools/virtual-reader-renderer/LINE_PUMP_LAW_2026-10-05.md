@@ -22,10 +22,10 @@ For every prepared page, after layout:
 2. Record the rendered line on which the airlock paragraph begins.
 3. Stagger against the **previous prepared page's rendered airlock-start line**, not its word count.
 4. Never accept the same airlock-start line on two consecutive prepared pages when a legal alternative exists.
-5. Prefer a separation of at least **2 rendered lines** from the immediately previous prepared page.
-6. Treat a run of 3 prepared pages within a **2-line band** as RETENTION and force the next legal page outside that band.
+5. Prefer a separation of at least **4 rendered lines** from the immediately previous prepared page where a legal placement permits.
+6. Treat a run of 3 prepared pages whose socket-start lines fall within a **4-line band** as RETENTION and force the next legal page outside that band.
 7. Preserve genuine text and paragraph order. Prepared-layer sentence splitting is allowed only where already permitted by the existing corpus rules.
-8. Preserve the first-new-paragraph rule and chapter-opener protection. The pump may choose among legal prepared insertion points; it may not invent prose or move genuine text.
+8. **Every prepared page must begin mid-paragraph.** The previous page creates the carry fragment. Fresh non-$$ paragraph starts are defects. Prepared paragraph boundaries may be run together or split at sensible sentence boundaries, but genuine words and order are inviolable.
 
 ## Initial target cycle
 
@@ -36,9 +36,9 @@ Use a five-step line target cycle as a compass, not a mandate:
 This deliberately spans the usable vertical field while avoiding adjacent repeats. If the exact target is unavailable because of paragraph/sentence boundaries, choose the nearest legal rendered line subject to:
 
 - no consecutive repeat;
-- ideally >=2-line separation from previous page;
-- no 3-page cluster inside a 2-line band;
-- no violation of first-new-paragraph/chapter-opener rules.
+- ideally >=4-line separation from previous page;
+- no 3-page cluster inside a 4-line band;
+- every prepared page begins with genuine carry-over from an already-started paragraph.
 
 ## Why these targets
 
