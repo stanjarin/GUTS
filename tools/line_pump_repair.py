@@ -53,8 +53,13 @@ def extract_page(p):
     return {"genuine":genuine,"air":air,"old_ai":ai}
 
 def candidate_splits(genuine, measure, target, prev_line, history):
+    """
+    Choose only candidates that obey the hard line law.
+    The donor may run several genuine paragraphs together; this is prepared-layer
+    camouflage only. Genuine words/order remain unchanged.
+    """
     cands=[]
-    max_tail=min(5,len(genuine))
+    max_tail=len(genuine)
     for k in range(1,max_tail+1):
         donor=" ".join(genuine[-k:]).strip()
         ss=split_sentences(donor)
@@ -64,19 +69,20 @@ def candidate_splits(genuine, measure, target, prev_line, history):
         for cut in range(1,len(ss)):
             head=" ".join(ss[:cut]).strip()
             carry=" ".join(ss[cut:]).strip()
-            if wc(head)<12 or wc(carry)<12: continue
-            if wc(carry)>180: continue
+            if wc(head)<8 or wc(carry)<8: continue
+            if wc(carry)>220: continue
             remain=prefix_words+wc(head)
-            if remain<120: continue
+            if remain<60: continue
             line=measure(carry)
             if line is None: continue
-            spacing_bad = prev_line is not None and abs(line-prev_line)<4
-            window_bad=False
+            if prev_line is not None and abs(line-prev_line)<4:
+                continue
             if len(history)>=2:
                 vals=[history[-2],history[-1],line]
-                if max(vals)-min(vals)<=4: window_bad=True
-            score=(200 if window_bad else 0)+(80 if spacing_bad else 0)+abs(line-target)*10+abs(wc(carry)-80)/20+k*.05
-            cands.append((score,k,head,carry,line,spacing_bad,window_bad))
+                if max(vals)-min(vals)<=4:
+                    continue
+            score=abs(line-target)*10+abs(wc(carry)-80)/20+k*.05
+            cands.append((score,k,head,carry,line))
     cands.sort(key=lambda x:x[0])
     return cands
 
@@ -99,6 +105,7 @@ def repair_book(book,page,stats,failures):
         pages=ch.get("pages",[])
         if not pages: continue
         prepared=[]
+        original_genuine=[]
         chapter_ok=True
         for pi,p in enumerate(pages):
             e=extract_page(p)
@@ -109,25 +116,35 @@ def repair_book(book,page,stats,failures):
                 failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: prepared/genuine page token mismatch")
                 chapter_ok=False; break
             prepared.append(e)
+            original_genuine.append(list(e["genuine"]))
             before_stream += norm_tokens(e["genuine"])
         if not chapter_ok:
             stats["chapters_skipped"]+=1
             continue
 
+        # Each boundary pumps a suffix of page pi-1 into the head of page pi.
+        # If no legal split exists, leave that boundary unchanged and flag HOLD.
         lines=[]
-        unresolved=[]
+        incoming_ok=[False]*len(prepared)
         for pi in range(1,len(prepared)):
             target=TARGETS[(pi-1)%len(TARGETS)]
             prev=prepared[pi-1]
             cur=prepared[pi]
-            cands=candidate_splits(prev["genuine"],lambda s:page.evaluate(JS_MEASURE,s),target,lines[-1] if lines else None,lines)
+            cands=candidate_splits(
+                prev["genuine"],
+                lambda s:page.evaluate(JS_MEASURE,s),
+                target,
+                lines[-1] if lines else None,
+                lines
+            )
             if not cands:
-                unresolved.append(pi)
                 stats["unresolved_pages"]+=1
+                lines.append(None)
                 continue
-            _,k,head,carry,line,spacing_bad,window_bad=cands[0]
+            _,k,head,carry,line=cands[0]
             prev["genuine"]=prev["genuine"][:-k]+[head]
             cur["genuine"]=[carry]+cur["genuine"]
+            incoming_ok[pi]=True
             lines.append(line)
             stats["forceable_pages"]+=1
             stats["line_abs_error"]+=abs(line-target)
@@ -135,16 +152,35 @@ def repair_book(book,page,stats,failures):
             elif abs(line-target)==1: stats["within1"]+=1
             elif abs(line-target)==2: stats["within2"]+=1
             else: stats["beyond2"]+=1
-            if spacing_bad: stats["spacing_violations"]+=1
-            if window_bad: stats["retention_windows"]+=1
 
+        # Rebuild any page whose prepared genuine layer changed. This is crucial:
+        # a page may have received carry even if its own outgoing boundary later
+        # proved unresolved.
         for pi,p in enumerate(pages):
-            forceable=(pi>0 and pi not in unresolved)
-            newp=rebuild_page(p,prepared[pi]["genuine"],prepared[pi]["air"],forceable)
-            if newp.get("force_paragraphs")!=p.get("force_paragraphs"):
+            changed = prepared[pi]["genuine"] != original_genuine[pi]
+            q=copy.deepcopy(p)
+            if changed:
+                g=prepared[pi]["genuine"]
+                if g:
+                    q["force_paragraphs"]=[g[0],prepared[pi]["air"]]+g[1:]
+                    q["airlock_index"]=1
+                    q["pre_airlock_words"]=wc(g[0])
+            if q.get("force_paragraphs")!=p.get("force_paragraphs"):
                 stats["pages_changed"]+=1
-            pages[pi]=newp
-            after_stream += norm_tokens([x for x in newp.get("force_paragraphs",[]) if "$$$" not in str(x)])
+            pages[pi]=q
+            after_stream += norm_tokens([x for x in q.get("force_paragraphs",[]) if "$$$" not in str(x)])
+
+        # Hard post-checks on resolved incoming pages.
+        resolved_lines=[x for x in lines if x is not None]
+        for i in range(1,len(lines)):
+            if lines[i-1] is None or lines[i] is None: continue
+            if abs(lines[i]-lines[i-1])<4:
+                stats["spacing_violations"]+=1
+        for i in range(2,len(lines)):
+            tri=lines[i-2:i+1]
+            if any(x is None for x in tri): continue
+            if max(tri)-min(tri)<=4:
+                stats["retention_windows"]+=1
 
     if before_stream!=after_stream:
         failures.append(f"{book.get('id','?')}: chapter-stream token order mismatch after repair")
