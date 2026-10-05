@@ -2,9 +2,11 @@
 
 ## Status at wall
 
-Current `main`:
+Formatted runtime/content repair anchor:
 `99a4d422dc69ae6ba07e81f4ee25f07e2e081273`
 — **Repair formatted airlock placement under fixed Reader measure**
+
+Later 5 Oct commits are documentation-only handover/current-state records. Do not mistake the newer docs head for another corpus/runtime repair.
 
 Exact pre-repair rollback:
 `rollback-pre-formatted-repair-2026-10-05` @
