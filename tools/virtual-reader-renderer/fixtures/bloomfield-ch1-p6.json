@@ -1,0 +1,40 @@
+{
+  "name": "Bloomfield Ch 1 p6 control",
+  "viewport": {
+    "width": 414,
+    "height": 736,
+    "device_scale_factor": 1
+  },
+  "paragraphs": [
+    "Michael Bloomfield’s father was nothing if not a risk taker. But Harold strongly disapproved of his elder son’s obsession with music. He was a consummate businessman, driven by personal discipline and a determination to succeed, and he devoted nearly all his waking hours to that objective.",
+    "At this point it’s useful to remember one of Mike’s earliest observations: ‘Who would have thought? $$$. Of all things.’",
+    "That Michael could spend entire days in his room listening to music—if that noise could even be called music—while playing along on a buzzy, loud electric guitar was alarming. Time that should have been devoted to schoolwork was instead squandered on a frivolous hobby. Mr. Bloomfield could see no future in rock’n’ roll for his son. In his eyes, Michael was destined to join him in the family business, just as he had done with his father. The boy would be a businessman like the Bloomfield men before him. But Michael Bloomfield had no interest in business. He had found something he was good at—playing guitar—and had discovered a world of sound in rock’n’ roll, R&B, and blues—especially blues—that excited him like nothing else. He had to know more about it, and about its creators. Many of them lived and worked in the vast metropolis just twenty miles to the south. Why couldn’t he go see them? Michael had been listening to the big stars of Chicago blues on the radio for many months, and now he decided he would go see the biggest. He would go see Muddy Waters."
+  ],
+  "css": ".page{max-width:640px;margin:auto;}",
+  "expected_lines": [
+    "Michael Bloomfield’s father was nothing if not",
+    "a risk taker. But Harold strongly disapproved",
+    "of his elder son’s obsession with music. He",
+    "was a consummate businessman, driven by",
+    "personal discipline and a determination to",
+    "succeed, and he devoted nearly all his waking",
+    "hours to that objective.",
+    "At this point it’s useful to remember one of",
+    "Mike’s earliest observations: ‘Who would have",
+    "thought? $$$. Of all things.’",
+    "That Michael could spend entire days in his",
+    "room listening to music—if that noise could",
+    "even be called music—while playing along on a",
+    "buzzy, loud electric guitar was alarming. Time",
+    "that should have been devoted to schoolwork",
+    "was instead squandered on a frivolous hobby.",
+    "Mr. Bloomfield could see no future in rock’n’",
+    "roll for his son. In his eyes, Michael was",
+    "destined to join him in the family business,",
+    "just as he had done with his father. The boy",
+    "would be a businessman like the Bloomfield",
+    "men before him. But Michael Bloomfield had",
+    "no interest in business. He had found",
+    "something he was good at—playing guitar—"
+  ]
+}
