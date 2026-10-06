@@ -26,6 +26,34 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 
 ## Machine verdict: **HOLD**
 
+## Unresolved classification
+- NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT: **21**
+- SPACING_OR_RETENTION_CONFLICT: **1**
+
+## Unresolved locations
+- ch1 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch1 p3 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 12 — previous line None
+- ch3 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch4 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch6 p9 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 16 — previous line 12
+- ch7 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch8 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch9 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch11 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch11 p11 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 14 — previous line 10
+- ch12 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch14 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch16 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch17 p5 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 10 — previous line 5
+- ch17 p9 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 16 — previous line 12
+- ch21 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch21 p3 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 12 — previous line None
+- ch22 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch22 p3 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 12 — previous line None
+- ch22 p14 — SPACING_OR_RETENTION_CONFLICT — target 16 — previous line 4
+- ch22 p15 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 10 — previous line None
+- ch23 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+
 No machine-QA invariant failures detected.
 
-Next action: Stanley performs actual-phone QA on the Jeeves candidate before any promotion discussion.
+Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists.
