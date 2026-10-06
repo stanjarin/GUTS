@@ -66,11 +66,11 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
     No global stitching or OCR repair is attempted.
     """
     if not genuine:
-        return []
+        return [], "NO_GENUINE_DONOR"
     floor=1 if protect_first else 0
     available=len(genuine)-floor
     if available<=0:
-        return []
+        return [], "NO_AVAILABLE_DONOR"
 
     raw=[]
     for k in range(1,available+1):
@@ -97,7 +97,7 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
                 raw.append({"k":k,"head":head,"carry":carry,"remainder":remainder})
 
     if not raw:
-        return []
+        return [], "NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT"
 
     lines=measure_many([x["carry"] for x in raw])
     cands=[]
@@ -112,7 +112,9 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
         score=abs(line-target)*10+abs(wc(x["carry"])-80)/20+x["k"]*.05
         cands.append((score,x["k"],x["head"],x["carry"],x["remainder"],line))
     cands.sort(key=lambda x:x[0])
-    return cands
+    if not cands:
+        return [], "SPACING_OR_RETENTION_CONFLICT"
+    return cands, "OK"
 
 def rebuild_page(orig, genuine, air, forceable):
     q=copy.deepcopy(orig)
@@ -125,7 +127,7 @@ def rebuild_page(orig, genuine, air, forceable):
     q["pre_airlock_words"]=wc(genuine[0])
     return q
 
-def repair_book(book,page,stats,failures):
+def repair_book(book,page,stats,failures,unresolved_details):
     before_hash=para_hash(book)
     before_stream=[]
     after_stream=[]
@@ -158,7 +160,7 @@ def repair_book(book,page,stats,failures):
             target=TARGETS[(pi-1)%len(TARGETS)]
             prev=prepared[pi-1]
             cur=prepared[pi]
-            cands=candidate_splits(
+            cands,reason=candidate_splits(
                 prev["genuine"],
                 lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
                 target,
@@ -169,6 +171,14 @@ def repair_book(book,page,stats,failures):
             if not cands:
                 unresolved[pi]=True
                 stats["unresolved_pages"]+=1
+                unresolved_details.append({
+                    "book":book.get("id","?"),
+                    "chapter":ci+1,
+                    "page":pi+1,
+                    "target":target,
+                    "reason":reason,
+                    "previous_line":lines[-1] if lines else None
+                })
                 lines.append(None)
                 continue
 
@@ -233,12 +243,12 @@ def repair_book(book,page,stats,failures):
         stats["genuine_hash_mismatches"]+=1
     return book
 
-def process_copy(path,page,write,allstats,failures):
+def process_copy(path,page,write,allstats,failures,unresolved_details):
     book=json.loads(path.read_text())
     stats={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
                          "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","line_abs_error"]}
-    repaired=repair_book(book,page,stats,failures)
+    repaired=repair_book(book,page,stats,failures,unresolved_details)
     if write: path.write_text(json.dumps(repaired,ensure_ascii=False,separators=(",",":")))
     for k,v in stats.items(): allstats[k]+=v
     return stats
@@ -255,6 +265,7 @@ def main():
         if pub.exists(): authorities.append((rel,pub,root if root.exists() else None))
         elif root.exists(): authorities.append((rel,root,None))
     failures=[]
+    unresolved_details=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
                          "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","line_abs_error"]}
@@ -264,7 +275,7 @@ def main():
         pg=browser.new_page(viewport={"width":414,"height":736},device_scale_factor=1)
         pg.set_content(f"<!doctype html><style>{CSS}</style><div class='page'></div>")
         for rel,path,mirror in authorities:
-            st=process_copy(path,pg,args.write,totals,failures)
+            st=process_copy(path,pg,args.write,totals,failures,unresolved_details)
             per.append((str(path),st))
             if args.write and mirror is not None:
                 mirror.parent.mkdir(parents=True,exist_ok=True)
@@ -306,10 +317,20 @@ def main():
       f"- root/public corpus parity failures: **{sum(1 for _,ok in parity if not ok)}**","",
       f"## Machine verdict: **{'PASS' if passed else 'HOLD'}**",""
     ]
+    if unresolved_details:
+        from collections import Counter
+        counts=Counter(x["reason"] for x in unresolved_details)
+        lines+=["## Unresolved classification"]
+        for reason,count in sorted(counts.items()):
+            lines.append(f"- {reason}: **{count}**")
+        lines+=["","## Unresolved locations"]
+        for x in unresolved_details:
+            lines.append(f"- ch{x['chapter']} p{x['page']} — {x['reason']} — target {x['target']} — previous line {x['previous_line']}")
+        lines+=[""]
     if failures:
         lines+=["## Failures"]+[f"- {x}" for x in failures[:80]]
     else:
-        lines+=["No machine-QA invariant failures detected.","","Next action: Stanley performs actual-phone QA on the Jeeves candidate before any promotion discussion."]
+        lines+=["No machine-QA invariant failures detected.","","Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists."]
     rp=Path(args.report); rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text("\n".join(lines)+"\n")
     print("\n".join(lines[:30]))
     if not passed: raise SystemExit(2)
