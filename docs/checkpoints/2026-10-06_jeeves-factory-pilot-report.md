@@ -2,21 +2,21 @@
 
 **Jeeves-only branch automation. Production main and all other books untouched.**
 
-Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.
+Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined into a larger pump donor** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.
 
 Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.
 
 ## Compact QA
-- forceable prepared pages repaired: **183**
+- forceable prepared pages repaired: **182**
 - pages whose force layer changed: **210**
-- exact target hits: **160**
-- ±1 line: **3**
-- ±2 lines: **2**
-- >2 lines: **18**
-- mean absolute target error: **0.69 lines**
+- exact target hits: **169**
+- ±1 line: **1**
+- ±2 lines: **0**
+- >2 lines: **12**
+- mean absolute target error: **0.42 lines**
 - adjacent <4-line spacing violations: **0**
 - 3-page retention windows within 4-line band: **0**
-- unresolved prepared pages: **22**
+- unresolved prepared pages: **23**
 - skipped chapters: **0**
 - genuine paragraph hash mismatches: **0**
 - genuine token-order mismatches: **0**
@@ -27,7 +27,7 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 ## Machine verdict: **HOLD**
 
 ## Unresolved classification
-- NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT: **21**
+- NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT: **22**
 - SPACING_OR_RETENTION_CONFLICT: **1**
 
 ## Unresolved locations
@@ -39,13 +39,14 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 - ch7 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch8 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch9 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
+- ch9 p12 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line 14
 - ch11 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch11 p11 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 14 — previous line 10
 - ch12 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch14 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch16 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
-- ch17 p5 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 10 — previous line 5
 - ch17 p9 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 16 — previous line 12
+- ch20 p3 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 12 — previous line 8
 - ch21 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
 - ch21 p3 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 12 — previous line None
 - ch22 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT — target 8 — previous line None
