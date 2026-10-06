@@ -8,66 +8,38 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 
 ## Compact QA
 - forceable prepared pages repaired: **205**
-- pages whose force layer changed: **228**
-- exact target hits: **90**
-- ±1 line: **15**
-- ±2 lines: **8**
-- >2 lines: **92**
-- mean absolute target error: **3.35 lines**
+- pages whose force layer changed: **80**
+- exact target hits: **176**
+- ±1 line: **4**
+- ±2 lines: **0**
+- >2 lines: **25**
+- mean absolute target error: **0.83 lines**
 - adjacent <4-line spacing violations: **0**
 - 3-page retention windows within 4-line band: **0**
 - unresolved prepared pages: **0**
 - skipped chapters: **0**
 - genuine paragraph hash mismatches: **0**
 - canonical source token-order mismatches: **0**
-- page-head mid-sentence failures: **3**
-- local prepared-boundary slides used: **91**
-- emergency plasticine slides used: **2**
-- borrowed-fill prepared pages used: **24**
+- page-head mid-sentence failures: **0**
+- local prepared-boundary slides used: **34**
+- emergency plasticine slides used: **0**
+- borrowed-fill prepared pages used: **5**
 - airlock-left sentence-completion failures: **0**
-- adjacent prose-overlap failures: **8**
+- adjacent prose-overlap failures: **0**
 - chapter-opener socket failures: **0**
-- duplicate prepared heads stripped before rebuild: **314**
-- DOUBLE-UP pages: **144** (16806 repeated packing words)
+- duplicate prepared heads stripped before rebuild: **0**
+- DOUBLE-UP pages: **11** (786 repeated packing words)
 - root/public corpus parity failures: **0**
 
-## Machine verdict: **HOLD**
+## Machine verdict: **PASS**
 
 ## Borrowed-fill exceptions
-- ch1 p2 — SAME_CHAPTER — target 8 — rendered line 3
-- ch1 p5 — SAME_CHAPTER — target 10 — rendered line 16
-- ch1 p6 — SAME_CHAPTER — target 14 — rendered line 20
-- ch5 p2 — SAME_CHAPTER — target 8 — rendered line 8
-- ch7 p6 — SAME_CHAPTER — target 14 — rendered line 14
-- ch8 p3 — SAME_CHAPTER — target 12 — rendered line 12
-- ch10 p2 — SAME_CHAPTER — target 8 — rendered line 8
-- ch10 p6 — SAME_CHAPTER — target 14 — rendered line 15
-- ch10 p9 — SAME_CHAPTER — target 16 — rendered line 16
-- ch11 p8 — SAME_CHAPTER — target 12 — rendered line 12
-- ch11 p10 — SAME_CHAPTER — target 10 — rendered line 11
-- ch15 p3 — SAME_CHAPTER — target 12 — rendered line 12
-- ch17 p2 — SAME_CHAPTER — target 8 — rendered line 8
-- ch17 p3 — SAME_CHAPTER — target 12 — rendered line 12
-- ch17 p7 — SAME_CHAPTER — target 8 — rendered line 8
-- ch17 p13 — SAME_CHAPTER — target 12 — rendered line 12
-- ch17 p17 — SAME_CHAPTER — target 8 — rendered line 8
+- ch1 p2 — SAME_CHAPTER — target 8 — rendered line 8
+- ch17 p4 — SAME_CHAPTER — target 16 — rendered line 16
 - ch20 p2 — SAME_CHAPTER — target 8 — rendered line 8
-- ch20 p4 — SAME_CHAPTER — target 16 — rendered line 14
-- ch20 p5 — SAME_CHAPTER — target 10 — rendered line 10
-- ch22 p2 — SAME_CHAPTER — target 8 — rendered line 15
-- ch22 p8 — SAME_CHAPTER — target 12 — rendered line 15
-- ch22 p10 — SAME_CHAPTER — target 10 — rendered line 15
-- ch22 p16 — SAME_CHAPTER — target 14 — rendered line 15
+- ch22 p2 — SAME_CHAPTER — target 8 — rendered line 8
+- ch22 p14 — SAME_CHAPTER — target 16 — rendered line 16
 
-## Failures
-- jeeves ch1 p1/p2: distinctive adjacent prose overlap
-- jeeves ch1 p5/p6: distinctive adjacent prose overlap
-- jeeves ch5 p1/p2: distinctive adjacent prose overlap
-- jeeves ch8 p6: prepared page begins at sentence start
-- jeeves ch9 p7: prepared page begins at sentence start
-- jeeves ch17 p1/p2: distinctive adjacent prose overlap
-- jeeves ch17 p2/p3: distinctive adjacent prose overlap
-- jeeves ch20 p1/p2: distinctive adjacent prose overlap
-- jeeves ch20 p4/p5: distinctive adjacent prose overlap
-- jeeves ch20 p6: prepared page begins at sentence start
-- jeeves ch22 p2/p3: distinctive adjacent prose overlap
+No machine-QA invariant failures detected. Borrowed-fill camouflage is permitted only when explicitly flagged; canonical source paragraphs remain the authority.
+
+Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists.
