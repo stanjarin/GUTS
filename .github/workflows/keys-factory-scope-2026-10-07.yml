@@ -40,9 +40,9 @@ jobs:
           git config user.name "GUTS Keys scope robot"
           git config user.email "actions@users.noreply.github.com"
           git add docs/checkpoints/2026-10-07_keys-factory-scope-report.md
-          if [ "${{ steps.qa.outcome }}" = "success" ]; then
-            git add PERFORMANCE10 public/PERFORMANCE10
-          fi
+          # Safe-branch scope trial: retain generated candidate even on QA HOLD
+          # so residual pages can be diagnosed and repaired without rerunning blind.
+          git add PERFORMANCE10 public/PERFORMANCE10
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
