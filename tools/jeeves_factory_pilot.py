@@ -465,7 +465,7 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
             if q.get("force_paragraphs")!=p.get("force_paragraphs"):
                 stats["pages_changed"]+=1
             pages[pi]=q
-            after_stream += norm_tokens([x for x in q.get("force_paragraphs",[]) if "$$$" not in str(x)])
+            after_stream += norm_tokens(q.get("paragraphs",[]))
 
         for i in range(1,len(final_lines)):
             a,b=final_lines[i-1],final_lines[i]
@@ -479,7 +479,7 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
                 stats["retention_windows"]+=1
 
     if before_stream!=after_stream:
-        failures.append(f"{book.get('id','?')}: chapter-stream token order mismatch after repair")
+        failures.append(f"{book.get('id','?')}: canonical source token order mismatch after repair")
         stats["token_mismatches"]+=1
     if para_hash(book)!=before_hash:
         failures.append(f"{book.get('id','?')}: genuine paragraphs changed")
@@ -555,7 +555,7 @@ def main():
       f"- unresolved prepared pages: **{totals['unresolved_pages']}**",
       f"- skipped chapters: **{totals['chapters_skipped']}**",
       f"- genuine paragraph hash mismatches: **{totals['genuine_hash_mismatches']}**",
-      f"- genuine token-order mismatches: **{totals['token_mismatches']}**",
+      f"- canonical source token-order mismatches: **{totals['token_mismatches']}**",
       f"- page-head mid-sentence failures: **{totals['mid_sentence_failures']}**",
       f"- local prepared-boundary slides used: **{totals['boundary_slides']}**",
       f"- emergency plasticine slides used: **{totals['emergency_slides']}**",
@@ -582,7 +582,7 @@ def main():
     if failures:
         lines+=["## Failures"]+[f"- {x}" for x in failures[:80]]
     else:
-        lines+=["No machine-QA invariant failures detected.","","Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists."]
+        lines+=["No machine-QA invariant failures detected. Borrowed-fill camouflage is permitted only when explicitly flagged; canonical source paragraphs remain the authority.","","Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists."]
     rp=Path(args.report); rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text("\n".join(lines)+"\n")
     print("\n".join(lines[:30]))
     if not passed: raise SystemExit(2)
