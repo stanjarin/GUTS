@@ -221,6 +221,87 @@ def candidate_emergency_slide(genuine, measure_many, target, prev_line, history)
         return [], "EMERGENCY_SPACING_CONFLICT"
     return cands, "OK"
 
+def candidate_borrowed_fill(book, chapter_index, page_index, measure_many, target, prev_line, history):
+    """
+    Final factory fallback. Borrow stylistically native prose from elsewhere in
+    the same book to manufacture a convincing prepared-page head when all local
+    plasticine options fail. Source/genuine corpus remains untouched; borrowed
+    material exists only in the prepared force layer and is explicitly reported.
+    Preference order: same chapter -> nearby chapters -> anywhere in same book.
+    """
+    pools=[]
+    chapters=book.get("chapters",[])
+    # 1) same chapter, excluding current page
+    same=[]
+    if 0 <= chapter_index < len(chapters):
+        for j,p in enumerate(chapters[chapter_index].get("pages",[])):
+            if j==page_index: continue
+            same += [str(x).strip() for x in p.get("paragraphs",[]) if str(x).strip()]
+    pools.append(("SAME_CHAPTER", same))
+
+    # 2) nearby chapters
+    near=[]
+    for dist in range(1,4):
+        for ci in (chapter_index-dist, chapter_index+dist):
+            if 0 <= ci < len(chapters):
+                for p in chapters[ci].get("pages",[]):
+                    near += [str(x).strip() for x in p.get("paragraphs",[]) if str(x).strip()]
+    pools.append(("NEARBY_CHAPTER", near))
+
+    # 3) whole book
+    whole=[]
+    for ci,ch in enumerate(chapters):
+        if ci==chapter_index: continue
+        for p in ch.get("pages",[]):
+            whole += [str(x).strip() for x in p.get("paragraphs",[]) if str(x).strip()]
+    pools.append(("SAME_BOOK", whole))
+
+    def loose_terminal(tok):
+        t=str(tok).strip()
+        return bool(re.search(r"[.!?][”\"’')\\]]*$", t))
+
+    for source_class, paras in pools:
+        toks=words(" ".join(paras))
+        if len(toks)<20:
+            continue
+        raw=[]
+        # Search bounded windows so the fallback remains deterministic and fast.
+        max_start=max(1, min(len(toks)-12, 12000))
+        for start in range(0,max_start,7):
+            for cut in range(start+2,min(start+80,len(toks)-6)):
+                if loose_terminal(toks[cut-1]):
+                    continue
+                for end in range(cut+4,min(len(toks),cut+180)+1):
+                    if not loose_terminal(toks[end-1]):
+                        continue
+                    carry=" ".join(toks[cut:end]).strip()
+                    raw.append((carry, start, cut, end))
+                    if len(raw)>=1200:
+                        break
+                if len(raw)>=1200:
+                    break
+            if len(raw)>=1200:
+                break
+        if not raw:
+            continue
+        measured=measure_many([x[0] for x in raw])
+        cands=[]
+        for (carry,start,cut,end),line in zip(raw,measured):
+            if line is None:
+                continue
+            if prev_line is not None and abs(line-prev_line)<4:
+                continue
+            if len(history)>=2 and history[-2] is not None and history[-1] is not None:
+                vals=[history[-2],history[-1],line]
+                if max(vals)-min(vals)<=4:
+                    continue
+            score=abs(line-target)*10+abs(wc(carry)-80)/24
+            cands.append((score,carry,line,source_class,start,cut,end))
+        cands.sort(key=lambda x:x[0])
+        if cands:
+            return cands, "OK"
+    return [], "NO_BORROWED_FILL_CANDIDATE"
+
 def rebuild_page(orig, genuine, air, forceable):
     q=copy.deepcopy(orig)
     if not forceable:
@@ -232,7 +313,7 @@ def rebuild_page(orig, genuine, air, forceable):
     q["pre_airlock_words"]=wc(genuine[0])
     return q
 
-def repair_book(book,page,stats,failures,unresolved_details):
+def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
     before_hash=para_hash(book)
     before_stream=[]
     after_stream=[]
@@ -306,18 +387,43 @@ def repair_book(book,page,stats,failures,unresolved_details):
                         reason="EMERGENCY_PLASTICINE"
                         stats["emergency_slides"]+=1
                     else:
-                        unresolved[pi]=True
-                        stats["unresolved_pages"]+=1
-                        unresolved_details.append({
-                            "book":book.get("id","?"),
-                            "chapter":ci+1,
-                            "page":pi+1,
-                            "target":target,
-                            "reason":reason+" / "+slide_reason+" / "+emergency_reason,
-                            "previous_line":lines[-1] if lines else None
-                        })
-                        lines.append(None)
-                        continue
+                        borrowed,borrow_reason=candidate_borrowed_fill(
+                            book,
+                            ci,
+                            pi,
+                            lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
+                            target,
+                            lines[-1] if lines else None,
+                            lines
+                        )
+                        if borrowed:
+                            _,carry,line,source_class,start,cut,end=borrowed[0]
+                            # Borrowed prose is prepared-layer camouflage only.
+                            # Genuine paragraphs and source token stream remain untouched.
+                            cur["genuine"]=[carry]+cur["genuine"]
+                            reason="BORROWED_FILL_"+source_class
+                            stats["borrowed_fill_pages"]+=1
+                            borrowed_details.append({
+                                "book":book.get("id","?"),
+                                "chapter":ci+1,
+                                "page":pi+1,
+                                "source_class":source_class,
+                                "target":target,
+                                "line":line
+                            })
+                        else:
+                            unresolved[pi]=True
+                            stats["unresolved_pages"]+=1
+                            unresolved_details.append({
+                                "book":book.get("id","?"),
+                                "chapter":ci+1,
+                                "page":pi+1,
+                                "target":target,
+                                "reason":reason+" / "+slide_reason+" / "+emergency_reason+" / "+borrow_reason,
+                                "previous_line":lines[-1] if lines else None
+                            })
+                            lines.append(None)
+                            continue
             else:
                 _,k,head,carry,remainder,line=cands[0]
                 prev["genuine"]=prev["genuine"][:-k]+[head]
@@ -380,12 +486,12 @@ def repair_book(book,page,stats,failures,unresolved_details):
         stats["genuine_hash_mismatches"]+=1
     return book
 
-def process_copy(path,page,write,allstats,failures,unresolved_details):
+def process_copy(path,page,write,allstats,failures,unresolved_details,borrowed_details):
     book=json.loads(path.read_text())
     stats={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","line_abs_error"]}
-    repaired=repair_book(book,page,stats,failures,unresolved_details)
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error"]}
+    repaired=repair_book(book,page,stats,failures,unresolved_details,borrowed_details)
     if write: path.write_text(json.dumps(repaired,ensure_ascii=False,separators=(",",":")))
     for k,v in stats.items(): allstats[k]+=v
     return stats
@@ -403,16 +509,17 @@ def main():
         elif root.exists(): authorities.append((rel,root,None))
     failures=[]
     unresolved_details=[]
+    borrowed_details=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error"]}
     per=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True)
         pg=browser.new_page(viewport={"width":414,"height":736},device_scale_factor=1)
         pg.set_content(f"<!doctype html><style>{CSS}</style><div class='page'></div>")
         for rel,path,mirror in authorities:
-            st=process_copy(path,pg,args.write,totals,failures,unresolved_details)
+            st=process_copy(path,pg,args.write,totals,failures,unresolved_details,borrowed_details)
             per.append((str(path),st))
             if args.write and mirror is not None:
                 mirror.parent.mkdir(parents=True,exist_ok=True)
@@ -433,7 +540,7 @@ def main():
     lines=[
       "# Jeeves factory pilot — 6 Oct 2026","",
       "**Jeeves-only branch automation. Production main and all other books untouched.**","",
-      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; pathological pages may use an **emergency plasticine token-stream slide** while preserving genuine token order; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
+      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; pathological pages may use an **emergency plasticine token-stream slide** while preserving genuine token order; if that still fails, the factory may use **flagged borrowed-fill camouflage from elsewhere in the same book** (same chapter preferred, then nearby chapters, then same book); socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
       "Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.","",
       "## Compact QA",
       f"- forceable prepared pages repaired: **{totals['forceable_pages']}**",
@@ -452,6 +559,7 @@ def main():
       f"- page-head mid-sentence failures: **{totals['mid_sentence_failures']}**",
       f"- local prepared-boundary slides used: **{totals['boundary_slides']}**",
       f"- emergency plasticine slides used: **{totals['emergency_slides']}**",
+      f"- borrowed-fill prepared pages used: **{totals['borrowed_fill_pages']}**",
       f"- airlock-left sentence-completion failures: **{totals['airlock_left_terminal_failures']}**",
       f"- root/public corpus parity failures: **{sum(1 for _,ok in parity if not ok)}**","",
       f"## Machine verdict: **{'PASS' if passed else 'HOLD'}**",""
@@ -465,6 +573,11 @@ def main():
         lines+=["","## Unresolved locations"]
         for x in unresolved_details:
             lines.append(f"- ch{x['chapter']} p{x['page']} — {x['reason']} — target {x['target']} — previous line {x['previous_line']}")
+        lines+=[""]
+    if borrowed_details:
+        lines+=["## Borrowed-fill exceptions"]
+        for x in borrowed_details:
+            lines.append(f"- ch{x['chapter']} p{x['page']} — {x['source_class']} — target {x['target']} — rendered line {x['line']}")
         lines+=[""]
     if failures:
         lines+=["## Failures"]+[f"- {x}" for x in failures[:80]]
