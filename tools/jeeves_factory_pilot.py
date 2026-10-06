@@ -119,6 +119,56 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
         return [], "SPACING_OR_RETENTION_CONFLICT"
     return cands, "OK"
 
+def candidate_boundary_slide(genuine, measure_many, target, prev_line, history):
+    """
+    Plasticine fallback: slide the prepared page boundary forward into the
+    current page. Move an opening prefix back onto the previous page so the
+    current page begins mid-sentence, then carry through to the next genuine
+    sentence ending before the airlock.
+    """
+    if not genuine:
+        return [], "NO_CURRENT_TEXT_FOR_BOUNDARY_SLIDE"
+    raw=[]
+    max_join=min(4,len(genuine))
+    for k in range(1,max_join+1):
+        donor=" ".join(str(x).strip() for x in genuine[:k] if str(x).strip()).strip()
+        toks=words(donor)
+        if len(toks)<14:
+            continue
+        for cut in range(4,len(toks)-6):
+            if is_terminal_token(toks[cut-1]):
+                continue
+            ends=[]
+            for end in range(cut+6,min(len(toks),cut+260)+1):
+                if is_terminal_token(toks[end-1]):
+                    ends.append(end)
+                    if len(ends)>=8:
+                        break
+            for end in ends:
+                prefix=" ".join(toks[:cut]).strip()
+                carry=" ".join(toks[cut:end]).strip()
+                remainder=" ".join(toks[end:]).strip()
+                raw.append({"k":k,"prefix":prefix,"carry":carry,"remainder":remainder})
+    if not raw:
+        return [], "NO_BOUNDARY_SLIDE_SPLIT"
+    lines=measure_many([x["carry"] for x in raw])
+    cands=[]
+    for x,line in zip(raw,lines):
+        if line is None:
+            continue
+        if prev_line is not None and abs(line-prev_line)<4:
+            continue
+        if len(history)>=2 and history[-2] is not None and history[-1] is not None:
+            vals=[history[-2],history[-1],line]
+            if max(vals)-min(vals)<=4:
+                continue
+        score=abs(line-target)*10+abs(wc(x["carry"])-80)/24+x["k"]*.03
+        cands.append((score,x["k"],x["prefix"],x["carry"],x["remainder"],line))
+    cands.sort(key=lambda x:x[0])
+    if not cands:
+        return [], "BOUNDARY_SLIDE_SPACING_CONFLICT"
+    return cands, "OK"
+
 def rebuild_page(orig, genuine, air, forceable):
     q=copy.deepcopy(orig)
     if not forceable:
@@ -172,25 +222,43 @@ def repair_book(book,page,stats,failures,unresolved_details):
                 protect_first=(pi-1)>0
             )
             if not cands:
-                unresolved[pi]=True
-                stats["unresolved_pages"]+=1
-                unresolved_details.append({
-                    "book":book.get("id","?"),
-                    "chapter":ci+1,
-                    "page":pi+1,
-                    "target":target,
-                    "reason":reason,
-                    "previous_line":lines[-1] if lines else None
-                })
-                lines.append(None)
-                continue
-
-            _,k,head,carry,remainder,line=cands[0]
-            prev["genuine"]=prev["genuine"][:-k]+[head]
-            injected=[carry]
-            if remainder:
-                injected.append(remainder)
-            cur["genuine"]=injected+cur["genuine"]
+                slide,slide_reason=candidate_boundary_slide(
+                    cur["genuine"],
+                    lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
+                    target,
+                    lines[-1] if lines else None,
+                    lines
+                )
+                if slide:
+                    _,k,prefix,carry,remainder,line=slide[0]
+                    prev["genuine"]=prev["genuine"]+[prefix]
+                    tail=cur["genuine"][k:]
+                    injected=[carry]
+                    if remainder:
+                        injected.append(remainder)
+                    cur["genuine"]=injected+tail
+                    reason="BOUNDARY_SLIDE"
+                    stats["boundary_slides"]+=1
+                else:
+                    unresolved[pi]=True
+                    stats["unresolved_pages"]+=1
+                    unresolved_details.append({
+                        "book":book.get("id","?"),
+                        "chapter":ci+1,
+                        "page":pi+1,
+                        "target":target,
+                        "reason":reason+" / "+slide_reason,
+                        "previous_line":lines[-1] if lines else None
+                    })
+                    lines.append(None)
+                    continue
+            else:
+                _,k,head,carry,remainder,line=cands[0]
+                prev["genuine"]=prev["genuine"][:-k]+[head]
+                injected=[carry]
+                if remainder:
+                    injected.append(remainder)
+                cur["genuine"]=injected+cur["genuine"]
             legality[pi]=(True, is_terminal_token(words(carry)[-1]) if words(carry) else False)
             lines.append(line)
             stats["forceable_pages"]+=1
@@ -250,7 +318,7 @@ def process_copy(path,page,write,allstats,failures,unresolved_details):
     book=json.loads(path.read_text())
     stats={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","line_abs_error"]}
     repaired=repair_book(book,page,stats,failures,unresolved_details)
     if write: path.write_text(json.dumps(repaired,ensure_ascii=False,separators=(",",":")))
     for k,v in stats.items(): allstats[k]+=v
@@ -271,7 +339,7 @@ def main():
     unresolved_details=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","line_abs_error"]}
     per=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True)
@@ -299,7 +367,7 @@ def main():
     lines=[
       "# Jeeves factory pilot — 6 Oct 2026","",
       "**Jeeves-only branch automation. Production main and all other books untouched.**","",
-      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined into a larger pump donor** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
+      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
       "Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.","",
       "## Compact QA",
       f"- forceable prepared pages repaired: **{totals['forceable_pages']}**",
@@ -316,6 +384,7 @@ def main():
       f"- genuine paragraph hash mismatches: **{totals['genuine_hash_mismatches']}**",
       f"- genuine token-order mismatches: **{totals['token_mismatches']}**",
       f"- page-head mid-sentence failures: **{totals['mid_sentence_failures']}**",
+      f"- local prepared-boundary slides used: **{totals['boundary_slides']}**",
       f"- airlock-left sentence-completion failures: **{totals['airlock_left_terminal_failures']}**",
       f"- root/public corpus parity failures: **{sum(1 for _,ok in parity if not ok)}**","",
       f"## Machine verdict: **{'PASS' if passed else 'HOLD'}**",""
