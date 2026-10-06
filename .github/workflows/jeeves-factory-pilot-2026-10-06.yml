@@ -1,0 +1,49 @@
+name: Jeeves factory pilot 2026-10-06
+
+on:
+  push:
+    branches:
+      - jeeves-factory-pilot-2026-10-06
+    paths:
+      - .github/jeeves-factory-pilot-trigger-2026-10-06
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: jeeves-factory-pilot-2026-10-06
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m py_compile tools/jeeves_factory_pilot.py
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Run boundary-law repair and QA
+        id: qa
+        continue-on-error: true
+        run: python tools/jeeves_factory_pilot.py --write --report docs/checkpoints/2026-10-06_jeeves-factory-pilot-report.md
+      - name: Commit QA result on safe branch
+        run: |
+          git config user.name "GUTS Jeeves pilot robot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/checkpoints/2026-10-06_jeeves-factory-pilot-report.md
+          if [ "${{ steps.qa.outcome }}" = "success" ]; then
+            git add PERFORMANCE35 PERFORMANCE10 public/PERFORMANCE35 public/PERFORMANCE10
+          fi
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Record Jeeves factory pilot QA"
+            git push origin HEAD:jeeves-factory-pilot-2026-10-06
+          fi
+      - name: Enforce QA gate
+        if: steps.qa.outcome != 'success'
+        run: |
+          echo "Jeeves pilot QA HOLD; report committed, corpus not committed."
+          exit 1
