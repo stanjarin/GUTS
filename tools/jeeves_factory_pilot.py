@@ -125,14 +125,17 @@ def apply_double_up(pages, page, stats):
         metrics=page.evaluate(JS_PAGE_METRICS,{"paras":fp,"air_index":ai})
         if metrics.get("bottom") is None: continue
         short_page=metrics["bottom"] < DOUBLE_UP_TRIGGER_BOTTOM
-        ugly_tail=(metrics.get("lastWidth") or 999)<95 and (metrics.get("lastTop") or 0)>520
-        if not (short_page or ugly_tail): continue
+        ugly_tail=(metrics.get("lastWidth") or 999)<110
+        # Both conditions are required. A merely short page is legitimate;
+        # DOUBLE-UP is reserved for the conspicuous "tiny last line + early end"
+        # specimen Stanley identified.
+        if not (short_page and ugly_tail): continue
         donor=words(" ".join(pages[i+1].get("paragraphs",[])))
         if not donor: continue
         last=max((j for j,x in enumerate(fp) if "$$" not in str(x)), default=-1)
         if last<0: continue
         added=[]
-        for tok in donor[:180]:
+        for tok in donor[:72]:
             added.append(tok)
             fp[last]=str(fp[last]).rstrip()+" "+tok
             if len(added)%6==0:
@@ -172,10 +175,12 @@ def para_hash(book):
     return hashlib.sha256(payload.encode()).hexdigest()
 def extract_page(p):
     fp=list(p.get("force_paragraphs") or [])
-    airs=[(i,x) for i,x in enumerate(fp) if "$$$" in str(x)]
+    airs=[(i,x) for i,x in enumerate(fp) if "$$" in str(x)]
     if len(airs)!=1: return None
     ai,air=airs[0]
-    genuine=[x for i,x in enumerate(fp) if i!=ai]
+    # Deterministic rebuild: canonical paragraphs are always the prose starting
+    # point. Never feed a previous factory's plasticine output back in.
+    genuine=[str(x) for x in p.get("paragraphs",[]) if str(x).strip()]
     return {"genuine":genuine,"air":air,"old_ai":ai}
 
 def is_terminal_token(tok):
@@ -366,7 +371,7 @@ def candidate_borrowed_fill(book, chapter_index, page_index, measure_many, targe
     same=[]
     if 0 <= chapter_index < len(chapters):
         for j,p in enumerate(chapters[chapter_index].get("pages",[])):
-            if j==page_index: continue
+            if j in {page_index-1,page_index,page_index+1}: continue
             same += [str(x).strip() for x in p.get("paragraphs",[]) if str(x).strip()]
     pools.append(("SAME_CHAPTER", same))
 
@@ -417,8 +422,14 @@ def candidate_borrowed_fill(book, chapter_index, page_index, measure_many, targe
             continue
         measured=measure_many([x[0] for x in raw])
         cands=[]
+        prev_src=" ".join(chapters[chapter_index].get("pages",[])[page_index-1].get("paragraphs",[])) if page_index>0 else ""
+        next_src=" ".join(chapters[chapter_index].get("pages",[])[page_index+1].get("paragraphs",[])) if page_index+1<len(chapters[chapter_index].get("pages",[])) else ""
         for (carry,start,cut,end),line in zip(raw,measured):
             if line is None:
+                continue
+            if has_ngram_overlap(carry,prev_src) or has_ngram_overlap(carry,next_src):
+                continue
+            if not head_is_mid_sentence(book,carry):
                 continue
             if prev_line is not None and abs(line-prev_line)<4:
                 continue
