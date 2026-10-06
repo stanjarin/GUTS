@@ -305,3 +305,26 @@ The exact implementation estimator still was not recovered, but that no longer b
 
 Checkpoint:
 `docs/checkpoints/2026-10-05_wall-hit-scouting-handover.md`
+
+
+## Jeeves Monday-demo freeze — 7 Oct 2026
+
+Stanley actual-phone QA now **PASSED** the Jeeves factory candidate after:
+- tagless prepared dialogue (`SELF:` / `JEEVES:` removed);
+- targeted manual DOUBLE-UP on all 12 phone-failed Ridiculously Short Pages.
+
+Frozen demo/reference content anchor:
+`07cd1fb8b72b957fdd22d6acea2f904a63e0adf3`
+
+Immutable Cloudflare reference preview:
+`https://b55e014a-guts.stanjarin.workers.dev/?browse=1`
+
+Canonical checkpoint:
+`docs/checkpoints/2026-10-07_jeeves-demo-freeze.md`
+
+Factory policy extracted from the successful pilot:
+`docs/GUTS_FACTORY_STAGECRAFT_LAW_2026-10-07.md`
+
+One isolated top-of-page sentence-start defect is known but location is pending Stanley's shed notes; it is explicitly non-blocking and deferred.
+
+**NEXT ACTION:** build/run the 18-book Motherlode factory on isolated branch machinery using the approved stagecraft law. Production `main` remains untouched and usable for performance throughout.
