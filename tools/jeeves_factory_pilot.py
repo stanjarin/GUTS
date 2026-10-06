@@ -87,10 +87,10 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
             if is_terminal_token(toks[cut-1]):
                 continue
             ends=[]
-            for end in range(cut+6,min(len(toks),cut+260)+1):
+            for end in range(cut+4,min(len(toks),cut+320)+1):
                 if is_terminal_token(toks[end-1]):
                     ends.append(end)
-                    if len(ends)>=8:
+                    if len(ends)>=12:
                         break
             for end in ends:
                 head=" ".join(toks[:cut]).strip()
@@ -107,6 +107,8 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
     for x,line in zip(raw,lines):
         if line is None: continue
         if prev_line is not None and abs(line-prev_line)<4:
+            # Keep the hard spacing law, but permit a second-pass search below
+            # to choose a different legal target rather than declaring defeat.
             continue
         if len(history)>=2 and history[-2] is not None and history[-1] is not None:
             vals=[history[-2],history[-1],line]
@@ -129,13 +131,13 @@ def candidate_boundary_slide(genuine, measure_many, target, prev_line, history):
     if not genuine:
         return [], "NO_CURRENT_TEXT_FOR_BOUNDARY_SLIDE"
     raw=[]
-    max_join=min(4,len(genuine))
+    max_join=len(genuine)
     for k in range(1,max_join+1):
         donor=" ".join(str(x).strip() for x in genuine[:k] if str(x).strip()).strip()
         toks=words(donor)
-        if len(toks)<14:
+        if len(toks)<10:
             continue
-        for cut in range(4,len(toks)-6):
+        for cut in range(2,len(toks)-4):
             if is_terminal_token(toks[cut-1]):
                 continue
             ends=[]
