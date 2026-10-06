@@ -35,6 +35,137 @@ def norm_tokens(paras): return words(" ".join(str(x) for x in paras))
 def split_sentences(s):
     out=re.split(r'(?<=[.!?])\s+(?=[“‘"\'A-Z0-9])',str(s).strip())
     return [x.strip() for x in out if x.strip()]
+
+JS_PAGE_METRICS=r"""payload => {
+  const page=document.querySelector('.page');
+  page.innerHTML='';
+  const nodes=[];
+  for(const txt of payload.paras){
+    const p=document.createElement('p'); p.textContent=txt; page.appendChild(p); nodes.push(p);
+  }
+  const all=[];
+  nodes.forEach((node,idx)=>{
+    const r=document.createRange(); r.selectNodeContents(node);
+    for(const x of [...r.getClientRects()].filter(x=>x.width>0&&x.height>0)){
+      all.push({idx,top:x.top,bottom:x.bottom,width:x.width});
+    }
+  });
+  const last=all.length?all[all.length-1]:null;
+  const air=all.filter(x=>x.idx===payload.air_index);
+  return {
+    bottom:last?last.bottom:null,
+    lastTop:last?last.top:null,
+    lastWidth:last?last.width:null,
+    airTop:air.length?air[0].top:null
+  };
+}"""
+
+OVERLAP_N=10
+DOUBLE_UP_TRIGGER_BOTTOM=600
+DOUBLE_UP_TARGET_BOTTOM=715
+
+def clean_tok(t):
+    return re.sub(r"^\W+|\W+$","",str(t),flags=re.UNICODE).lower()
+
+def clean_words(s):
+    return [x for x in (clean_tok(t) for t in words(s)) if x]
+
+def has_ngram_overlap(a,b,n=OVERLAP_N):
+    aa=clean_words(a); bb=clean_words(b)
+    if len(aa)<n or len(bb)<n: return False
+    seen={tuple(aa[i:i+n]) for i in range(len(aa)-n+1)}
+    return any(tuple(bb[j:j+n]) in seen for j in range(len(bb)-n+1))
+
+def strip_adjacent_duplicate_head(cur_genuine, prev_source, next_source, stats):
+    """Remove only clearly repeated leading prepared paragraphs before rebuilding."""
+    out=list(cur_genuine)
+    neighbours=" ".join(list(prev_source or [])+list(next_source or []))
+    removed=0
+    while out and has_ngram_overlap(out[0],neighbours):
+        out.pop(0); removed+=1
+    if removed: stats["duplicate_heads_stripped"]+=removed
+    return out
+
+def page_non_air_paras(p):
+    fp=list(p.get("force_paragraphs") or p.get("paragraphs") or [])
+    return [str(x) for x in fp if "$$" not in str(x)]
+
+def page_prepared_text(p, trim_double=True):
+    toks=words(" ".join(page_non_air_paras(p)))
+    if trim_double:
+        n=int(p.get("double_up_words") or 0)
+        if n>0 and n<=len(toks): toks=toks[:-n]
+    return " ".join(toks)
+
+def head_is_mid_sentence(book, head):
+    """Find the prepared head in canonical source and require a non-terminal predecessor."""
+    h=clean_words(head)[:8]
+    if len(h)<4: return False
+    raw=[]
+    for ch in book.get("chapters",[]):
+        for p in ch.get("pages",[]):
+            raw += words(" ".join(p.get("paragraphs",[])))
+    clean=[clean_tok(x) for x in raw]
+    for i in range(1,len(clean)-len(h)+1):
+        if clean[i:i+len(h)]==h and not is_terminal_token(raw[i-1]):
+            return True
+    return False
+
+def apply_double_up(pages, page, stats):
+    """
+    DOUBLE-UP: if a prepared page is visibly stunted, extend its final paragraph
+    with genuine following words until text runs below the phone window. The
+    next page remains at its original break, so the added tail repeats there.
+    """
+    for i in range(1,len(pages)-1):
+        q=pages[i]
+        fp=list(q.get("force_paragraphs") or [])
+        if not fp: continue
+        ai=next((j for j,x in enumerate(fp) if "$$" in str(x)), -1)
+        metrics=page.evaluate(JS_PAGE_METRICS,{"paras":fp,"air_index":ai})
+        if metrics.get("bottom") is None: continue
+        short_page=metrics["bottom"] < DOUBLE_UP_TRIGGER_BOTTOM
+        ugly_tail=(metrics.get("lastWidth") or 999)<95 and (metrics.get("lastTop") or 0)>520
+        if not (short_page or ugly_tail): continue
+        donor=words(" ".join(pages[i+1].get("paragraphs",[])))
+        if not donor: continue
+        last=max((j for j,x in enumerate(fp) if "$$" not in str(x)), default=-1)
+        if last<0: continue
+        added=[]
+        for tok in donor[:180]:
+            added.append(tok)
+            fp[last]=str(fp[last]).rstrip()+" "+tok
+            if len(added)%6==0:
+                m=page.evaluate(JS_PAGE_METRICS,{"paras":fp,"air_index":ai})
+                if (m.get("bottom") or 0)>=DOUBLE_UP_TARGET_BOTTOM:
+                    break
+        if added:
+            q["force_paragraphs"]=fp
+            q["double_up_words"]=len(added)
+            stats["double_up_pages"]+=1
+            stats["double_up_words"]+=len(added)
+
+def adjacency_and_head_qa(book, stats, failures):
+    for ci,ch in enumerate(book.get("chapters",[])):
+        pages=ch.get("pages",[])
+        for pi,p in enumerate(pages):
+            if pi==0:
+                if any("$$" in str(x) for x in p.get("force_paragraphs",[])):
+                    stats["opener_socket_failures"]+=1
+                    failures.append(f"{book.get('id','?')} ch{ci+1} p1: chapter opener exposes socket")
+                continue
+            fp=list(p.get("force_paragraphs") or [])
+            non=[str(x) for x in fp if "$$" not in str(x)]
+            if non and not head_is_mid_sentence(book,non[0]):
+                stats["mid_sentence_failures"]+=1
+                failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: prepared page begins at sentence start")
+            if pi>0:
+                a=page_prepared_text(pages[pi-1],trim_double=True)
+                b=page_prepared_text(p,trim_double=True)
+                if has_ngram_overlap(a,b):
+                    stats["adjacent_overlap_failures"]+=1
+                    failures.append(f"{book.get('id','?')} ch{ci+1} p{pi}/p{pi+1}: distinctive adjacent prose overlap")
+
 def para_hash(book):
     payload=json.dumps([[p.get("paragraphs",[]) for p in c.get("pages",[])] for c in book.get("chapters",[])],
                        ensure_ascii=False,separators=(",",":"))
@@ -328,12 +459,10 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
             if not e:
                 failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: socket count !=1")
                 chapter_ok=False; break
-            if norm_tokens(e["genuine"])!=norm_tokens(p.get("paragraphs",[])):
-                failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: prepared/genuine page token mismatch")
-                chapter_ok=False; break
             prepared.append(e)
             original_genuine.append(list(e["genuine"]))
-            before_stream += norm_tokens(e["genuine"])
+            # Prepared force text is intentionally plasticine; canonical paragraphs are source truth.
+            before_stream += norm_tokens(p.get("paragraphs",[]))
         if not chapter_ok:
             stats["chapters_skipped"]+=1
             continue
@@ -346,14 +475,25 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
             target=TARGETS[(pi-1)%len(TARGETS)]
             prev=prepared[pi-1]
             cur=prepared[pi]
-            cands,reason=candidate_splits(
-                prev["genuine"],
-                lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
-                target,
-                lines[-1] if lines else None,
-                lines,
-                protect_first=(pi-1)>0
+            cur["genuine"]=strip_adjacent_duplicate_head(
+                cur["genuine"],
+                pages[pi-1].get("paragraphs",[]),
+                pages[pi+1].get("paragraphs",[]) if pi+1<len(pages) else [],
+                stats
             )
+            # Immediately after a genuine chapter opener, do not manufacture the
+            # next head from prose the spectator has just seen on that opener.
+            if pi==1:
+                cands,reason=[],"CHAPTER_OPENER_VISUAL_RETENTION_GUARD"
+            else:
+                cands,reason=candidate_splits(
+                    prev["genuine"],
+                    lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
+                    target,
+                    lines[-1] if lines else None,
+                    lines,
+                    protect_first=(pi-1)>0
+                )
             if not cands:
                 slide,slide_reason=candidate_boundary_slide(
                     cur["genuine"],
@@ -444,7 +584,13 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
         for pi,p in enumerate(pages):
             q=copy.deepcopy(p)
             g=prepared[pi]["genuine"]
-            if pi>0 and not unresolved[pi] and g:
+            if pi==0:
+                # Chapter openers are always socket-free in the prepared layer.
+                q["force_paragraphs"]=list(g)
+                q.pop("airlock_index",None)
+                q.pop("pre_airlock_words",None)
+                final_lines.append(None)
+            elif not unresolved[pi] and g:
                 q["force_paragraphs"]=[g[0],prepared[pi]["air"]]+g[1:]
                 q["airlock_index"]=1
                 q["pre_airlock_words"]=wc(g[0])
@@ -467,6 +613,8 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
             pages[pi]=q
             after_stream += norm_tokens(q.get("paragraphs",[]))
 
+        apply_double_up(pages,page,stats)
+
         for i in range(1,len(final_lines)):
             a,b=final_lines[i-1],final_lines[i]
             if a is None or b is None: continue
@@ -484,13 +632,14 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
     if para_hash(book)!=before_hash:
         failures.append(f"{book.get('id','?')}: genuine paragraphs changed")
         stats["genuine_hash_mismatches"]+=1
+    adjacency_and_head_qa(book,stats,failures)
     return book
 
 def process_copy(path,page,write,allstats,failures,unresolved_details,borrowed_details):
     book=json.loads(path.read_text())
     stats={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error","duplicate_heads_stripped","adjacent_overlap_failures","opener_socket_failures","double_up_pages","double_up_words"]}
     repaired=repair_book(book,page,stats,failures,unresolved_details,borrowed_details)
     if write: path.write_text(json.dumps(repaired,ensure_ascii=False,separators=(",",":")))
     for k,v in stats.items(): allstats[k]+=v
@@ -512,7 +661,7 @@ def main():
     borrowed_details=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","borrowed_fill_pages","line_abs_error","duplicate_heads_stripped","adjacent_overlap_failures","opener_socket_failures","double_up_pages","double_up_words"]}
     per=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True)
@@ -535,7 +684,7 @@ def main():
             parity.append((rel,same))
             if not same: failures.append(f"{rel}: root/public parity FAIL")
 
-    passed=not failures and totals["unresolved_pages"]==0 and totals["spacing_violations"]==0 and totals["retention_windows"]==0 and totals["mid_sentence_failures"]==0 and totals["airlock_left_terminal_failures"]==0
+    passed=not failures and totals["unresolved_pages"]==0 and totals["spacing_violations"]==0 and totals["retention_windows"]==0 and totals["mid_sentence_failures"]==0 and totals["airlock_left_terminal_failures"]==0 and totals["adjacent_overlap_failures"]==0 and totals["opener_socket_failures"]==0
     avg=(totals["line_abs_error"]/totals["forceable_pages"]) if totals["forceable_pages"] else 0
     lines=[
       "# Jeeves factory pilot — 6 Oct 2026","",
@@ -561,6 +710,10 @@ def main():
       f"- emergency plasticine slides used: **{totals['emergency_slides']}**",
       f"- borrowed-fill prepared pages used: **{totals['borrowed_fill_pages']}**",
       f"- airlock-left sentence-completion failures: **{totals['airlock_left_terminal_failures']}**",
+      f"- adjacent prose-overlap failures: **{totals['adjacent_overlap_failures']}**",
+      f"- chapter-opener socket failures: **{totals['opener_socket_failures']}**",
+      f"- duplicate prepared heads stripped before rebuild: **{totals['duplicate_heads_stripped']}**",
+      f"- DOUBLE-UP pages: **{totals['double_up_pages']}** ({totals['double_up_words']} repeated packing words)",
       f"- root/public corpus parity failures: **{sum(1 for _,ok in parity if not ok)}**","",
       f"## Machine verdict: **{'PASS' if passed else 'HOLD'}**",""
     ]
