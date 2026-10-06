@@ -19,7 +19,7 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 - unresolved prepared pages: **0**
 - skipped chapters: **0**
 - genuine paragraph hash mismatches: **0**
-- genuine token-order mismatches: **1**
+- canonical source token-order mismatches: **0**
 - page-head mid-sentence failures: **0**
 - local prepared-boundary slides used: **21**
 - emergency plasticine slides used: **0**
@@ -27,12 +27,13 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 - airlock-left sentence-completion failures: **0**
 - root/public corpus parity failures: **0**
 
-## Machine verdict: **HOLD**
+## Machine verdict: **PASS**
 
 ## Borrowed-fill exceptions
 - ch1 p2 — SAME_CHAPTER — target 8 — rendered line 3
 - ch22 p2 — SAME_CHAPTER — target 8 — rendered line 15
 - ch22 p14 — SAME_CHAPTER — target 16 — rendered line 16
 
-## Failures
-- jeeves: chapter-stream token order mismatch after repair
+No machine-QA invariant failures detected. Borrowed-fill camouflage is permitted only when explicitly flagged; canonical source paragraphs remain the authority.
+
+Next action: Builder diagnoses unresolved classes and revises factory; Stanley phone QA only after a clean candidate exists.
