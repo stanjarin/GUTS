@@ -2,7 +2,7 @@
 
 **Jeeves-only branch automation. Production main and all other books untouched.**
 
-Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.
+Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; pathological pages may use an **emergency plasticine token-stream slide** while preserving genuine token order; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.
 
 Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.
 
@@ -22,19 +22,20 @@ Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS p
 - genuine token-order mismatches: **0**
 - page-head mid-sentence failures: **0**
 - local prepared-boundary slides used: **21**
+- emergency plasticine slides used: **0**
 - airlock-left sentence-completion failures: **0**
 - root/public corpus parity failures: **0**
 
 ## Machine verdict: **HOLD**
 
 ## Unresolved classification
-- NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT: **2**
-- SPACING_OR_RETENTION_CONFLICT / NO_BOUNDARY_SLIDE_SPLIT: **1**
+- NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT / NO_EMERGENCY_SPLIT: **2**
+- SPACING_OR_RETENTION_CONFLICT / NO_BOUNDARY_SLIDE_SPLIT / NO_EMERGENCY_SPLIT: **1**
 
 ## Unresolved locations
-- ch1 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT — target 8 — previous line None
-- ch22 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT — target 8 — previous line None
-- ch22 p14 — SPACING_OR_RETENTION_CONFLICT / NO_BOUNDARY_SLIDE_SPLIT — target 16 — previous line 4
+- ch1 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT / NO_EMERGENCY_SPLIT — target 8 — previous line None
+- ch22 p2 — NO_LEGAL_MID_SENTENCE_TO_TERMINAL_SPLIT / NO_BOUNDARY_SLIDE_SPLIT / NO_EMERGENCY_SPLIT — target 8 — previous line None
+- ch22 p14 — SPACING_OR_RETENTION_CONFLICT / NO_BOUNDARY_SLIDE_SPLIT / NO_EMERGENCY_SPLIT — target 16 — previous line 4
 
 No machine-QA invariant failures detected.
 
