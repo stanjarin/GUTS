@@ -74,20 +74,23 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
 
     raw=[]
     for k in range(1,available+1):
-        donor=" ".join(genuine[-k:]).strip()
+        # Prepared-layer paragraph boundaries are flexible camouflage.
+        # Join as many donor paragraphs as needed to create a legal pump block;
+        # genuine word order remains inviolable.
+        donor=" ".join(str(x).strip() for x in genuine[-k:] if str(x).strip()).strip()
         toks=words(donor)
         if len(toks)<18: continue
         prefix_words=sum(wc(x) for x in genuine[:-k])
-        lo=max(8,45-prefix_words)
-        hi=len(toks)-8
-        for cut in range(lo,hi+1,2):
+        lo=max(4,36-prefix_words)
+        hi=len(toks)-6
+        for cut in range(lo,hi+1):
             if is_terminal_token(toks[cut-1]):
                 continue
             ends=[]
-            for end in range(cut+8,min(len(toks),cut+220)+1):
+            for end in range(cut+6,min(len(toks),cut+260)+1):
                 if is_terminal_token(toks[end-1]):
                     ends.append(end)
-                    if len(ends)>=4:
+                    if len(ends)>=8:
                         break
             for end in ends:
                 head=" ".join(toks[:cut]).strip()
@@ -109,7 +112,7 @@ def candidate_splits(genuine, measure_many, target, prev_line, history, protect_
             vals=[history[-2],history[-1],line]
             if max(vals)-min(vals)<=4:
                 continue
-        score=abs(line-target)*10+abs(wc(x["carry"])-80)/20+x["k"]*.05
+        score=abs(line-target)*10+abs(wc(x["carry"])-80)/24+x["k"]*.03
         cands.append((score,x["k"],x["head"],x["carry"],x["remainder"],line))
     cands.sort(key=lambda x:x[0])
     if not cands:
@@ -296,7 +299,7 @@ def main():
     lines=[
       "# Jeeves factory pilot — 6 Oct 2026","",
       "**Jeeves-only branch automation. Production main and all other books untouched.**","",
-      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
+      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined into a larger pump donor** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
       "Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.","",
       "## Compact QA",
       f"- forceable prepared pages repaired: **{totals['forceable_pages']}**",
