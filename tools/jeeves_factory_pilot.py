@@ -292,18 +292,32 @@ def repair_book(book,page,stats,failures,unresolved_details):
                     reason="BOUNDARY_SLIDE"
                     stats["boundary_slides"]+=1
                 else:
-                    unresolved[pi]=True
-                    stats["unresolved_pages"]+=1
-                    unresolved_details.append({
-                        "book":book.get("id","?"),
-                        "chapter":ci+1,
-                        "page":pi+1,
-                        "target":target,
-                        "reason":reason+" / "+slide_reason,
-                        "previous_line":lines[-1] if lines else None
-                    })
-                    lines.append(None)
-                    continue
+                    emergency,emergency_reason=candidate_emergency_slide(
+                        cur["genuine"],
+                        lambda arr:page.evaluate(JS_MEASURE_MANY,arr),
+                        target,
+                        lines[-1] if lines else None,
+                        lines
+                    )
+                    if emergency:
+                        _,prefix,carry,remainder,line=emergency[0]
+                        prev["genuine"]=prev["genuine"]+[prefix]
+                        cur["genuine"]=[carry]+([remainder] if remainder else [])
+                        reason="EMERGENCY_PLASTICINE"
+                        stats["emergency_slides"]+=1
+                    else:
+                        unresolved[pi]=True
+                        stats["unresolved_pages"]+=1
+                        unresolved_details.append({
+                            "book":book.get("id","?"),
+                            "chapter":ci+1,
+                            "page":pi+1,
+                            "target":target,
+                            "reason":reason+" / "+slide_reason+" / "+emergency_reason,
+                            "previous_line":lines[-1] if lines else None
+                        })
+                        lines.append(None)
+                        continue
             else:
                 _,k,head,carry,remainder,line=cands[0]
                 prev["genuine"]=prev["genuine"][:-k]+[head]
@@ -370,7 +384,7 @@ def process_copy(path,page,write,allstats,failures,unresolved_details):
     book=json.loads(path.read_text())
     stats={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","line_abs_error"]}
     repaired=repair_book(book,page,stats,failures,unresolved_details)
     if write: path.write_text(json.dumps(repaired,ensure_ascii=False,separators=(",",":")))
     for k,v in stats.items(): allstats[k]+=v
@@ -391,7 +405,7 @@ def main():
     unresolved_details=[]
     totals={k:0 for k in ["forceable_pages","pages_changed","exact_hits","within1","within2","beyond2",
                          "spacing_violations","retention_windows","unresolved_pages","chapters_skipped",
-                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","line_abs_error"]}
+                         "token_mismatches","genuine_hash_mismatches","mid_sentence_failures","airlock_left_terminal_failures","boundary_slides","emergency_slides","line_abs_error"]}
     per=[]
     with sync_playwright() as pw:
         browser=pw.chromium.launch(headless=True)
@@ -419,7 +433,7 @@ def main():
     lines=[
       "# Jeeves factory pilot — 6 Oct 2026","",
       "**Jeeves-only branch automation. Production main and all other books untouched.**","",
-      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
+      "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; pathological pages may use an **emergency plasticine token-stream slide** while preserving genuine token order; socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
       "Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.","",
       "## Compact QA",
       f"- forceable prepared pages repaired: **{totals['forceable_pages']}**",
@@ -437,6 +451,7 @@ def main():
       f"- genuine token-order mismatches: **{totals['token_mismatches']}**",
       f"- page-head mid-sentence failures: **{totals['mid_sentence_failures']}**",
       f"- local prepared-boundary slides used: **{totals['boundary_slides']}**",
+      f"- emergency plasticine slides used: **{totals['emergency_slides']}**",
       f"- airlock-left sentence-completion failures: **{totals['airlock_left_terminal_failures']}**",
       f"- root/public corpus parity failures: **{sum(1 for _,ok in parity if not ok)}**","",
       f"## Machine verdict: **{'PASS' if passed else 'HOLD'}**",""
