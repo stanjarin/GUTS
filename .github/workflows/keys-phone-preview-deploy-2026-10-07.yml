@@ -18,17 +18,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: keys-factory-scope-2026-10-07
-
-      - name: Deploy isolated Keys preview Worker
-        uses: cloudflare/wrangler-action@v3
+      - uses: actions/setup-node@v4
         with:
-          wranglerVersion: '4.148.0'
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config wrangler.jsonc --name guts-keys-phone-preview
-
-      - name: Record candidate anchor
-        run: |
-          echo "Candidate commit: $(git rev-parse HEAD)"
-          echo "Expected preview base: https://guts-keys-phone-preview.<workers-subdomain>.workers.dev"
-          echo "No production Worker name, custom domain, corpus source, or main branch is changed."
+          node-version: '24'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@4.148.0
+      - name: Deploy anonymous temporary visual preview
+        run: npx wrangler deploy --config wrangler.keys-preview.jsonc --temporary
