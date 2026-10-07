@@ -1,0 +1,33 @@
+name: Keys phone preview deploy 2026-10-07
+
+on:
+  push:
+    branches:
+      - keys-factory-scope-2026-10-07
+    paths:
+      - .github/keys-phone-preview-trigger-2026-10-07
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: keys-factory-scope-2026-10-07
+
+      - name: Deploy isolated Keys preview Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --name guts-keys-phone-preview
+
+      - name: Record candidate anchor
+        run: |
+          echo "Candidate commit: $(git rev-parse HEAD)"
+          echo "Expected preview base: https://guts-keys-phone-preview.<workers-subdomain>.workers.dev"
+          echo "No production Worker name, custom domain, corpus source, or main branch is changed."
