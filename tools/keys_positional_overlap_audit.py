@@ -7,8 +7,7 @@ BOOK=Path("PERFORMANCE10/keys_performance.json")
 REPORT=Path("docs/checkpoints/2026-10-07_keys-positional-overlap-audit.md")
 N=10
 SAME_ZONE_PX=96
-TOP_ZONE_MAX=180
-BOTTOM_ZONE_MIN=500
+STRONG_DISPLACEMENT_PX=174  # about eight rendered lines at 21.75px
 
 CSS="""
 *{box-sizing:border-box}
@@ -92,51 +91,57 @@ def main():
                 hits=overlap_hits(ca,cb)
                 if not hits: continue
                 posa=pos_map(pg,pa); posb=pos_map(pg,pb)
-                # report the first occurrence pair with the smallest positional difference,
-                # plus whether any occurrence is genuinely same-zone.
-                best=None; dangerous=False; bottom_top=False
+                occ=[]
                 for ia,ib,g in hits:
                     ya=posa.get(ia); yb=posb.get(ib)
                     if ya is None or yb is None: continue
-                    d=abs(ya-yb)
-                    same=d<=SAME_ZONE_PX
-                    bt=(ya>=BOTTOM_ZONE_MIN and yb<=TOP_ZONE_MAX)
-                    if same: dangerous=True
-                    if bt: bottom_top=True
-                    cand=(d,ia,ib,ya,yb," ".join(g))
-                    if best is None or cand[0]<best[0]: best=cand
-                if best is None: continue
-                d,ia,ib,ya,yb,phrase=best
+                    occ.append((abs(ya-yb),ya-yb,ya,yb," ".join(g)))
+                if not occ: continue
+                occ.sort(key=lambda x:x[0])
+                mind,dir_delta,ya,yb,phrase=occ[0]
+                same=any(x[0]<=SAME_ZONE_PX for x in occ)
+                strong=all(x[0]>=STRONG_DISPLACEMENT_PX for x in occ)
+                down_up=any(x[1]>=STRONG_DISPLACEMENT_PX for x in occ)
+                up_down=any(x[1]<=-STRONG_DISPLACEMENT_PX for x in occ)
                 rows.append({
                     "chapter":ci,"left":pi+1,"right":pi+2,
-                    "left_y":round(ya,1),"right_y":round(yb,1),"delta":round(d,1),
-                    "dangerous":dangerous,"bottom_top":bottom_top,"phrase":phrase
+                    "left_y":round(ya,1),"right_y":round(yb,1),"delta":round(mind,1),
+                    "same_zone":same,"strong_displacement":strong,
+                    "down_up":down_up,"up_down":up_down,"phrase":phrase
                 })
         browser.close()
 
-    danger=[r for r in rows if r["dangerous"]]
-    benign=[r for r in rows if not r["dangerous"]]
-    bt=[r for r in rows if r["bottom_top"]]
+    same=[r for r in rows if r["same_zone"]]
+    strong=[r for r in rows if r["strong_displacement"]]
+    review=[r for r in rows if not r["same_zone"] and not r["strong_displacement"]]
+    downup=[r for r in rows if r["down_up"]]
     lines=[
-      "# Keys positional overlap audit — 7 Oct 2026","",
+      "# Keys positional overlap audit — calibrated 7 Oct 2026","",
       "Read-only audit. No prose or corpus files changed.","",
       f"- adjacent page pairs with a repeated {N}-word run anywhere: **{len(rows)}**",
-      f"- same-zone positional overlaps (≤ {SAME_ZONE_PX}px): **{len(danger)}**",
-      f"- non-same-zone textual overlaps: **{len(benign)}**",
-      f"- bottom→top overlaps detected (left ≥ {BOTTOM_ZONE_MIN}px, right ≤ {TOP_ZONE_MAX}px): **{len(bt)}**","",
-      "Interpretation: only the same-zone count is a retention-risk flag. Bottom→top duplication is expected camouflage and is not itself a failure.","",
+      f"- same-zone risk pairs (nearest repeat ≤ {SAME_ZONE_PX}px): **{len(same)}**",
+      f"- strongly displaced pairs (all repeats ≥ {STRONG_DISPLACEMENT_PX}px): **{len(strong)}**",
+      f"- intermediate / phone-review pairs: **{len(review)}**",
+      f"- pairs containing a strong down→up displacement: **{len(downup)}**","",
+      "Interpretation: textual duplication alone is not a failure. Same-zone recurrence is the machine risk signal; strong displacement is camouflage. The middle band is deliberately left for phone judgement.","",
       "## Same-zone risks"
     ]
-    if danger:
-        for r in danger:
+    if same:
+        for r in same:
             lines.append(f"- ch{r['chapter']} p{r['left']}/p{r['right']} — {r['left_y']}px → {r['right_y']}px (Δ {r['delta']}px) — “{r['phrase']}”")
     else:
         lines.append("- none")
-    lines += ["","## Benign positional duplicates"]
-    if benign:
-        for r in benign:
-            tag=" bottom→top" if r["bottom_top"] else ""
-            lines.append(f"- ch{r['chapter']} p{r['left']}/p{r['right']} — {r['left_y']}px → {r['right_y']}px (Δ {r['delta']}px){tag}")
+    lines += ["","## Strongly displaced / camouflage"]
+    if strong:
+        for r in strong:
+            tag=" down→up" if r["down_up"] else (" up→down" if r["up_down"] else "")
+            lines.append(f"- ch{r['chapter']} p{r['left']}/p{r['right']} — nearest Δ {r['delta']}px{tag}")
+    else:
+        lines.append("- none")
+    lines += ["","## Intermediate — phone review"]
+    if review:
+        for r in review:
+            lines.append(f"- ch{r['chapter']} p{r['left']}/p{r['right']} — nearest Δ {r['delta']}px")
     else:
         lines.append("- none")
     REPORT.write_text("\n".join(lines)+"\n")
