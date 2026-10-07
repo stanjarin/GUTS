@@ -1,0 +1,56 @@
+name: UBU factory scope 2026-10-07
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - ubu-factory-scope-2026-10-07
+    paths:
+      - .github/ubu-factory-scope-trigger-2026-10-07
+      - tools/ubu_factory_scope.py
+      - .github/workflows/ubu-factory-scope-2026-10-07.yml
+
+concurrency:
+  group: ubu-factory-scope-2026-10-07
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ubu-factory-scope-2026-10-07
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m py_compile tools/ubu_factory_scope.py
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Run UBU single-book factory trial
+        id: qa
+        continue-on-error: true
+        run: python tools/ubu_factory_scope.py --write --report docs/checkpoints/2026-10-07_ubu-factory-scope-report.md
+      - name: Commit UBU candidate and report
+        if: always()
+        run: |
+          git config user.name "GUTS UBU scope robot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/checkpoints/2026-10-07_ubu-factory-scope-report.md
+          git add PERFORMANCE10/ubu_performance.json public/PERFORMANCE10/ubu_performance.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Record UBU single-book factory scope QA"
+            git pull --rebase origin ubu-factory-scope-2026-10-07
+            git push origin HEAD:ubu-factory-scope-2026-10-07
+          fi
+      - name: Enforce structural gate
+        if: steps.qa.outcome != 'success'
+        run: |
+          echo "UBU structural QA HOLD; report and candidate retained on safe branch."
+          exit 1
