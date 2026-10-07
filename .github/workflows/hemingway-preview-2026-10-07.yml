@@ -1,0 +1,37 @@
+name: Hemingway standalone preview 2026-10-07
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - factory-autopilot-2026-10-07
+    paths:
+      - .github/hemingway-preview-trigger-2026-10-07
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 37565443433
+          name: factory-farewell
+          github-token: ${{ github.token }}
+          path: hemingway-artifact
+      - name: Overlay finished Hemingway candidate
+        shell: bash
+        run: |
+          cp -R hemingway-artifact/. .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@4.148.0
+      - name: Deploy anonymous temporary Hemingway preview
+        run: npx wrangler deploy --config wrangler.factory-preview.jsonc --temporary
