@@ -1,0 +1,39 @@
+name: Keys phone candidate 2026-10-07
+
+on:
+  push:
+    branches:
+      - keys-factory-scope-2026-10-07
+    paths:
+      - .github/keys-phone-candidate-trigger-2026-10-07
+
+permissions:
+  contents: write
+
+concurrency:
+  group: keys-phone-candidate-2026-10-07
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: keys-factory-scope-2026-10-07
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Build phone candidate
+        run: python tools/keys_phone_candidate.py
+      - name: Commit phone candidate
+        run: |
+          git config user.name "GUTS Keys phone candidate"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/checkpoints/2026-10-07_keys-phone-candidate-report.md
+          git add PERFORMANCE10/keys_performance.json public/PERFORMANCE10/keys_performance.json
+          git commit -m "Build Keys phone QA candidate" || exit 0
+          git pull --rebase origin keys-factory-scope-2026-10-07
+          git push origin HEAD:keys-factory-scope-2026-10-07
