@@ -199,7 +199,8 @@ if after_hash!=before_hash:
 # Root/public parity is written from one object only if the target gate clears.
 lines=["# Keys targeted positional-retention repair — 7 Oct 2026","",
        "Scope: phone candidate only. Apply the seven machine-clearable same-zone cases; leave the three stubborn pairs untouched for Stanley phone judgement.","",
-       f"- machine-clearable target pairs applied: **{len(TARGETS)}**",\n       "- deliberately untouched stubborn pairs: **ch4 p33/p34; ch4 p142/p143; ch4 p145/p146**",
+       f"- machine-clearable target pairs applied: **{len(TARGETS)}**",
+       "- deliberately untouched stubborn pairs: **ch4 p33/p34; ch4 p142/p143; ch4 p145/p146**",
        f"- remaining same-zone target pairs: **{len(remaining)}**",
        f"- canonical paragraphs hash unchanged: **{'YES' if after_hash==before_hash else 'NO'}**","",
        "## Actions"]
