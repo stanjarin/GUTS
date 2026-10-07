@@ -1,0 +1,153 @@
+name: GUTS factory autopilot 2026-10-07
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - factory-autopilot-2026-10-07
+    paths:
+      - .github/factory-autopilot-trigger-2026-10-07
+      - tools/factory_book.py
+      - .github/workflows/factory-autopilot-2026-10-07.yml
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: aam
+            corpus: PERFORMANCE35/aam_035.json
+          - id: farewell
+            corpus: PERFORMANCE35/farewell_035.json
+          - id: huck
+            corpus: PERFORMANCE35/huck_035.json
+          - id: dr
+            corpus: PERFORMANCE35/dr_035.json
+          - id: ac
+            corpus: PERFORMANCE35/ac_035.json
+          - id: jj
+            corpus: PERFORMANCE35/jj_035.json
+          - id: jt
+            corpus: PERFORMANCE35/jt_035.json
+          - id: brodie
+            corpus: PERFORMANCE10/brodie_performance.json
+          - id: chandler
+            corpus: PERFORMANCE10/chandler_performance.json
+          - id: kontiki
+            corpus: PERFORMANCE10/kontiki_performance.json
+          - id: parker
+            corpus: PERFORMANCE10/parker_performance.json
+          - id: peake
+            corpus: PERFORMANCE10/peake_performance.json
+          - id: perelman
+            corpus: PERFORMANCE10/perelman_performance.json
+          - id: policeman
+            corpus: PERFORMANCE10/policeman_performance.json
+          - id: ripley
+            corpus: PERFORMANCE10/ripley_performance.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m py_compile tools/factory_book.py
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Run book factory
+        shell: bash
+        run: |
+          mkdir -p .factory-status
+          set +e
+          python tools/factory_book.py --write --corpus "${{ matrix.corpus }}" --report "docs/checkpoints/2026-10-07_autopilot_${{ matrix.id }}.md"
+          code=$?
+          echo "$code" > ".factory-status/${{ matrix.id }}.txt"
+          exit 0
+      - name: Pack book result
+        uses: actions/upload-artifact@v4
+        with:
+          name: factory-${{ matrix.id }}
+          if-no-files-found: warn
+          path: |
+            ${{ matrix.corpus }}
+            public/${{ matrix.corpus }}
+            docs/checkpoints/2026-10-07_autopilot_${{ matrix.id }}.md
+            .factory-status/${{ matrix.id }}.txt
+
+  consolidate:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: factory-*
+          merge-multiple: true
+          path: autopilot-out
+      - name: Merge candidates and reports
+        shell: bash
+        run: |
+          cp -R autopilot-out/. .
+          rm -rf autopilot-out
+          python - <<'PY'
+          from pathlib import Path
+          lines=["# GUTS factory autopilot summary — 7 Oct 2026","",
+                 "Production main untouched. Jeeves is frozen; Keys and UBU were already phone-reviewed and were not regenerated.",""]
+          holds=[]
+          for p in sorted(Path("docs/checkpoints").glob("2026-10-07_autopilot_*.md")):
+              txt=p.read_text(errors="replace")
+              verdict="PASS" if "Machine verdict: **PASS**" in txt or "Machine structural verdict: **PASS**" in txt else "HOLD"
+              name=p.stem.replace("2026-10-07_autopilot_","")
+              lines.append(f"- {name}: **{verdict}**")
+              if verdict!="PASS": holds.append(name)
+          lines += ["",f"Structural HOLD books: **{len(holds)}**" + (f" — {', '.join(holds)}" if holds else ""),
+                    "","All generated candidates are retained on this safe branch. Raw sentence-start and textual-overlap flags are diagnostics for phone review, not automatic structural blockers.",
+                    "","Next human gate: one consolidated phone-QA pass after preview deployment."]
+          Path("docs/checkpoints/2026-10-07_factory-autopilot-summary.md").write_text("\n".join(lines)+"\n")
+          PY
+      - name: Commit consolidated factory output
+        shell: bash
+        run: |
+          git config user.name "GUTS factory autopilot"
+          git config user.email "actions@users.noreply.github.com"
+          git add PERFORMANCE10 PERFORMANCE35 public/PERFORMANCE10 public/PERFORMANCE35 docs/checkpoints/2026-10-07_autopilot_*.md docs/checkpoints/2026-10-07_factory-autopilot-summary.md
+          if git diff --cached --quiet; then
+            echo "No factory output changes"
+          else
+            git commit -m "Consolidate GUTS factory autopilot candidates"
+            git pull --rebase origin factory-autopilot-2026-10-07
+            git push origin HEAD:factory-autopilot-2026-10-07
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@4.148.0
+      - name: Deploy consolidated temporary phone preview
+        shell: bash
+        run: |
+          set -o pipefail
+          npx wrangler deploy --config wrangler.factory-preview.jsonc --temporary 2>&1 | tee /tmp/wrangler.out
+          url=$(grep -Eo 'https://[^ ]+\.workers\.dev' /tmp/wrangler.out | tail -1)
+          echo "FACTORY_PREVIEW=$url/?browse=1" >> "$GITHUB_ENV"
+          echo "### Factory preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "$url/?browse=1" >> "$GITHUB_STEP_SUMMARY"
+      - name: Notify only at the human gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          body=$(cat docs/checkpoints/2026-10-07_factory-autopilot-summary.md)
+          printf "%s\n\nPhone preview: %s\n" "$body" "$FACTORY_PREVIEW" > /tmp/issue.md
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "GUTS factory: phone QA ready" --body-file /tmp/issue.md
