@@ -22,9 +22,10 @@ jobs:
       - name: Deploy isolated Keys preview Worker
         uses: cloudflare/wrangler-action@v3
         with:
+          wranglerVersion: '4.148.0'
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --name guts-keys-phone-preview
+          command: deploy --config wrangler.jsonc --name guts-keys-phone-preview
 
       - name: Record candidate anchor
         run: |
