@@ -328,3 +328,18 @@ Factory policy extracted from the successful pilot:
 One isolated top-of-page sentence-start defect is known but location is pending Stanley's shed notes; it is explicitly non-blocking and deferred.
 
 **NEXT ACTION:** build/run the 18-book Motherlode factory on isolated branch machinery using the approved stagecraft law. Production `main` remains untouched and usable for performance throughout.
+
+
+## Factory autopilot — 7 Oct 2026
+
+Current safe engineering branch: `factory-autopilot-2026-10-07`.
+
+The GUTS factory has moved from manual stop-start triggering to a GitHub Actions matrix autopilot: remaining books run in parallel, each retains its candidate/report, outputs are consolidated, and the system should stop only at a genuine human phone-QA gate. Production `main` and `ebooks.fyi` remain untouched.
+
+Keys: provisional phone PASS; editorial/OCR uglies deferred. UBU: machine-clean apart from two raw overlaps, both phone-accepted. Retention is positional/attention-zone dependent; raw textual duplication is diagnostic, not automatically a visual defect.
+
+Engineering naming convention: in GUTS-building threads, call the machinery **GUTS**; reserve **NoBo NoFo** for performance/effect vocabulary.
+
+Durable checkpoint: `docs/checkpoints/2026-10-07_factory-autopilot-thread-store.md`.
+
+**NEXT ACTION:** let the current autopilot finish; then perform one consolidated Stanley phone-QA pass. Do not manually prod individual books or touch production main.
