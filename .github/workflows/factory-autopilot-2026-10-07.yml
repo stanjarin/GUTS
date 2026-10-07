@@ -10,6 +10,10 @@ on:
       - tools/factory_book.py
       - .github/workflows/factory-autopilot-2026-10-07.yml
 
+concurrency:
+  group: guts-factory-autopilot-2026-10-07
+  cancel-in-progress: true
+
 permissions:
   contents: write
   issues: write
