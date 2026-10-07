@@ -1,0 +1,95 @@
+name: GUTS laggard recovery 2026-10-07
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - factory-autopilot-2026-10-07
+    paths:
+      - .github/laggard-recovery-trigger-2026-10-07
+      - tools/factory_laggard.py
+      - .github/workflows/laggard-recovery-2026-10-07.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: dr
+            corpus: PERFORMANCE35/dr_035.json
+          - id: jj
+            corpus: PERFORMANCE35/jj_035.json
+          - id: kontiki
+            corpus: PERFORMANCE10/kontiki_performance.json
+          - id: peake
+            corpus: PERFORMANCE10/peake_performance.json
+          - id: ripley
+            corpus: PERFORMANCE10/ripley_performance.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python -m py_compile tools/factory_laggard.py
+      - run: pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Run optimized laggard factory
+        shell: bash
+        run: |
+          set +e
+          python tools/factory_laggard.py --write --corpus "${{ matrix.corpus }}" --report "docs/checkpoints/2026-10-07_laggard_${{ matrix.id }}.md"
+          code=$?
+          echo "factory_exit=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Pack laggard result
+        uses: actions/upload-artifact@v4
+        with:
+          name: laggard-${{ matrix.id }}
+          if-no-files-found: error
+          path: |
+            ${{ matrix.corpus }}
+            public/${{ matrix.corpus }}
+            docs/checkpoints/2026-10-07_laggard_${{ matrix.id }}.md
+
+  preview:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+      - name: Download ten finished original artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37565443433
+          pattern: factory-*
+          merge-multiple: true
+          path: merged
+      - name: Download recovered laggards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: laggard-*
+          merge-multiple: true
+          path: recovered
+      - name: Overlay finished candidates
+        shell: bash
+        run: |
+          cp -R merged/. .
+          cp -R recovered/. .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@4.148.0
+      - name: Deploy consolidated recovery preview
+        run: npx wrangler deploy --config wrangler.factory-preview.jsonc --temporary
