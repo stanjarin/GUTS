@@ -1,0 +1,27 @@
+name: UBU phone preview deploy 2026-10-07
+
+on:
+  push:
+    branches:
+      - ubu-factory-scope-2026-10-07
+    paths:
+      - .github/ubu-phone-preview-trigger-2026-10-07
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ubu-factory-scope-2026-10-07
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Wrangler
+        run: npm install --no-save wrangler@4.148.0
+      - name: Deploy anonymous temporary visual preview
+        run: npx wrangler deploy --config wrangler.keys-preview.jsonc --temporary
