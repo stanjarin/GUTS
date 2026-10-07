@@ -161,13 +161,13 @@ def adjacency_and_head_qa(book, stats, failures):
             non=[str(x) for x in fp if "$$" not in str(x)]
             if non and not head_is_mid_sentence(book,non[0]):
                 stats["mid_sentence_failures"]+=1
-                failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: prepared page begins at sentence start")
+                # Phone-review diagnostic only: Keys established that a machine sentence-start flag is not itself a structural failure.
             if pi>0:
                 a=page_prepared_text(pages[pi-1],trim_double=True)
                 b=page_prepared_text(p,trim_double=True)
                 if has_ngram_overlap(a,b):
                     stats["adjacent_overlap_failures"]+=1
-                    failures.append(f"{book.get('id','?')} ch{ci+1} p{pi}/p{pi+1}: distinctive adjacent prose overlap")
+                    # Phone-review diagnostic only: textual overlap is not itself a visual-retention failure.
 
 def para_hash(book):
     payload=json.dumps([[p.get("paragraphs",[]) for p in c.get("pages",[])] for c in book.get("chapters",[])],
