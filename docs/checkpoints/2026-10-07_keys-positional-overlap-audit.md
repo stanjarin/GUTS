@@ -1,13 +1,14 @@
-# Keys positional overlap audit — 7 Oct 2026
+# Keys positional overlap audit — calibrated 7 Oct 2026
 
 Read-only audit. No prose or corpus files changed.
 
 - adjacent page pairs with a repeated 10-word run anywhere: **24**
-- same-zone positional overlaps (≤ 96px): **10**
-- non-same-zone textual overlaps: **14**
-- bottom→top overlaps detected (left ≥ 500px, right ≤ 180px): **0**
+- same-zone risk pairs (nearest repeat ≤ 96px): **10**
+- strongly displaced pairs (all repeats ≥ 174px): **12**
+- intermediate / phone-review pairs: **2**
+- pairs containing a strong down→up displacement: **0**
 
-Interpretation: only the same-zone count is a retention-risk flag. Bottom→top duplication is expected camouflage and is not itself a failure.
+Interpretation: textual duplication alone is not a failure. Same-zone recurrence is the machine risk signal; strong displacement is camouflage. The middle band is deliberately left for phone judgement.
 
 ## Same-zone risks
 - ch4 p2/p3 — 50.8px → 50.8px (Δ 0.0px) — “but alas when he landed he saw he was mistaken”
@@ -21,18 +22,20 @@ Interpretation: only the same-zone count is a retention-risk flag. Bottom→top 
 - ch5 p2/p3 — 213.8px → 126.8px (Δ 87.0px) — “naturally we're a little disappointed in the figures monsignor sleeth”
 - ch6 p2/p3 — 235.5px → 279.0px (Δ 43.5px) — “himself flushing.''you f seem to have a very slight regard”
 
-## Benign positional duplicates
-- ch1 p2/p3 — 322.5px → 224.6px (Δ 98.0px)
-- ch2 p2/p3 — 29px → 529.1px (Δ 500.1px)
-- ch2 p5/p6 — 257.3px → 909.8px (Δ 652.5px)
-- ch2 p26/p27 — 518.3px → 1377.3px (Δ 859.0px)
-- ch2 p58/p59 — 300.8px → 1301.3px (Δ 1000.5px)
-- ch2 p62/p63 — 387.8px → 1540.5px (Δ 1152.8px)
-- ch3 p7/p8 — 463.8px → 627.0px (Δ 163.2px)
-- ch3 p28/p29 — 463.8px → 692.3px (Δ 228.5px)
-- ch3 p32/p33 — 311.6px → 496.5px (Δ 185.0px)
-- ch4 p3/p4 — 72.5px → 1116.2px (Δ 1043.7px)
-- ch4 p89/p90 — 409.5px → 1312.1px (Δ 902.5px)
-- ch4 p116/p117 — 322.5px → 866.3px (Δ 543.8px)
-- ch4 p158/p159 — 387.8px → 888.0px (Δ 500.2px)
-- ch4 p160/p161 — 279.0px → 866.3px (Δ 587.2px)
+## Strongly displaced / camouflage
+- ch2 p2/p3 — nearest Δ 500.1px up→down
+- ch2 p5/p6 — nearest Δ 652.5px up→down
+- ch2 p26/p27 — nearest Δ 859.0px up→down
+- ch2 p58/p59 — nearest Δ 1000.5px up→down
+- ch2 p62/p63 — nearest Δ 1152.8px up→down
+- ch3 p28/p29 — nearest Δ 228.5px up→down
+- ch3 p32/p33 — nearest Δ 185.0px up→down
+- ch4 p3/p4 — nearest Δ 1043.7px up→down
+- ch4 p89/p90 — nearest Δ 902.5px up→down
+- ch4 p116/p117 — nearest Δ 543.8px up→down
+- ch4 p158/p159 — nearest Δ 500.2px up→down
+- ch4 p160/p161 — nearest Δ 587.2px up→down
+
+## Intermediate — phone review
+- ch1 p2/p3 — nearest Δ 98.0px
+- ch3 p7/p8 — nearest Δ 163.2px
