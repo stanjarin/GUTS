@@ -658,9 +658,15 @@ def process_copy(path,page,write,allstats,failures,unresolved_details,borrowed_d
 
 def main():
     ap=argparse.ArgumentParser()
-    ap.add_argument("--write",action="store_true")\n    ap.add_argument("--corpus",required=True)
+    ap.add_argument("--write",action="store_true")
+    ap.add_argument("--corpus",required=True)
     ap.add_argument("--report")
     args=ap.parse_args()
+    global CORPORA
+    CORPORA=[args.corpus]
+    if not args.report:
+        stem=Path(args.corpus).stem
+        args.report=f"docs/checkpoints/2026-10-07_autopilot_{stem}.md"
     authorities=[]
     for rel in CORPORA:
         pub=Path("public")/rel
@@ -698,8 +704,8 @@ def main():
     passed=not failures and totals["unresolved_pages"]==0 and totals["spacing_violations"]==0 and totals["airlock_left_terminal_failures"]==0 and totals["opener_socket_failures"]==0
     avg=(totals["line_abs_error"]/totals["forceable_pages"]) if totals["forceable_pages"] else 0
     lines=[
-      "## UBU factory scope — 7 Oct 2026","",
-      "**UBU-only branch automation. Production main untouched. Keys candidate inherited but not regenerated.**","",
+      f"# Factory autopilot — {Path(args.corpus).stem} — 7 Oct 2026","",
+      "**Single-book branch automation. Production main untouched.**","",
       "Law: every forceable prepared page begins **mid-sentence**; the airlock appears only after a **proper completed sentence**; prepared-layer paragraphs may be **joined or locally rebalanced across page boundaries** when needed; pathological pages may use an **emergency plasticine token-stream slide** while preserving genuine token order; if that still fails, the factory may use **flagged borrowed-fill camouflage from elsewhere in the same book** (same chapter preferred, then nearby chapters, then same book); socket-start targets cycle **8 / 12 / 16 / 10 / 14**; unrelated Gutenberg paragraph oddities are left alone.","",
       "Renderer used for machine pass: Chromium at the fixed Reader geometry (329 CSS px, Georgia 15px/1.45). Actual iPhone Safari remains the phone-QA authority.","",
       "## Compact QA",
