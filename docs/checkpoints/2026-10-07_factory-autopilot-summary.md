@@ -2,7 +2,16 @@
 
 Production main untouched. Jeeves is frozen; Keys and UBU were already phone-reviewed and were not regenerated.
 
+- aam: **PASS**
+- ac: **PASS**
 - brodie: **PASS**
+- chandler: **PASS**
+- farewell: **PASS**
+- huck: **PASS**
+- jt: **PASS**
+- parker: **PASS**
+- perelman: **PASS**
+- policeman: **PASS**
 
 Structural HOLD books: **0**
 
