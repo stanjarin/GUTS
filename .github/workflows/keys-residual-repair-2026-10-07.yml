@@ -29,6 +29,8 @@ jobs:
           python-version: '3.12'
       - name: Syntax check
         run: python -m py_compile tools/keys_residual_repair.py
+      - name: Install Python dependency
+        run: pip install playwright
       - name: Run targeted residual repair
         id: qa
         continue-on-error: true
