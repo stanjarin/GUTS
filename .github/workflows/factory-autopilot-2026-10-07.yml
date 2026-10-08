@@ -75,6 +75,22 @@ jobs:
           code=$?
           echo "$code" > ".factory-status/${{ matrix.id }}.txt"
           exit 0
+      - name: Independent final-page stagecraft inspection
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "${{ matrix.corpus }}" ]; then
+            python tools/factory_final_page_gate.py "${{ matrix.corpus }}" --output "docs/checkpoints/2026-10-08_final_gate_${{ matrix.id }}.json" --strict
+          else
+            echo "Missing corpus: ${{ matrix.corpus }}"
+            exit 1
+          fi
+      - name: Enforce factory engine exit status
+        if: always()
+        shell: bash
+        run: |
+          test -f ".factory-status/${{ matrix.id }}.txt"
+          test "$(cat ".factory-status/${{ matrix.id }}.txt")" = "0"
       - name: Pack book result
         uses: actions/upload-artifact@v4
         with:
@@ -85,6 +101,7 @@ jobs:
             public/${{ matrix.corpus }}
             docs/checkpoints/2026-10-07_autopilot_${{ matrix.id }}.md
             .factory-status/${{ matrix.id }}.txt
+            docs/checkpoints/2026-10-08_final_gate_${{ matrix.id }}.json
 
   consolidate:
     needs: build
