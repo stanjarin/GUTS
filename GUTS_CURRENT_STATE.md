@@ -343,3 +343,24 @@ Engineering naming convention: in GUTS-building threads, call the machinery **GU
 Durable checkpoint: `docs/checkpoints/2026-10-07_factory-autopilot-thread-store.md`.
 
 **NEXT ACTION:** let the current autopilot finish; then perform one consolidated Stanley phone-QA pass. Do not manually prod individual books or touch production main.
+
+
+## CURRENT OVERRIDE — 8 OCT 2026
+
+This section supersedes earlier NEXT ACTION text where inconsistent.
+
+- Safe working branch: `factory-autopilot-2026-10-07`.
+- Factory batch complete.
+- Original autopilot artifact-source run: `37565443433` (old laggard jobs cancelled).
+- Optimized laggard recovery run: `37592243640` — SUCCESS.
+- Recovered: Runyon, Ripley, Kon-Tiki, Peake, Joyce.
+- Stable consolidated staging workflow: `.github/workflows/stable-staging-2026-10-08.yml`.
+- Stable staging successful run: `37707029293`, attempt 2 — SUCCESS.
+- Stable staging URL: `https://stanjarin.github.io/GUTS/?browse=1`.
+- GitHub Pages source is now GitHub Actions.
+- Production `main`, `ebooks.fyi`, and live NoBo remain untouched by staging.
+- NoBo production still routes to the older production GUTS, not staging.
+- Stanley phone judgment: factory principle mainly OK; many warts remain; short pages are the most visible recurring wart.
+- Pre-Monday policy: no broad repair campaign. Fix only method-revealing / illusion-breaking defects; leave plausible Gutenberg roughness.
+- Monday priority: rehearsal/presentation, then explicit decision whether to repoint/promote.
+- Canonical handover: `GUTS_HANDOVER_2026-10-08.md`.
