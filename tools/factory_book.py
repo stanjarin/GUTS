@@ -97,19 +97,26 @@ def page_prepared_text(p, trim_double=True):
         if n>0 and n<=len(toks): toks=toks[:-n]
     return " ".join(toks)
 
+_HEAD_INDEX_CACHE = {}
+
 def head_is_mid_sentence(book, head):
-    """Find the prepared head in canonical source and require a non-terminal predecessor."""
-    h=clean_words(head)[:8]
-    if len(h)<4: return False
-    raw=[]
-    for ch in book.get("chapters",[]):
-        for p in ch.get("pages",[]):
-            raw += words(" ".join(p.get("paragraphs",[])))
-    clean=[clean_tok(x) for x in raw]
-    for i in range(1,len(clean)-len(h)+1):
-        if clean[i:i+len(h)]==h and not is_terminal_token(raw[i-1]):
-            return True
-    return False
+    """Index canonical source once per book; reused by borrowed-fill candidates."""
+    key=id(book)
+    entry=_HEAD_INDEX_CACHE.get(key)
+    if entry is None:
+        raw=[]
+        for ch in book.get("chapters",[]):
+            for p in ch.get("pages",[]):
+                raw.extend(words(" ".join(p.get("paragraphs",[]))))
+        clean=[clean_tok(x) for x in raw]
+        starts=set()
+        for i in range(1,len(clean)-3):
+            if not is_terminal_token(raw[i-1]):
+                starts.add(tuple(clean[i:i+4]))
+        entry=starts
+        _HEAD_INDEX_CACHE[key]=entry
+    h=clean_words(head)[:4]
+    return len(h)==4 and tuple(h) in entry
 
 def apply_double_up(pages, page, stats):
     """
@@ -420,7 +427,7 @@ def candidate_borrowed_fill(book, chapter_index, page_index, measure_many, targe
                 break
         if not raw:
             continue
-        measured=measure_many([x[0] for x in raw])
+        # Reject non-native or adjacent-overlap prose before expensive Chromium measurements.\n        prev_src=" ".join(chapters[chapter_index].get("pages",[])[page_index-1].get("paragraphs",[])) if page_index>0 else ""\n        next_src=" ".join(chapters[chapter_index].get("pages",[])[page_index+1].get("paragraphs",[])) if page_index+1<len(chapters[chapter_index].get("pages",[])) else ""\n        raw=[x for x in raw if not has_ngram_overlap(x[0],prev_src) and not has_ngram_overlap(x[0],next_src) and head_is_mid_sentence(book,x[0])]\n        if not raw: continue\n        measured=measure_many([x[0] for x in raw])
         cands=[]
         prev_src=" ".join(chapters[chapter_index].get("pages",[])[page_index-1].get("paragraphs",[])) if page_index>0 else ""
         next_src=" ".join(chapters[chapter_index].get("pages",[])[page_index+1].get("paragraphs",[])) if page_index+1<len(chapters[chapter_index].get("pages",[])) else ""
