@@ -34,8 +34,6 @@ jobs:
             corpus: PERFORMANCE35/dr_035.json
           - id: ac
             corpus: PERFORMANCE35/ac_035.json
-          - id: jj
-            corpus: PERFORMANCE35/jj_035.json
           - id: jt
             corpus: PERFORMANCE35/jt_035.json
           - id: brodie
@@ -63,7 +61,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Syntax check
-        run: python -m py_compile tools/factory_book.py
+        run: python -m py_compile tools/factory_book.py tools/factory_final_page_gate.py
       - run: pip install playwright
       - run: python -m playwright install --with-deps chromium
       - name: Run book factory
@@ -105,7 +103,8 @@ jobs:
 
   consolidate:
     needs: build
-    if: always()
+    # Quarantined: never merge or deploy candidates before per-book QA and review.
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
