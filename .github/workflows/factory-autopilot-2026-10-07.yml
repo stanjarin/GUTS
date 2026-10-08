@@ -90,6 +90,7 @@ jobs:
           test -f ".factory-status/${{ matrix.id }}.txt"
           test "$(cat ".factory-status/${{ matrix.id }}.txt")" = "0"
       - name: Pack book result
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: factory-${{ matrix.id }}
