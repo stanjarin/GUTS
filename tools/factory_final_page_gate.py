@@ -54,5 +54,5 @@ def main():
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps({"summary":stats,"suspects":entries},ensure_ascii=False,indent=2))
     print(json.dumps(stats))
-    if args.strict and (stats["firstNewParaFailures"] or stats["socketFailures"]):raise SystemExit(1)
+    if args.strict and (stats["firstNewParaFailures"] or stats["socketFailures"] or stats["upperStaggerFlags"]):raise SystemExit(1)
 if __name__=="__main__":main()
