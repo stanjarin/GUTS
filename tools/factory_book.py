@@ -467,6 +467,10 @@ def repair_book(book,page,stats,failures,unresolved_details,borrowed_details):
         chapter_ok=True
         for pi,p in enumerate(pages):
             e=extract_page(p)
+            if not e and pi==0:
+                # Approved chapter openers are deliberately socket-free.
+                if "$$" not in " ".join(str(x) for x in p.get("force_paragraphs",[])):
+                    e={"genuine":list(p.get("paragraphs",[])),"air":None,"old_ai":None}
             if not e:
                 failures.append(f"{book.get('id','?')} ch{ci+1} p{pi+1}: socket count !=1")
                 chapter_ok=False; break
