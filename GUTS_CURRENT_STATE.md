@@ -1,5 +1,8 @@
 # GUTS — CURRENT STATE
 
+> **LATEST REGRESSION CHECKPOINT (9 Oct midnight):** [First-NEW-paragraph / live-version investigation](docs/checkpoints/2026-10-09_midnight-regression-handover.md). The prior flight-simulator next-job pointer below is superseded. NEXT: verify Cloudflare active `guts` deployment SHA against GitHub Main, then identify the live corpus/Reader mismatch before any corrections. Monday is a controlled prototype demonstration, not release certification.
+
+
 > **CURRENT OPERATIONAL HANDOVER (9 Oct 2026): Read [OPERATIONS_START_HERE.md](OPERATIONS_START_HERE.md) FIRST.** It supersedes historical startup pointers below. Cloudflare auto-deploys GUTS Main; the next job is the read-only above-the-fold retention flight-simulator pilot.
 
 **Authoritative checkpoint: 5 October 2026**
