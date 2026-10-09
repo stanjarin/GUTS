@@ -1,5 +1,16 @@
 # GUTS — CURRENT STATE
 
+## 9 October 2026 — One authoritative 18-book working Main
+
+- **Main consolidated** at commit `bddc02d391f7346df153da1b26a5f3ab6ee95ff0`, from original and recovery factory artifacts.
+- **Verified backup:** `backup-production-main-2026-10-09` at `e5856d8bdd53f08218febe8c2ac039e77edc7bce`, identical to pre-consolidation Main.
+- **Reader:** Joyce's prior `Book unavailable` branch removed; 18 listed Reader books present, including Joyce and Ripley. This is **review stage**, not blanket phone approval.
+- **CP EDIT destinations:** upload edited corpus JSON directly to **`public/PERFORMANCE10/<same filename>.json`** or **`public/PERFORMANCE35/<same filename>.json`** on `main` (the exact Reader metadata filepath). Keep the corresponding root `PERFORMANCE10/` or `PERFORMANCE35/` copy identical; coordinate paired updates, never allow drift. In particular Ripley: `public/PERFORMANCE10/ripley_performance.json`; Joyce: `public/PERFORMANCE35/jj_035.json`.
+- **Ripley:** recovered candidate is available for editorial review but the machine result is **HOLD**, with chapter 1 pages 5–6 exceptions. Do not treat as signed off.
+- **Release distinction:** Main is working source authority; live Cloudflare `ebooks.fyi` and NoBo have **not been deliberately redeployed or repointed** by this consolidation. Show/hide belongs to NoBo. Revalidate deployment wiring and phone chain before declaring new live release.
+- Old factory/staging branches and artifacts are historical recovery material, not editing authorities. Their safe retirement is a separate, reversible cleanup after confirming the new Main.
+- Existing production safety and protocol invariants remain as documented below.
+
 **Authoritative checkpoint: 5 October 2026**
 
 ## Read first
