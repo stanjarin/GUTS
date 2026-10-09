@@ -147,8 +147,22 @@ export default {
     }
     const mode = await readMode(env); const rehearsalAuthorised = cookie(request, "guts_rehearsal") === "1";
     if (mode === "REHEARSAL" && !rehearsalAuthorised) {
-      const real = new URL("https://www.gutenberg.org/"); if (url.pathname !== "/") real.pathname = url.pathname; real.search = url.search;
-      return new Response(null, { status: 302, headers: { "location": real.toString(), "cache-control": "no-store" } });
+      // In HIDD, ebooks.fyi still displays its familiar public-domain resources pre-page.
+      // All four links target the existing camouflage browse path; that path (and
+      // every other non-whitelisted path) must go to genuine Gutenberg in HIDD.
+      const host = url.hostname.toLowerCase();
+      if (host === "ebooks.fyi" && request.method === "GET" &&
+          (url.pathname === "/" || url.pathname === "/Pre-Page.jpg")) {
+        const asset = await env.ASSETS?.fetch(request);
+        if (asset) {
+          const headers = new Headers(asset.headers);
+          headers.set("cache-control", "no-store");
+          return new Response(asset.body, { status: asset.status, headers });
+        }
+      }
+      return new Response(null, { status: 302, headers: {
+        "location": "https://www.gutenberg.org/", "cache-control": "no-store"
+      } });
     }
     return env.ASSETS ? env.ASSETS.fetch(request) : new Response("Not found", { status: 404 });
   }
