@@ -8,6 +8,9 @@ on:
     paths:
       - .github/stable-staging-trigger-2026-10-08
       - .github/workflows/stable-staging-2026-10-08.yml
+      - 'staging-overrides/**'
+      - public/index.html
+      - public/project_library/books/browse/index.html
 
 permissions:
   contents: read
@@ -44,6 +47,15 @@ jobs:
           merge-multiple: true
           path: recovered
 
+      - name: Download newest five-book review candidates (including Ripley HOLD)
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37864168324
+          pattern: factory-*
+          merge-multiple: true
+          path: latest-five
+
       - name: Build consolidated staging tree
         shell: bash
         run: |
@@ -52,6 +64,9 @@ jobs:
           cp -R public stage
           cp -R merged/public/. stage/
           cp -R recovered/public/. stage/
+          cp -R latest-five/public/. stage/
+          # Artist-approved page edits override all factory artifacts.
+          if [ -d staging-overrides ]; then cp -R staging-overrides/. stage/; fi
           # GitHub Pages serves this repository beneath /GUTS/.
           # Keep production files untouched; adapt only the staging copy.
           python - <<'PY'
