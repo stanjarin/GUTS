@@ -17,6 +17,6 @@
 - **Full Main snapshot immediately before parlour cleanup:** [archive-full-main-before-parlour-cleanup-2026-10-09](https://github.com/stanjarin/GUTS/tree/archive-full-main-before-parlour-cleanup-2026-10-09).
 - **Verified earlier production backup:** [backup-production-main-2026-10-09](https://github.com/stanjarin/GUTS/tree/backup-production-main-2026-10-09).
 - Read `GUTS_WORKFLOW_CONSTITUTION.md`, `GUTS_CURRENT_STATE.md`, and `docs/CURRENT_STATE.md` for engineering invariants and actual release state.
-- Historical notes, old workbooks, tests and build materials are preserved in the full archive branch. Historical `LEGACY_DO_NOT_DEPLOY/` content remains explicitly non-live.
+- Historical notes, old workbooks, tests and build materials are preserved in the full archive branch. Historical `LEGACY_DO_NOT_DEPLOY/` and `FORMAT1/` content was retired from Main and remains in the full archive branch.
 
 **Principle:** Working files stay at their expected paths; archives and documentation never get to dictate runtime. One backup, one working Main.
