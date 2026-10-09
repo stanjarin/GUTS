@@ -430,7 +430,9 @@ def candidate_borrowed_fill(book, chapter_index, page_index, measure_many, targe
         # Reject non-native or adjacent-overlap prose before expensive Chromium measurements.
         prev_src=" ".join(chapters[chapter_index].get("pages",[])[page_index-1].get("paragraphs",[])) if page_index>0 else ""
         next_src=" ".join(chapters[chapter_index].get("pages",[])[page_index+1].get("paragraphs",[])) if page_index+1<len(chapters[chapter_index].get("pages",[])) else ""
-        raw=[x for x in raw if not has_ngram_overlap(x[0],prev_src) and not has_ngram_overlap(x[0],next_src) and head_is_mid_sentence(book,x[0])]\n        if not raw: continue\n        measured=measure_many([x[0] for x in raw])
+        raw=[x for x in raw if not has_ngram_overlap(x[0],prev_src) and not has_ngram_overlap(x[0],next_src) and head_is_mid_sentence(book,x[0])]
+        if not raw: continue
+        measured=measure_many([x[0] for x in raw])
         cands=[]
         prev_src=" ".join(chapters[chapter_index].get("pages",[])[page_index-1].get("paragraphs",[])) if page_index>0 else ""
         next_src=" ".join(chapters[chapter_index].get("pages",[])[page_index+1].get("paragraphs",[])) if page_index+1<len(chapters[chapter_index].get("pages",[])) else ""
