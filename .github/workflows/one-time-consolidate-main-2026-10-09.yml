@@ -1,0 +1,101 @@
+name: GUTS one-time consolidate 18 books into main
+
+on:
+  push:
+    branches:
+      - factory-autopilot-2026-10-07
+    paths:
+      - .github/workflows/one-time-consolidate-main-2026-10-09.yml
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main as the sole destination
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: working
+          persist-credentials: true
+      - name: Checkout reviewed Reader source
+        uses: actions/checkout@v4
+        with:
+          ref: factory-autopilot-2026-10-07
+          path: source
+      - name: Download original ten-book factory results
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37565443433
+          pattern: factory-*
+          merge-multiple: true
+          path: original
+      - name: Download five old recovered results
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37592243640
+          pattern: laggard-*
+          merge-multiple: true
+          path: old-recovered
+      - name: Download newest five candidates including Ripley HOLD
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37864168324
+          pattern: factory-*
+          merge-multiple: true
+          path: new-five
+      - name: Assemble exactly one Reader and eighteen corpus authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp -R source/public/. working/public/
+          cp -R original/public/. working/public/
+          cp -R old-recovered/public/. working/public/
+          cp -R new-five/public/. working/public/
+          # Explicit editorial overrides win over all factory outputs.
+          if [ -d source/staging-overrides ]; then cp -R source/staging-overrides/. working/public/; fi
+          cp working/public/index.html working/index.html
+          mkdir -p working/public/project_library/books/browse
+          cp working/public/index.html working/public/project_library/books/browse/index.html
+          python - <<'PY'
+          from pathlib import Path
+          import json,re,shutil
+          root=Path("working")
+          reader=(root/"public/index.html").read_text()
+          entries=re.findall(r'\{id:"([^"]+)",title:"[^"]+",author:"[^"]+",file:"([^"]+)",legacy:true\}',reader)
+          ids=[id for id,_ in entries]
+          assert len(entries)==18 and len(set(ids))==18,(len(entries),ids)
+          assert "jj" in ids and "ripley" in ids
+          assert "if(id==='jj')" not in reader,"Joyce still blocked"
+          for id,rel in entries:
+              src=root/"public"/rel
+              assert src.exists(),f"Missing book {id}: {rel}"
+              data=json.loads(src.read_text())
+              assert data.get("chapters"),f"Empty chapters {id}"
+              dst=root/rel;dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copyfile(src,dst)
+              assert dst.read_bytes()==src.read_bytes()
+          assert (root/"index.html").read_bytes()==(root/"public/index.html").read_bytes()
+          assert (root/"public/project_library/books/browse/index.html").read_bytes()==(root/"public/index.html").read_bytes()
+          print("Verified 18 distinct book IDs, 18 valid JSONs, root/public parity, Reader parity, Joyce link.")
+          PY
+      - name: Commit reviewed library to main without live deployment
+        shell: bash
+        working-directory: working
+        run: |
+          set -euo pipefail
+          git config user.name "GUTS one-time consolidation"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html public PERFORMANCE10 PERFORMANCE35
+          if git diff --cached --quiet; then
+            echo "Main already contains assembled reader and corpora"
+          else
+            git commit -m "Consolidate 18-book review corpus and Joyce Reader to main"
+            git push origin HEAD:main
+          fi
