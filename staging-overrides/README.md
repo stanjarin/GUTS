@@ -11,7 +11,7 @@ Review URL: https://stanjarin.github.io/GUTS/?browse=1
 In GitHub, choose branch `factory-autopilot-2026-10-07`, upload the CP-edited JSON under **this folder**, preserving the relative path it has in the web Reader:
 
 - Ripley: `staging-overrides/PERFORMANCE10/ripley_performance.json`
-- Joyce: `staging-overrides/PERFORMANCE35/jj_035.json` **only if this is the Reader's actual corpus filename; check the Reader metadata first**
+- Joyce: `staging-overrides/PERFORMANCE35/jj_035.json` (confirmed against Reader metadata)
 - Other books: `staging-overrides/PERFORMANCE10/<filename>.json` or `staging-overrides/PERFORMANCE35/<filename>.json`, exactly matching the Reader's `file` field.
 
 The staging build copies the base `public/` tree, original factory artifacts, recovered artifacts, newest five artifacts (including Ripley HOLD), **then finally `staging-overrides/`**.
