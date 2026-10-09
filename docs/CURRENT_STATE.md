@@ -1,5 +1,7 @@
 # GUTS — CURRENT STATE
 
+> **CURRENT OPERATIONAL HANDOVER (9 Oct 2026): Read [OPERATIONS_START_HERE.md](OPERATIONS_START_HERE.md) FIRST.** It supersedes historical startup pointers below. Cloudflare auto-deploys GUTS Main; the next job is the read-only above-the-fold retention flight-simulator pilot.
+
 ## 9 October 2026 — One authoritative 18-book working Main
 
 - **Main consolidated** at commit `bddc02d391f7346df153da1b26a5f3ab6ee95ff0`, from original and recovery factory artifacts.
