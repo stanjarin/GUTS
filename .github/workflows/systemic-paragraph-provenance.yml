@@ -1,0 +1,45 @@
+name: Systemic paragraph provenance audit
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/systemic-paragraph-provenance.yml]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06086d6c1290692d283a6a855cc12cf8a4485143
+      - name: Inspect all source versus prepared paragraph boundaries
+        run: |
+          python3 - <<'PY'
+          import glob,json,collections,re,html
+          files=sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json'))
+          grand=collections.Counter()
+          for path in files:
+            d=json.load(open(path));c=collections.Counter();examples=[]
+            for ci,ch in enumerate(d['chapters']):
+              for pi,p in enumerate(ch['pages']):
+                genuine=p.get('paragraphs') or []
+                force=p.get('force_paragraphs') or []
+                hits=[i for i,s in enumerate(force) if '$$$' in str(s)]
+                if not hits:continue
+                c['prepared_pages']+=1
+                if hits[0]!=1:
+                  c['nonsecond']+=1
+                  if len(examples)<3:examples.append((ci+1,pi+1,hits))
+                if any(re.search(r'<\s*/?(?:p|br)\b',str(x),re.I) for x in force):c['literal_html_breaks']+=1
+                if any('\n\n' in str(x) for x in force):c['embedded_blank_lines']+=1
+                if any('\n' in str(x) for x in force):c['embedded_newlines']+=1
+                if len(force)>len(genuine)+1:c['extra_force_blocks']+=1
+                # Detect carry beginning at a fresh sentence, despite being syntactically 'paragraph 1'.
+                a=str(force[0]).strip() if force else ''
+                if a and a[0].isupper():c['first_block_capital_start']+=1
+                if a and a[-1] in '.!?':c['first_block_sentence_end']+=1
+                if genuine and a==str(genuine[0]).strip():c['carry_equals_genuine_first']+=1
+            grand.update(c)
+            print('BOOK',path.rsplit('/',1)[-1],dict(c),'examples',examples,flush=True)
+          print('TOTAL',dict(grand),flush=True)
+          print('RIPLEY_C3P4_MAIN_FORCE_FIRST',repr(json.load(open('public/PERFORMANCE10/ripley_performance.json'))['chapters'][2]['pages'][3]['force_paragraphs'][0][:120]))
+          print('PROVENANCE_AUDIT_COMPLETE')
+          PY
