@@ -1,0 +1,60 @@
+name: Isolated NoBo GUTS end-to-end rehearsal
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/rehearse-nobo-top-airlock.yml]
+jobs:
+  rehearsal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Local isolated NoBo READY ARMED PAID RESET simulation
+        run: |
+          mkdir -p /tmp/site/GUTS/top-airlock
+          cp -a public/. /tmp/site/GUTS/top-airlock/
+          python3 -m http.server 8765 --directory /tmp/site >/tmp/http.log 2>&1 &
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          from time import sleep
+          with sync_playwright() as pw:
+            browser=pw.chromium.launch()
+            page=browser.new_page(viewport={'width':375,'height':667})
+            remote={'phase':'READY','revision':1,'word':''}
+            def route(r):
+              r.fulfill(status=200,content_type='application/json',body=__import__('json').dumps(remote))
+            page.route('**/api/state',route)
+            page.goto('http://127.0.0.1:8765/GUTS/top-airlock/?trial=1')
+            verdict=page.evaluate("""async()=>{
+              const b=await load('ripley');state.book=b;state.ci=0;state.pi=0;
+              applyRemoteState({phase:'READY',revision:100,word:''});
+              let initial=topAirlockEdition();
+              applyRemoteState({phase:'ARMED',revision:101,word:'GOPHERS'});
+              magic.selectedChapter={book:'ripley',ci:0};
+              let armed=topAirlockEdition();
+              dwell();
+              return {ready:!initial.some(x=>String(x).includes('GOPHERS')),
+                      armed:armed.some(x=>String(x).includes('GOPHERS')),
+                      opener:state.pi===0,
+                      phase:magic.phase,
+                      hasDwell:!!magic.dwell}
+            }""")
+            print('ARMED_CHECK',verdict,flush=True)
+            assert all([verdict['ready'],verdict['armed'],verdict['opener'],verdict['phase']=='ARMED',verdict['hasDwell']])
+            sleep(6.5)
+            result=page.evaluate("""()=>{
+               const qualified=magic.dwell?.qualified===true;
+               depart();
+               const phase=magic.phase,paid=magic.paid===key();
+               const preserved=topAirlockEdition().some(x=>String(x).includes('GOPHERS'));
+               applyRemoteState({phase:'READY',revision:102,word:''});
+               const cleared=!topAirlockEdition().some(x=>String(x).includes('GOPHERS'));
+               return {qualified,phase,paid,preserved,cleared,resetPhase:magic.phase}
+            }""")
+            print('PAID_RESET_CHECK',result,flush=True)
+            assert result=={'qualified':True,'phase':'PAID','paid':True,'preserved':True,'cleared':True,'resetPhase':'READY'}
+            print('ISOLATED_NOBO_GUTS_CHAIN_PASS',flush=True)
+            browser.close()
+          PY
