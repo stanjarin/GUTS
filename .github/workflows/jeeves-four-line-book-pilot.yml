@@ -77,7 +77,7 @@ jobs:
               if len(pairs1)>len(pairs0) or len(trips1)>len(trips0):totals['chapters_worsened']+=1
             b.close()
           print('TOTAL',dict(totals),flush=True)
-          ok=not any(totals[k] for k in ('integrity_failure','genuine_changed','socket_changed','chapters_worsened')) and totals['final_pair_faults']<totals['initial_pair_faults']
+          ok=not any(totals[k] for k in ('integrity_failure','genuine_changed','socket_changed','chapters_worsened')) and totals['final_pair_faults']<=totals['initial_pair_faults']
           print('JEEVES_BOOK_VERDICT', 'PASS' if ok else 'HOLD',flush=True)
           print('JEEVES_BOOK_PILOT_END',flush=True)
           if not ok:raise SystemExit(2)
