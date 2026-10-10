@@ -1,0 +1,37 @@
+name: Keys Ripley visible airlock paragraph audit
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/keys-ripley-paragraph-audit.yml]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06086d6c1290692d283a6a855cc12cf8a4485143
+      - name: Read-only paragraph position and suspicious heading inventory
+        run: |
+          python3 - <<'PY'
+          import json,collections,re
+          for path in ['public/PERFORMANCE10/keys_performance.json','public/PERFORMANCE10/ripley_performance.json']:
+            book=json.load(open(path));count=collections.Counter();issues=[]
+            for ci,ch in enumerate(book['chapters']):
+              for pi,page in enumerate(ch['pages']):
+                arr=page.get('force_paragraphs') or []
+                hits=[i for i,x in enumerate(arr) if '$$$' in str(x)]
+                if not hits:count['no_socket']+=1;continue
+                if len(hits)!=1:count['multiple_socket']+=1
+                position=hits[0]+1;count['socket_pages']+=1;count['position_'+str(position)]+=1
+                # Reader output: displayParas makes no changes to non-opening pages of these two books;
+                # every prepared entry becomes one rendered <p>, even empty strings.
+                prefix=arr[:hits[0]]
+                empty=sum(not str(x).strip() for x in prefix)
+                if position>=3:
+                  count['third_or_later']+=1
+                  issues.append((ci+1,pi+1,position,empty,[str(x)[:80] for x in prefix]))
+            print('BOOK',path,'COUNTS',dict(count),flush=True)
+            print('THIRD_PLUS_LOCATIONS_BEGIN')
+            for q in issues:print('CHAPTER',q[0],'PAGE',q[1],'PARAGRAPH',q[2],'EMPTY_PRECEDING',q[3],'PRECEDING_TEXT',repr(q[4]),flush=True)
+            print('THIRD_PLUS_LOCATIONS_END')
+          PY
