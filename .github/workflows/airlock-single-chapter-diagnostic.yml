@@ -1,0 +1,28 @@
+name: Single chapter airlock pump diagnostic
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/airlock-single-chapter-diagnostic.yml]
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Check current prepared versus genuine structures
+        run: |
+          python3 - <<'PY'
+          import json,re,collections
+          d=json.load(open('public/PERFORMANCE35/jeeves_035.json'))
+          chapter=d['chapters'][0]['pages']
+          def tok(x):return re.findall(r'\S+',' '.join(map(str,x)))
+          print('DIAGNOSTIC_BEGIN')
+          for i,p in enumerate(chapter[:9]):
+            f=p.get('force_paragraphs') or []
+            air=[j for j,s in enumerate(f) if '$$$' in str(s)]
+            g=[x for j,x in enumerate(f) if j not in air]
+            print('PAGE',i+1,'air',air,'genuine_wc',len(tok(p.get('paragraphs',[]))),'force_wc',len(tok(g)),'same_page_tokens',tok(g)==tok(p.get('paragraphs',[])),'first_force',str(f[0])[:85] if f else '-')
+          print('CHAPTER_STREAM_MATCH',tok([s for p in chapter for s in p.get('paragraphs',[])])==tok([s for p in chapter for s in p.get('force_paragraphs',[]) if '$$$' not in str(s)]))
+          print('DIAGNOSTIC_END')
+          PY
