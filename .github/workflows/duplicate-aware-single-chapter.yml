@@ -1,0 +1,57 @@
+name: Duplicate aware single chapter airlock trial
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/duplicate-aware-single-chapter.yml]
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Trial pump against prepared Jeeves chapter 1 without publishing
+        run: |
+          python3 - <<'PY'
+          import json,re,copy,hashlib
+          from pathlib import Path
+          p=Path('public/PERFORMANCE35/jeeves_035.json');d=json.loads(p.read_text());ch=d['chapters'][0];pages=ch['pages']
+          toks=lambda s:re.findall(r'\S+',' '.join(map(str,s)))
+          def stream(pages):return toks([x for p in pages for x in p.get('force_paragraphs',[]) if '$$$' not in str(x)])
+          def sig(x):return hashlib.sha256(json.dumps(x,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+          original=sig(d); before=stream(pages); baseline_pages=copy.deepcopy(pages)
+          # A conservative single-boundary trial: move a complete sentence from
+          # the end of the current prepared page to the start of its successor.
+          # Do NOT cross socket passages, modify the genuine source, or alter any
+          # repeated-text blocks outside this pair.
+          selected=None
+          for pi in range(1,len(pages)-1):
+            a=pages[pi];b=pages[pi+1];fa=a.get('force_paragraphs') or [];fb=b.get('force_paragraphs') or []
+            if sum('$$$' in str(t) for t in fa)!=1 or sum('$$$' in str(t) for t in fb)!=1:continue
+            if len(fa)<4:continue
+            tail=fa[-1]
+            if '$$$' in tail:continue
+            m=re.search(r'(?<=[.!?])\s+(?=[“"A-Z])',tail)
+            if not m or len(toks(tail[:m.start()]))<9:continue
+            part=tail[m.end():]
+            if len(toks(part))<8 or len(toks(part))>60:continue
+            # preserve successor's initial carry as first paragraph by prefixing
+            # trial continuation to its existing carry; never insert before socket.
+            oldfa=list(fa);oldfb=list(fb)
+            fa[-1]=tail[:m.start()]
+            fb[0]=part+' '+fb[0]
+            if stream(pages)==before and sum('$$$' in str(t) for t in fa)==1 and sum('$$$' in str(t) for t in fb)==1:
+              selected=(pi+1,pi+2,len(toks(part)))
+              break
+            fa[:]=oldfa;fb[:]=oldfb
+          print('TRIAL_BEGIN')
+          print('source_file',str(p))
+          print('baseline_original_digest',original)
+          print('trial_boundary',selected)
+          print('prepared_chapter_token_preserved',stream(pages)==before)
+          print('genuine_paragraphs_unchanged',all(x['paragraphs']==y['paragraphs'] for x,y in zip(pages,baseline_pages)))
+          print('socket_count_preserved',all(sum('$$$' in str(x) for x in p.get('force_paragraphs',[]))==sum('$$$' in str(x) for x in q.get('force_paragraphs',[])) for p,q in zip(pages,baseline_pages)))
+          print('change_limited_to_two_pages',sum(p['force_paragraphs']!=q['force_paragraphs'] for p,q in zip(pages,baseline_pages))==2 if selected else False)
+          print('TRIAL_VERDICT', 'PASS' if selected and stream(pages)==before and all(x['paragraphs']==y['paragraphs'] for x,y in zip(pages,baseline_pages)) else 'HOLD')
+          print('TRIAL_END')
+          PY
