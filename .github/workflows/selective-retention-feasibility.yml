@@ -18,7 +18,7 @@ jobs:
           python3 - <<'PY'
           import json,copy,re,collections
           from playwright.sync_api import sync_playwright
-          files=['public/PERFORMANCE10/keys_performance.json','public/PERFORMANCE10/ripley_performance.json','public/PERFORMANCE35/jj_035.json']
+          files=['public/PERFORMANCE10/keys_performance.json','public/PERFORMANCE10/ripley_performance.json']
           css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
           js="""a=>{let p=document.querySelector('.page'),o=[];for(let s of a){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let y=[];for(let z of r.getClientRects())if(z.width&&z.height&&!y.some(t=>Math.abs(t-z.top)<.75))y.push(z.top);o.push(y.length+1)}return o}"""
           with sync_playwright() as pw:
