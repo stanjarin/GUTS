@@ -1,3 +1,5 @@
+> **10 OCT 2026 — APPROVED EXPERIMENT (NOT PRODUCTION):** top-airlock edition frozen at `1ae4abe1e1f3ce83c996d932fa5bdcbb8fc95601`, rollback `freeze-top-airlock-approved-2026-10-10`. Phone QA approved. Integration NOT yet tested or promoted. See [approved checkpoint](checkpoints/2026-10-10_top-airlock-approved-freeze-and-integration.md). Production Main/Cloudflare/NoBo unchanged. **NEXT:** isolate full NoBo→GUTS Reader protocol rehearsal before any production edit.
+
 # GUTS — CURRENT STATE
 
 > **LATEST REGRESSION CHECKPOINT (9 Oct midnight):** [First-NEW-paragraph / live-version investigation](checkpoints/2026-10-09_midnight-regression-handover.md). The prior flight-simulator next-job pointer below is superseded. NEXT: verify Cloudflare active `guts` deployment SHA against GitHub Main, then identify the live corpus/Reader mismatch before any corrections. Monday is a controlled prototype demonstration, not release certification.
