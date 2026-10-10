@@ -50,6 +50,8 @@ if(state.book.id==='kontiki'&&state.pi===0){
   // Kon-Tiki's first source block is the long chapter-subhead slab.
   // Suppress it; normalise the opening real-prose word without altering corpus JSON.
   if(base.length)base.shift();
+  // Chapter 7's subheading inventory wraps into an extra source paragraph.
+  if(state.ci===6&&base.length&&/^the Witches[’'] Cauldron\b/.test(String(base[0]).trim()))base.shift();
   if(base.length)base[0]=String(base[0]).replace(/^(\s*[^A-Za-z]*)([A-Z]{2,})(?=\b)/,(all,prefix,word)=>prefix+word[0]+word.slice(1).toLowerCase());
 }
 const rendered=displayParas(base);
