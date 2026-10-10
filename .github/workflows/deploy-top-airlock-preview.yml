@@ -13,9 +13,6 @@ concurrency:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}top-airlock/?browse=1
     steps:
       - name: Get existing Main site for unchanged root
         uses: actions/checkout@v4
