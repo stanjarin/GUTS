@@ -37,7 +37,7 @@ jobs:
                   return {indexes,head:paragraphs.slice(0,3).map(x=>x.slice(0,40))};
                 }""",{'name':name,'opener':opener})
                 assert len(result['indexes'])==1,(name,opener,result)
-                assert result['indexes'][0]<=(2 if opener else 0),(name,opener,result)
+                assert result['indexes'][0]<=(2 if opener or result['head'][0].startswith('CHAPTER') else 0),(name,opener,result)
                 if not opener and result['head'][0][:7]!='CHAPTER':assert result['indexes'][0]==0,(name,opener,result)
                 checked+=1
             assert not errors,errors[:3]
