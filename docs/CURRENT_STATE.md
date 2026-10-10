@@ -1,3 +1,5 @@
+> **LATEST — 10 OCT 2026 TOP-AIRLOCK PROMOTION:** Approved Reader merged in PR #7 at `837a0ce`, rollback `backup-pre-top-airlock-promotion-2026-10-10` at `06086d6`. Code/corpus/NoBo untouched except three Reader mirrors. Live Cloudflare deployment *not yet confirmed*. Next: verify active Cloudflare source SHA, then BR+ visual phone QA and real NoBo ARMED sequence. See [current handover](checkpoints/2026-10-10_top-airlock-production-promotion-handover.md).
+
 # GUTS — CURRENT STATE
 
 > **LATEST REGRESSION CHECKPOINT (9 Oct midnight):** [First-NEW-paragraph / live-version investigation](checkpoints/2026-10-09_midnight-regression-handover.md). The prior flight-simulator next-job pointer below is superseded. NEXT: verify Cloudflare active `guts` deployment SHA against GitHub Main, then identify the live corpus/Reader mismatch before any corrections. Monday is a controlled prototype demonstration, not release certification.
