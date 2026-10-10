@@ -1,0 +1,38 @@
+name: Airlock pump validation on backed-up Main
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/airlock-pump-validation-2026-10-10.yml]
+jobs:
+  airlock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Install headless browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Retrieve historical pump code (no corpus changes)
+        run: |
+          mkdir -p tools
+          curl -fsSL https://raw.githubusercontent.com/stanjarin/GUTS/line-pump-corpus-repair-2026-10-05/tools/line_pump_repair.py -o tools/line_pump_repair.py
+          python -m py_compile tools/line_pump_repair.py
+      - name: Execute airlock repair and invariant checks locally
+        id: pump
+        continue-on-error: true
+        run: |
+          python tools/line_pump_repair.py --write --report /tmp/airlock-report.md
+      - name: Print summary and extent of changes
+        if: always()
+        run: |
+          echo 'AIRLOCK_SUMMARY_BEGIN'
+          if [ -f /tmp/airlock-report.md ]; then head -50 /tmp/airlock-report.md; else echo 'No report generated'; fi
+          echo 'AIRLOCK_CHANGED_FILES'
+          git diff --name-only | head -30
+          echo 'AIRLOCK_STATUS: ${{ steps.pump.outcome }}'
+          echo 'AIRLOCK_SUMMARY_END'
+      - name: Enforce gate, without publishing any corpus
+        if: steps.pump.outcome != 'success'
+        run: exit 1
