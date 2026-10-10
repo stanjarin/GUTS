@@ -1,0 +1,47 @@
+name: Phone-sized top airlock Reader smoke test
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/browser-smoke-top-airlock.yml]
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Render all 18 books, chapter openers and regular pages
+        run: |
+          python3 -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          ids=['aam','jeeves','farewell','huck','dr','ac','jj','jt','brodie','chandler','keys','kontiki','parker','peake','perelman','policeman','ripley','ubu']
+          with sync_playwright() as pw:
+            b=pw.chromium.launch()
+            p=b.new_page(viewport={'width':375,'height':667},device_scale_factor=2)
+            errors=[];p.on('pageerror',lambda e:errors.append(str(e)))
+            p.goto('http://127.0.0.1:8765/index.html?browse=1')
+            checked=0
+            for name in ids:
+              for opener in (True,False):
+                result=p.evaluate("""async v=>{
+                  const book=await load(v.name);
+                  state.book=book;state.ci=0;state.pi=v.opener?0:1;state.screen='reader';
+                  render();
+                  const paragraphs=[...document.querySelectorAll('.page p')].map(x=>x.textContent);
+                  const indexes=paragraphs.map((x,i)=>x.includes('$$$')?i:-1).filter(i=>i>=0);
+                  return {indexes,head:paragraphs.slice(0,3).map(x=>x.slice(0,40))};
+                }""",{'name':name,'opener':opener})
+                assert len(result['indexes'])==1,(name,opener,result)
+                assert result['indexes'][0]<=1,(name,opener,result)
+                if not opener:assert result['indexes'][0]==0,(name,opener,result)
+                checked+=1
+            assert not errors,errors[:3]
+            print('BROWSER_SMOKE_PASS', 'books=18','sample_pages=36','errors=0',flush=True)
+            print('RIPLEY_C3P4',p.evaluate("""async ()=>{
+              state.book=await load('ripley');state.ci=2;state.pi=3;state.screen='reader';render();
+              return [...document.querySelectorAll('.page p')].slice(0,3).map(x=>x.textContent.slice(0,110))
+            }"""),flush=True)
+            b.close()
+          PY
