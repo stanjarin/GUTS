@@ -1,5 +1,5 @@
 name: Phone-sized top airlock Reader smoke test
-# rerun book-level fallback fix
+# verify chapter heading and subtitle ordering
 on:
   push:
     branches: [experiment-top-airlock-2026-10-10]
