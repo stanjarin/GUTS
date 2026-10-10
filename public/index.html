@@ -46,6 +46,12 @@ const socketPage=hasSocket(page)?page:(ch.pages.find(hasSocket)||state.book.chap
 if(!socketPage)return displayParas(visible(page));
 const socket=socketPage.force_paragraphs.find(x=>String(x).includes('$$$'));
 const base=state.pi===0?page.paragraphs.slice():(page.force_paragraphs||page.paragraphs).filter(x=>!String(x).includes('$$$'));
+if(state.book.id==='kontiki'&&state.pi===0){
+  // Kon-Tiki's first source block is the long chapter-subhead slab.
+  // Suppress it; normalise the opening real-prose word without altering corpus JSON.
+  if(base.length)base.shift();
+  if(base.length)base[0]=String(base[0]).replace(/^(\s*[^A-Za-z]*)([A-Z]{2,})(?=\b)/,(all,prefix,word)=>prefix+word[0]+word.slice(1).toLowerCase());
+}
 const rendered=displayParas(base);
 const title=state.pi===0?String(rendered[0]||'').trim():'';
 const explicitTitle=state.pi===0&&(/^(CHAPTER|ACT|PART|BOOK)\b/i.test(title)||(/^[^a-z]{2,90}$/.test(title)&&/[A-Z]/.test(title))||title.toLowerCase()===String(ch.title||'').trim().toLowerCase());
