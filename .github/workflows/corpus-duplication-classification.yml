@@ -1,0 +1,40 @@
+name: Corpus duplication classification
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/corpus-duplication-classification.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Classify complete chapter inserts and losses
+        run: |
+          python3 - <<'PY'
+          import glob,json,re,difflib,collections
+          tok=lambda s:re.findall(r'\S+', ' '.join(map(str,s)))
+          grand=collections.Counter()
+          print('DUPLICATION_CLASSIFICATION_BEGIN')
+          for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            book=json.load(open(path));c=collections.Counter();examples=[]
+            for ci,ch in enumerate(book['chapters']):
+              a=tok([s for p in ch['pages'] for s in (p.get('paragraphs') or [])])
+              b=tok([s for p in ch['pages'] for s in (p.get('force_paragraphs') or []) if '$$$' not in str(s)])
+              if a==b:c['exact_chapters']+=1;continue
+              c['different_chapters']+=1
+              ops=difflib.SequenceMatcher(None,a,b,autojunk=False).get_opcodes()
+              for tag,i,j,k,l in ops:
+                if tag=='equal':continue
+                piece=b[k:l]
+                if tag=='insert' and len(piece)>=5 and any(a[q:q+len(piece)]==piece for q in range(max(0,len(a)-len(piece)+1))):
+                  c['whole_duplicate_blocks']+=1;c['duplicate_words']+=len(piece)
+                else:
+                  c['non_duplicate_blocks']+=1
+                  if len(examples)<3:examples.append(f'c{ci+1}:{tag}:g{i}-{j}:p{k}-{l}')
+            grand.update(c)
+            print(path.split('/')[-1],dict(c),'other_examples',','.join(examples))
+          print('TOTAL',dict(grand))
+          print('DUPLICATION_CLASSIFICATION_END')
+          PY
