@@ -1,0 +1,57 @@
+name: Publish isolated top-airlock phone preview
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/deploy-top-airlock-preview.yml]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: top-airlock-gh-pages-preview
+  cancel-in-progress: false
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}top-airlock/?browse=1
+    steps:
+      - name: Get existing Main site for unchanged root
+        uses: actions/checkout@v4
+        with:
+          ref: 06086d6c1290692d283a6a855cc12cf8a4485143
+          path: baseline
+      - name: Get isolated experimental edition
+        uses: actions/checkout@v4
+        with:
+          ref: experiment-top-airlock-2026-10-10
+          path: experiment
+      - name: Build separate preview within Pages site
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp -a baseline/public/. _site/
+          mkdir -p _site/top-airlock
+          cp -a experiment/public/. _site/top-airlock/
+          cmp _site/index.html baseline/public/index.html
+          cmp _site/top-airlock/index.html experiment/public/index.html
+          test -f _site/top-airlock/PERFORMANCE10/ripley_performance.json
+          test -f _site/top-airlock/PERFORMANCE35/jeeves_035.json
+          python3 - <<'PY'
+          import json,glob
+          for root in ['_site','_site/top-airlock']:
+            a=glob.glob(root+'/PERFORMANCE10/*.json')+glob.glob(root+'/PERFORMANCE35/*_035.json')
+            assert len(a)==18,(root,len(a))
+            for f in a:json.load(open(f))
+          print('PREVIEW_ARTIFACT_PASS',flush=True)
+          PY
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Report intended independent URL
+        run: |
+          echo "TOP_AIRLOCK_PREVIEW_URL=https://stanjarin.github.io/GUTS/top-airlock/?browse=1"
