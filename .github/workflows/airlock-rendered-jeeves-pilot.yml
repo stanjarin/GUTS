@@ -1,0 +1,75 @@
+name: Airlock pump rendered Jeeves pilot
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/airlock-rendered-jeeves-pilot.yml]
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Browser setup
+        run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Rendered-line automatic pilot, temporary runner only
+        run: |
+          python3 - <<'PY'
+          import json,re,copy
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          d=json.loads(Path('public/PERFORMANCE35/jeeves_035.json').read_text())
+          pages=d['chapters'][0]['pages'];old=copy.deepcopy(pages)
+          tok=lambda ps:re.findall(r'\S+',' '.join(x for p in ps for x in p.get('force_paragraphs',[]) if '$$$' not in x))
+          before=tok(pages)
+          targets=[8,12,16,10,14]
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          with sync_playwright() as pw:
+            browser=pw.chromium.launch()
+            pg=browser.new_page(viewport={'width':414,'height':736})
+            pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            def lines(s):
+              return pg.evaluate("""s=>{let p=document.querySelector('.page');p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let yy=[];for(let z of r.getClientRects())if(z.width&&z.height&&!yy.some(t=>Math.abs(t-z.top)<0.75))yy.push(z.top);return yy.length+1}""",s)
+            print('PILOT_BEGIN')
+            successes=0;holds=0;initial=[];after=[];changed=0
+            for pi in range(1,len(pages)):
+              p=pages[pi];f=p['force_paragraphs']; ai=next((i for i,x in enumerate(f) if '$$$' in x),None)
+              if ai is None:continue
+              current=lines(' '.join(f[:ai]));initial.append(current)
+              target=targets[(pi-1)%len(targets)]
+              if abs(current-target)<=2:after.append(current);continue
+              if ai!=1 or pi==0:holds+=1;after.append(current);continue
+              prev=pages[pi-1]; pf=prev['force_paragraphs']; prior_end=pf[-1]
+              incoming=f[0]
+              # shift only suffix across page boundary, keeping complete prepared chapter text sequence.
+              candidates=[]
+              bits=prior_end.split()
+              # move words from previous page to start of current carry
+              for k in range(4,min(65,len(bits)-8)):
+                new_prev=' '.join(bits[:-k]); new_carry=' '.join(bits[-k:])+' '+incoming
+                measure=lines(new_carry)
+                if abs(measure-target)<abs(current-target) and len(new_prev.split())>=8:
+                  candidates.append((abs(measure-target),k,new_prev,new_carry,measure))
+              # alternatively move leading carry words to end of prior page
+              cbits=incoming.split()
+              for k in range(4,min(65,len(cbits)-8)):
+                new_prev=prior_end+' '+' '.join(cbits[:k]);new_carry=' '.join(cbits[k:])
+                measure=lines(new_carry)
+                if abs(measure-target)<abs(current-target):
+                  candidates.append((abs(measure-target),k,new_prev,new_carry,measure))
+              if not candidates:holds+=1;after.append(current);continue
+              _,_,new_prev,new_carry,nline=min(candidates,key=lambda x:(x[0],x[1]))
+              oldprev=pf[-1];oldcarry=f[0]
+              pf[-1]=new_prev;f[0]=new_carry
+              if tok(pages)!=before:
+                pf[-1]=oldprev;f[0]=oldcarry;holds+=1;after.append(current);continue
+              successes+=1;after.append(nline)
+            browser.close()
+          check=tok(pages)==before and all(p['paragraphs']==q['paragraphs'] for p,q in zip(pages,old)) and all(sum('$$$' in x for x in p['force_paragraphs'])==sum('$$$' in x for x in q['force_paragraphs']) for p,q in zip(pages,old))
+          print('pages',len(pages),'initial_within_2',sum(abs(v-targets[i%5])<=2 for i,v in enumerate(initial)),'final_within_2',sum(abs(v-targets[i%5])<=2 for i,v in enumerate(after)),'improved',successes,'holds',holds,'integrity',check)
+          print('PILOT_VERDICT', 'PASS' if check and successes>0 else 'HOLD')
+          print('PILOT_END')
+          if not check:raise SystemExit(2)
+          PY
