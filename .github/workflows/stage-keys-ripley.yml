@@ -1,0 +1,60 @@
+name: Stage validated Keys and Ripley for promotion
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/stage-keys-ripley.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+          fetch-depth: 0
+      - name: Download validated source and stage four mirrors
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/stanjarin/GUTS/actions/artifacts/11659398897/zip > /tmp/validated.zip
+          mkdir -p /tmp/validated
+          unzip -q /tmp/validated.zip -d /tmp/validated
+          find /tmp/validated -type f
+          for name in keys_performance.json ripley_performance.json; do
+            src="/tmp/validated/$name"
+            test -s "$src"
+            python3 -m json.tool "$src" >/dev/null
+            cp "$src" "public/PERFORMANCE10/$name"
+            cp "$src" "PERFORMANCE10/$name"
+            cmp "$src" "public/PERFORMANCE10/$name"
+            cmp "$src" "PERFORMANCE10/$name"
+          done
+          python3 - <<'PY'
+          import json,glob,hashlib,subprocess
+          names=['keys_performance.json','ripley_performance.json']
+          for name in names:
+            d=json.load(open('public/PERFORMANCE10/'+name))
+            original=json.loads(subprocess.check_output(['git','show','HEAD:public/PERFORMANCE10/'+name]))
+            assert len(d['chapters'])==len(original['chapters'])
+            for a,b in zip(d['chapters'],original['chapters']):
+              assert len(a['pages'])==len(b['pages'])
+              for x,y in zip(a['pages'],b['pages']):
+                assert x['paragraphs']==y['paragraphs']
+                assert sum('$$$' in str(t) for t in x.get('force_paragraphs',[]))==sum('$$$' in str(t) for t in y.get('force_paragraphs',[]))
+            print('STAGED',name,'CHAPTERS',len(d['chapters']))
+          assert subprocess.check_output(['git','show','HEAD:public/PERFORMANCE35/jj_035.json'])==open('public/PERFORMANCE35/jj_035.json','rb').read()
+          allpaths=glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')
+          assert len(allpaths)==18
+          print('STAGING_QA_PASS',flush=True)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "release-keys-ripley-2026-10-10"
+          git add public/PERFORMANCE10/keys_performance.json public/PERFORMANCE10/ripley_performance.json PERFORMANCE10/keys_performance.json PERFORMANCE10/ripley_performance.json
+          test "$(git diff --cached --name-only | wc -l)" -eq 4
+          git commit -m "Repair Keys and Ripley airlock retention without touching other books"
+          git push origin HEAD:refs/heads/release-keys-ripley-2026-10-10
+          echo "STAGING_PUSH_SUCCESS"
