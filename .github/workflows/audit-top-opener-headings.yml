@@ -1,0 +1,27 @@
+name: Diagnose opener headings and then phrases
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/audit-top-opener-headings.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory chapter opening blocks and airlock initial words
+        run: |
+          python3 - <<'PY'
+          import glob,json,re,collections
+          for f in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            d=json.load(open(f)); openings=[];c=collections.Counter();then=[]
+            for ci,ch in enumerate(d['chapters']):
+              p=ch['pages'][0];a=p.get('paragraphs',[])
+              openings.append((ci+1,[(len(str(t)),str(t)[:105]) for t in a[:4]]))
+              for page in ch['pages']:
+                for s in page.get('force_paragraphs',[]):
+                  if '$$$' in str(s):
+                    if re.search(r'\bThen\b',str(s)[:150],re.I):c['then_in_airlock']+=1
+                    if re.match(r'^\s*(Then|And then|It was then)\b',str(s),re.I):c['starts_then']+=1
+            print('BOOK',f.rsplit('/',1)[-1],'THEN',dict(c),flush=True)
+            for x in openings[:8]:print('OPEN',x,flush=True)
+          PY
