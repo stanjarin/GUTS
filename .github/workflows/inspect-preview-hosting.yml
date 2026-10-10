@@ -1,0 +1,18 @@
+name: Inspect independent preview hosting
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/inspect-preview-hosting.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect Pages configuration without edits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/stanjarin/GUTS/pages --jq '{url:.html_url,source:.source,build_type:.build_type,status:.status,https_enforced:.https_enforced}' || echo "PAGES_INFO_UNAVAILABLE"
+          echo "HOSTING_INSPECTION_COMPLETE"
