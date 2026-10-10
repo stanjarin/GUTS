@@ -30,3 +30,12 @@ The 18 book-specific approved airlocks stay verbatim. Each prepared page, includ
 
 ## Next action
 Specify a minimum-surface, isolated NoBo→GUTS full-chain rehearsal plan using existing controls and Word/KV; seek approval prior to any production promotion. Retain frozen rollback intact.
+
+
+## Isolated Reader protocol rehearsal — 10 October (same day)
+- Test workflow: `rehearse-nobo-top-airlock.yml`; PASS [Actions 38041746845](https://github.com/stanjarin/GUTS/actions/runs/38041746845).
+- Browser served local copy of experimental Reader; NoBo command payloads simulated in-browser and `/api/state` intercepted to prevent any live Worker/KV traffic.
+- Ripley chapter 1 opening tested: READY (clear) → ARMED + GOPHERS (substitute) → 6s dwell (qualified) → depart (PAID) → paid-page persistence → newer READY clears.
+- This is **not** proof that the live NoBo app, pre-page handoff, auth cookie, Cloudflare API and Worker routing function against the experimental Github Pages preview; its absolute `/api/state` does not go to production and must not be silently repointed.
+- Frozen approved code commit remains `1ae4abe1e1f3ce83c996d932fa5bdcbb8fc95601`; current experiment branch carries *tests/docs only* since that freeze. Main and NoBo unchanged.
+- Next step: design a genuine isolated Worker/KV-backed or explicitly approved rehearsal endpoint for phone-to-phone handoff, without touching production domains. Prefer existing machinery and minimal changes; do not conflate simulation with full live integration.
