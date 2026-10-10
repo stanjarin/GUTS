@@ -1,0 +1,43 @@
+name: Airlock stream authority forensic
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/airlock-stream-authority-forensic.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Compare genuine and force streams without mutation
+        run: |
+          python3 - <<'PY'
+          import json,glob,re,hashlib,collections
+          def tokens(s):return re.findall(r'\S+',s)
+          print('STREAM_AUTHORITY_BEGIN')
+          totals=collections.Counter()
+          for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            d=json.load(open(path)); c=collections.Counter(); samples=[]
+            for ci,ch in enumerate(d.get('chapters',[])):
+              ps=ch.get('pages',[])
+              original=tokens(' '.join(str(x) for p in ps for x in (p.get('paragraphs') or [])))
+              force=tokens(' '.join(str(x) for p in ps for x in (p.get('force_paragraphs') or []) if '$$$' not in str(x)))
+              if original==force:c['whole_chapter_equal']+=1
+              else:
+                c['whole_chapter_different']+=1
+                if len(samples)<2:
+                  # Compare exact common leading tokens, detect trailing retention and differences.
+                  i=0
+                  while i<min(len(original),len(force)) and original[i]==force[i]: i+=1
+                  samples.append(f'c{ci+1}: genuine={len(original)} prepared={len(force)} common_prefix={i}')
+              for pi,p in enumerate(ps):
+                f=p.get('force_paragraphs') or []
+                n=sum('$$$' in str(x) for x in f)
+                c[f'socket_{n}']+=1
+                if n==1:c['forceable']+=1
+            totals.update(c)
+            print(path.split('/')[-1],dict(c),'samples',','.join(samples))
+          print('TOTAL',dict(totals))
+          print('STREAM_AUTHORITY_END')
+          PY
