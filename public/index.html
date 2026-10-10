@@ -25,7 +25,7 @@ function applyRemoteState(r){if(!r||!["READY","ARMED"].includes(r.phase))return 
 const page=current(),ch=state.book.chapters[state.ci],prepared=browseMode||magic.phase==='ARMED'||(magic.phase==='PAID'&&magic.paid===key());
 if(!prepared)return displayParas(visible(page));
 const hasSocket=p=>p.force_paragraphs&&p.force_paragraphs.some(x=>String(x).includes('$$$'));
-const socketPage=hasSocket(page)?page:ch.pages.find(hasSocket);
+const socketPage=hasSocket(page)?page:(ch.pages.find(hasSocket)||state.book.chapters.flatMap(c=>c.pages).find(hasSocket));
 if(!socketPage)return displayParas(visible(page));
 const socket=socketPage.force_paragraphs.find(x=>String(x).includes('$$$'));
 const base=state.pi===0?page.paragraphs.slice():(page.force_paragraphs||page.paragraphs).filter(x=>!String(x).includes('$$$'));
