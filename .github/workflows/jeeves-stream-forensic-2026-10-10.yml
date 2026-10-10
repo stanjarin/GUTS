@@ -1,0 +1,30 @@
+name: Jeeves chapter stream forensic
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/jeeves-stream-forensic-2026-10-10.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Analyze chapter 1 exact token alignment and repeats
+        run: |
+          python3 - <<'PY'
+          import json,re,difflib,collections
+          d=json.load(open('public/PERFORMANCE35/jeeves_035.json'))
+          ps=d['chapters'][0]['pages']
+          words=lambda ss: re.findall(r'\S+',' '.join(map(str,ss)))
+          a=words([x for p in ps for x in p.get('paragraphs',[])])
+          b=words([x for p in ps for x in p.get('force_paragraphs',[]) if '$$$' not in str(x)])
+          op=difflib.SequenceMatcher(None,a,b,autojunk=False).get_opcodes()
+          print('JEEVES_FORENSIC_BEGIN')
+          print('genuine_tokens',len(a),'prepared_tokens',len(b),'edit_blocks',sum(tag!='equal' for tag,*_ in op))
+          for tag,i,j,k,l in [x for x in op if x[0]!='equal'][:24]:
+            block=b[k:l]
+            found=bool(block and len(block)>7 and ' '.join(block) in ' '.join(a))
+            print('BLOCK',tag,'genuine',i,j,'prepared',k,l,'delta',(l-k)-(j-i),'prepared_already_elsewhere',found,'genuine_sample',repr(' '.join(a[i:j])[:110]),'prepared_sample',repr(' '.join(b[k:l])[:170]))
+          print('JEEVES_FORENSIC_END')
+          PY
