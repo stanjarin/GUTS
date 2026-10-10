@@ -1,0 +1,37 @@
+name: Read-only prepared short-page audit
+on:
+  push:
+    branches:
+      - audit-short-pages-2026-10-10
+jobs:
+  short-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Count prepared short pages (summary only)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,glob,os
+          paths=sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json'))
+          rows=[]
+          print('AUDIT_BEGIN')
+          for path in paths:
+              data=json.load(open(path,encoding='utf-8'))
+              pages=[(ci+1,pi+1,p) for ci,ch in enumerate(data.get('chapters',[])) for pi,p in enumerate(ch.get('pages',[]))]
+              prepared=[]
+              for ci,pi,p in pages:
+                  texts=p.get('force_paragraphs') or []
+                  if not any('$$$' in str(t) for t in texts):continue
+                  wc=len(' '.join(str(t) for t in texts).split())
+                  prepared.append((wc,ci,pi))
+              n90=sum(w<90 for w,c,p in prepared)
+              n130=sum(w<130 for w,c,p in prepared)
+              n180=sum(w<180 for w,c,p in prepared)
+              samples=','.join(f'{c}:{p}={w}' for w,c,p in sorted(prepared)[:3])
+              name=os.path.basename(path)
+              print(f'{name}|{len(pages)}|{len(prepared)}|{n90}|{n130}|{n180}|{samples}')
+              rows.append((len(pages),len(prepared),n90,n130,n180))
+          print('TOTAL|'+'|'.join(str(sum(x[k] for x in rows)) for k in range(5)))
+          print('AUDIT_END')
+          PY
