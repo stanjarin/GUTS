@@ -31,7 +31,8 @@ jobs:
             }""")
             for d in data: print('CHAPTER',d,flush=True)
             assert len(data)>=7
-            assert all(d['ix']>=0 for d in data)
+            assert all(d['ix']==1 for d in data)
+            assert data[6]['first'][2].startswith('On the night'),data[6]
             assert all(not (len(d['first'])>1 and '—' in d['first'][1] and len(d['first'][1])>150) for d in data)
             print('KONTIKI_OPENINGS_PASS chapters='+str(len(data)),flush=True)
             browser.close()
