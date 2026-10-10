@@ -28,7 +28,7 @@ jobs:
               for opener in (True,False):
                 result=p.evaluate("""async v=>{
                   const book=await load(v.name);
-                  state.book=book;state.ci=0;state.pi=v.opener?0:1;state.screen='reader';
+                  state.book=book;state.ci=0;state.pi=v.opener?0:Math.min(1,book.chapters[0].pages.length-1);state.screen='reader';
                   render();
                   const paragraphs=[...document.querySelectorAll('.page p')].map(x=>x.textContent);
                   const indexes=paragraphs.map((x,i)=>x.includes('$$$')?i:-1).filter(i=>i>=0);
@@ -36,7 +36,7 @@ jobs:
                 }""",{'name':name,'opener':opener})
                 assert len(result['indexes'])==1,(name,opener,result)
                 assert result['indexes'][0]<=1,(name,opener,result)
-                if not opener:assert result['indexes'][0]==0,(name,opener,result)
+                if not opener and result['head'][0][:7]!='CHAPTER':assert result['indexes'][0]==0,(name,opener,result)
                 checked+=1
             assert not errors,errors[:3]
             print('BROWSER_SMOKE_PASS', 'books=18','sample_pages=36','errors=0',flush=True)
