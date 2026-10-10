@@ -33,8 +33,9 @@ jobs:
           old='''                    fp=list(g); fp.insert(ai,prepared[pi]["air"])
                     q["force_paragraphs"]=fp
                     q["airlock_index"]=ai'''
-          assert old in s
-          s=s.replace(old,'''                    fp=list(g)
+          assert 'fp=list(g); fp.insert(ai,prepared[pi]["air"])' in s
+          import re
+          s=re.sub(r'fp=list\\(g\\); fp.insert\\(ai,prepared\\[pi\\]\\["air"\\]\\)\\n\\s*q\\["force_paragraphs"\\]=fp\\n\\s*q\\["airlock_index"\\]=ai','''                    fp=list(g)
                     if prepared[pi]["air"] is not None:
                         fp.insert(ai,prepared[pi]["air"])
                         q["airlock_index"]=ai
