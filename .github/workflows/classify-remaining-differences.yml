@@ -1,0 +1,44 @@
+name: Classify outstanding corpus differences
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/classify-remaining-differences.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Classify exceptions with token-sequence checks
+        run: |
+          python3 - <<'PY'
+          import glob,json,re,difflib,collections
+          T=lambda ss: re.findall(r'\S+',' '.join(map(str,ss)))
+          counts=collections.Counter(); per=[]
+          print('DIFF_CLASSIFY_BEGIN')
+          for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            d=json.load(open(path));c=collections.Counter();examples=[]
+            for ci,ch in enumerate(d['chapters']):
+              a=T([s for p in ch['pages'] for s in (p.get('paragraphs') or [])])
+              b=T([s for p in ch['pages'] for s in (p.get('force_paragraphs') or []) if '$$$' not in str(s)])
+              if a==b:continue
+              sm=difflib.SequenceMatcher(None,a,b,autojunk=False)
+              for tag,i,j,k,l in sm.get_opcodes():
+                if tag=='equal':continue
+                seg=b[k:l]
+                if tag=='insert' and len(seg)>=5 and any(a[z:z+len(seg)]==seg for z in range(len(a)-len(seg)+1)):continue
+                if tag=='insert':
+                  # Detect partial exact matches of inserted text to source
+                  positions=[z for z in range(len(a)) if a[z]==seg[0]] if seg else []
+                  best=max((sum(x==y for x,y in zip(seg,a[z:z+len(seg)])) for z in positions),default=0)
+                  kind='insert_partial_repeat' if len(seg) and best>=len(seg)*.75 else 'insert_unmatched'
+                elif tag=='delete':kind='genuine_omission'
+                else:kind='replacement'
+                c[kind]+=1;c[kind+'_words']+=max(j-i,l-k)
+                if len(examples)<2:examples.append(f'c{ci+1}:{kind}:src={i}-{j}:force={k}-{l}:text={repr(" ".join(seg[:12]))}')
+            counts.update(c)
+            print(path.split('/')[-1],dict(c),'samples',' / '.join(examples))
+          print('TOTAL',dict(counts))
+          print('DIFF_CLASSIFY_END')
+          PY
