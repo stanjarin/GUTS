@@ -1,5 +1,5 @@
 name: Publish isolated top-airlock phone preview
-# opening headings and subtitles verified
+# Kon-Tiki eight chapter openers verified including split chapter seven
 on:
   push:
     branches: [experiment-top-airlock-2026-10-10]
