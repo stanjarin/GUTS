@@ -1,4 +1,4 @@
-name: Full corpus four-line staggering audit
+name: Active 17-book four-line retention audit
 on:
   push:
     branches: [audit-short-pages-2026-10-10]
@@ -24,7 +24,7 @@ jobs:
           print('FOUR_LINE_AUDIT_BEGIN',flush=True)
           with sync_playwright() as pw:
             b=pw.chromium.launch();pg=b.new_page(viewport={'width':414,'height':736});pg.set_content('<style>'+css+'</style><div class="page"></div>')
-            for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            for path in sorted(x for x in glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json') if not x.endswith('/jj_035.json')):
               d=json.load(open(path));c=collections.Counter();examples=[]
               for ci,ch in enumerate(d['chapters']):
                 entries=[]
