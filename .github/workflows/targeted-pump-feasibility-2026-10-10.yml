@@ -1,0 +1,38 @@
+name: Targeted 132 page pump feasibility
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect movable boundaries without writing corpus
+        run: |
+          python3 - <<'PY'
+          import glob,json,re,collections
+          print("PUMP_FEASIBILITY_BEGIN")
+          total=collections.Counter(); per=[]
+          for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            d=json.load(open(path)); c=collections.Counter(); hints=[]
+            for ci,ch in enumerate(d['chapters']):
+              pages=ch['pages']
+              for pi,p in enumerate(pages):
+                f=p.get('force_paragraphs') or []
+                if '$$$' not in ' '.join(map(str,f)):continue
+                if len(' '.join(map(str,f)).split())>=130:continue
+                c['candidates']+=1
+                if pi+1>=len(pages):c['chapter_end']+=1;continue
+                nextp=pages[pi+1]; nf=nextp.get('force_paragraphs') or []
+                if '$$$' not in ' '.join(map(str,nf)):c['next_not_prepared']+=1;continue
+                # A safe pump must maintain two distinct force sockets and
+                # conserve non-airlock text; inspect candidate capacity only.
+                trailing=' '.join(map(str,f[f.index(next(x for x in f if '$$$' in str(x)))+1:])) if any('$$$' in str(x) for x in f) else ''
+                c['has_post_socket_text' if trailing.strip() else 'no_post_socket_text']+=1
+                if len(nf)>2:c['next_has_after_socket_paras']+=1
+                if len(' '.join(map(str,nf)).split())>160:c['next_above_160']+=1
+            total.update(c);per.append((path,c))
+            print(path.split('/')[-1],dict(c))
+          print('TOTAL',dict(total))
+          print('PUMP_FEASIBILITY_END')
+          PY
