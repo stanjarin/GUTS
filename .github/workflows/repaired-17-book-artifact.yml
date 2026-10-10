@@ -1,0 +1,112 @@
+name: Keys Ripley repaired artifact and 17-book gate
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/repaired-17-book-artifact.yml]
+jobs:
+  selective:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Simulate local fixes and report preservation checks
+        run: |
+          python3 - <<'PY'
+          import json,copy,re,collections
+          from playwright.sync_api import sync_playwright
+          files=['public/PERFORMANCE10/keys_performance.json','public/PERFORMANCE10/ripley_performance.json']
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          js="""a=>{let p=document.querySelector('.page'),o=[];for(let s of a){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let y=[];for(let z of r.getClientRects())if(z.width&&z.height&&!y.some(t=>Math.abs(t-z.top)<.75))y.push(z.top);o.push(y.length+1)}return o}"""
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();pg=b.new_page(viewport={'width':414,'height':736});pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            def ln(s):return pg.evaluate(js,[s])[0]
+            def f(p):return p.get('force_paragraphs') or []
+            def socket(p):return next((i for i,s in enumerate(f(p)) if '$$$' in str(s)),None)
+            def val(p):
+              a=socket(p)
+              return ln(' '.join(map(str,f(p)[:a]))) if a is not None else None
+            def tok(ch):return re.findall(r'\S+',' '.join(str(z) for p in ch['pages'] for z in f(p) if '$$$' not in str(z)))
+            repaired={};original_data={}
+            for path in files:
+              d=json.load(open(path));orig=copy.deepcopy(d);original_data[path]=orig;stats=collections.Counter();locations=[];unsafe=[]
+              for ci,ch in enumerate(d['chapters']):
+                pages=ch['pages'];before=tok(ch);positions=[(pi,val(p)) for pi,p in enumerate(pages) if socket(p) is not None]
+                bad=[(a,z) for a,z in zip(positions,positions[1:]) if abs(a[1]-z[1])<4]
+                stats['initial_faults']+=len(bad)
+                for a,z in bad:
+                  if len(locations)<20:locations.append(f'c{ci+1}p{a[0]+1}-{z[0]+1}:{a[1]}/{z[1]}')
+                # Repair one defective pair at a time, recomputing all chapter positions.
+                for iteration in range(min(100,len(pages)*3)):
+                  positions=[(pi,val(p)) for pi,p in enumerate(pages) if socket(p) is not None]
+                  bad=[(a,z) for a,z in zip(positions,positions[1:]) if abs(a[1]-z[1])<4]
+                  if not bad:break
+                  old_faults=len(bad);chosen=None
+                  for a,z in bad:
+                    for pi in (a[0],z[0]):
+                      if pi<1 or socket(pages[pi])!=1:continue
+                      previous=pages[pi-1];current=pages[pi]
+                      if not f(previous) or '$$$' in str(f(previous)[-1]):continue
+                      left=str(f(previous)[-1]);right=str(f(current)[0])
+                      for direction in ('right','left'):
+                        ws=(left if direction=='right' else right).split()
+                        for k in range(1,min(65,len(ws)-4)):
+                          if direction=='right': nl=' '.join(ws[:-k]);nr=' '.join(ws[-k:])+' '+right
+                          else:nl=left+' '+' '.join(ws[:k]);nr=' '.join(ws[k:])
+                          if not nl or not nr:continue
+                          # Require cuts after complete sentences; no arbitrary mid-sentence surgery.
+                          if not nl.rstrip().endswith(('.', '?', '!', '”', '’', '"', "'")):continue
+                          f(previous)[-1]=nl;f(current)[0]=nr
+                          pp=[val(p) for p in pages if socket(p) is not None]
+                          nf=sum(abs(x-y)<4 for x,y in zip(pp,pp[1:]))
+                          if nf<old_faults and tok(ch)==before:
+                            shift=abs(ln(nr)-z[1]);cost=(nf,shift,k)
+                            if chosen is None or cost<chosen[0]:chosen=(cost,previous,current,nl,nr,pi)
+                          f(previous)[-1]=left;f(current)[0]=right
+                  if chosen is None:break
+                  _,previous,current,nl,nr,pi=chosen
+                  f(previous)[-1]=nl;f(current)[0]=nr;stats['moves']+=1
+                positions=[val(p) for p in pages if socket(p) is not None]
+                remain=sum(abs(x-y)<4 for x,y in zip(positions,positions[1:]))
+                stats['remaining_faults']+=remain
+                if tok(ch)!=before:stats['text_faults']+=1
+                if any(p['paragraphs']!=q['paragraphs'] for p,q in zip(pages,orig['chapters'][ci]['pages'])):stats['source_faults']+=1
+                if any(sum('$$$' in str(x) for x in f(p))!=sum('$$$' in str(x) for x in f(q)) for p,q in zip(pages,orig['chapters'][ci]['pages'])):stats['socket_faults']+=1
+                if remain:unsafe.append(f'c{ci+1}:{remain}')
+              repaired[path]=d
+              print('BOOK',path,dict(stats),'INITIAL',locations,'UNRESOLVED_CHAPTERS',unsafe[:30],flush=True)
+              if any(stats[k] for k in ('text_faults','source_faults','socket_faults')):print('INTEGRITY_GATE_FAIL',path,flush=True)
+            assert stats['remaining_faults']==0 and not any(stats[x] for x in ('text_faults','source_faults','socket_faults')), 'repair integrity gate'
+            import glob,os
+            allfiles=sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json'))
+            assert len(allfiles)==18
+            assert any(x.endswith('/jj_035.json') for x in allfiles)
+            other_faults=0
+            for filename in allfiles:
+              if filename.endswith('/jj_035.json') or filename in files:continue
+              other=json.load(open(filename))
+              for chapter in other['chapters']:
+                p=[val(page) for page in chapter['pages'] if socket(page) is not None]
+                other_faults+=sum(abs(a-z)<4 for a,z in zip(p,p[1:]))
+            assert other_faults==0, f'other book retention {other_faults}'
+            os.makedirs('validated-repair/PERFORMANCE10',exist_ok=True)
+            for filename in files:
+              # Re-run repair in separate loop above means retain the objects in memory.
+              assert filename in repaired, 'missing repaired data'
+              data=repaired[filename]
+              assert data != original_data[filename], 'repair produced no changes'
+              dest='validated-repair/PERFORMANCE10/'+filename.rsplit('/',1)[-1]
+              with open(dest,'w') as out:json.dump(data,out,ensure_ascii=False,separators=(',',':'))
+              with open(dest) as source:assert json.load(source)==data
+            print('SEVENTEEN_BOOK_GATE_PASS', 'remaining=0', 'other15=0', 'files=2',flush=True)
+            b.close()
+          print('SELECTIVE_FEASIBILITY_COMPLETE',flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: validated-keys-ripley-repair
+          path: validated-repair/PERFORMANCE10/*.json
+          if-no-files-found: error
