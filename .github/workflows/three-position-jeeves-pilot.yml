@@ -1,0 +1,102 @@
+name: Three-position rendered airlock audit and Jeeves dry-run
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/three-position-jeeves-pilot.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Full audit and guarded Jeeves rehearsal
+        run: |
+          python3 - <<'PY'
+          import glob,json,copy,collections,re
+          from playwright.sync_api import sync_playwright
+          paths=sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json'))
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          js="""a=>{let p=document.querySelector('.page'),o=[];for(let s of a){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let y=[];for(let z of r.getClientRects())if(z.width&&z.height&&!y.some(t=>Math.abs(t-z.top)<.75))y.push(z.top);o.push(y.length+1)}return o}"""
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();pg=b.new_page(viewport={'width':414,'height':736});pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            def lines(a):return pg.evaluate(js,a)
+            def entries(ch):
+              out=[]
+              for pi,p in enumerate(ch['pages']):
+                f=p.get('force_paragraphs') or []
+                ai=next((i for i,s in enumerate(f) if '$$$' in str(s)),None)
+                if ai is not None:out.append((pi,ai,' '.join(map(str,f[:ai]))))
+              return out
+            print('THREE_POSITION_AUDIT_BEGIN',flush=True)
+            grand=collections.Counter()
+            for path in paths:
+              book=json.load(open(path));cnt=collections.Counter()
+              for ch in book['chapters']:
+                e=entries(ch);q=lines([z[2] for z in e])
+                for index,((pi,ai,_),n) in enumerate(zip(e,q)):
+                  # First socket page of each chapter anchors the three-step cycle
+                  target=(8,12,16)[index%3];dist=abs(n-target)
+                  cnt['sockets']+=1
+                  cnt['exact']+=dist==0
+                  cnt['off_by_1']+=dist==1
+                  cnt['off_by_2']+=dist==2
+                  cnt['off_by_3plus']+=dist>=3
+                  cnt['distance_total']+=dist
+                  cnt['max_distance']=max(cnt['max_distance'],dist)
+                cnt['retention']+=sum(abs(a-b)<4 for a,b in zip(q,q[1:]))
+              grand.update({k:v for k,v in cnt.items() if k!='max_distance'})
+              print('BOOK',path.split('/')[-1],dict(cnt),flush=True)
+            print('CORPUS_TOTAL',dict(grand),flush=True)
+            path='public/PERFORMANCE35/jeeves_035.json'
+            d=json.load(open(path));base=copy.deepcopy(d);s=collections.Counter()
+            def tokens(ch):return re.findall(r'\S+',' '.join(str(x) for p in ch['pages'] for x in p.get('force_paragraphs',[]) if '$$$' not in str(x)))
+            def chapter_qa(ch):
+              e=entries(ch);q=lines([x[2] for x in e]);return sum(abs(n-(8,12,16)[i%3]) for i,n in enumerate(q)),sum(abs(a-b)<4 for a,b in zip(q,q[1:])),sum(abs(n-(8,12,16)[i%3])>2 for i,n in enumerate(q))
+            for ci,ch in enumerate(d['chapters']):
+              pages=ch['pages'];orig=base['chapters'][ci];original=tokens(orig)
+              before=chapter_qa(ch)
+              for order,(pi,ai,_) in enumerate(entries(ch)):
+                if ai!=1 or pi<1:continue
+                p=pages[pi];prev=pages[pi-1];f=p['force_paragraphs'];pf=prev['force_paragraphs']
+                if not pf or '$$$' in str(pf[-1]):continue
+                aim=(8,12,16)[order%3];old=lines([str(f[0])])[0]
+                if old==aim:continue
+                prior=str(pf[-1]);carry=str(f[0]);candidates=[]
+                for direction in ('forward','back'):
+                  source=prior if direction=='forward' else carry
+                  ws=source.split()
+                  for k in range(1,min(len(ws)-4,70)):
+                    if direction=='forward':
+                      a=' '.join(ws[:-k]);z=' '.join(ws[-k:])+' '+carry
+                    else:
+                      a=prior+' '+' '.join(ws[:k]);z=' '.join(ws[k:])
+                    if not a or not z:continue
+                    n=lines([z])[0]
+                    if abs(n-aim)>=abs(old-aim):continue
+                    # Candidate is legal only if cut coincides with a sentence terminator.
+                    boundary=a.rstrip().endswith(('.','!','?','”','’','\"',"'"))
+                    if not boundary:continue
+                    candidates.append((abs(n-aim),k,a,z,n))
+                if not candidates: s['no_legal_candidate']+=1;continue
+                candidate=min(candidates)
+                _,k,a,z,n=candidate
+                pf[-1]=a;f[0]=z
+                if tokens(ch)!=original:
+                  pf[-1]=prior;f[0]=carry;s['conservation_rejected']+=1;continue
+                s['moves']+=1
+              after=chapter_qa(ch)
+              s['before_distance']+=before[0];s['after_distance']+=after[0]
+              s['before_retention']+=before[1];s['after_retention']+=after[1]
+              s['before_off_by_3plus']+=before[2];s['after_off_by_3plus']+=after[2]
+              if tokens(ch)!=original:s['token_integrity_fail']+=1
+              if any(a['paragraphs']!=o['paragraphs'] for a,o in zip(pages,orig['pages'])):s['genuine_modified']+=1
+              if any(sum('$$$' in str(x) for x in a.get('force_paragraphs',[]))!=sum('$$$' in str(x) for x in o.get('force_paragraphs',[])) for a,o in zip(pages,orig['pages'])):s['socket_modified']+=1
+            print('JEEVES_DRYRUN',dict(s),flush=True)
+            print('PILOT_GATE','PASS' if s['token_integrity_fail']==0 and s['genuine_modified']==0 and s['socket_modified']==0 and s['after_distance']<s['before_distance'] and s['after_retention']<=s['before_retention'] else 'HOLD',flush=True)
+            print('THREE_POSITION_AUDIT_END',flush=True)
+            b.close()
+          PY
