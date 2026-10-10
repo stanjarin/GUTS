@@ -1,0 +1,28 @@
+name: Extract eighteen book airlock texts
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/extract-airlock-texts.yml]
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06086d6c1290692d283a6a855cc12cf8a4485143
+      - name: Print unique airlock paragraphs, read only
+        run: |
+          python3 - <<'PY'
+          import glob,json,collections
+          for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+            book=json.load(open(path))
+            d=collections.Counter()
+            for ch in book['chapters']:
+              for p in ch['pages']:
+                for t in p.get('force_paragraphs',[]):
+                  if '$$$' in str(t):d[str(t)]+=1
+            print('AIRLOCK_BOOK',path.split('/')[-1], 'VARIANTS',len(d),'SOCKETS',sum(d.values()),flush=True)
+            for i,(txt,n) in enumerate(d.most_common()):
+              print('AIRLOCK_TEXT',i+1,'COUNT',n,'TEXT',repr(txt),flush=True)
+          print('AIRLOCK_EXTRACTION_END',flush=True)
+          PY
