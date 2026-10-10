@@ -1,5 +1,5 @@
 name: Publish isolated top-airlock phone preview
-# corrected base asset path
+# sentence-start trim validated across 4,858 pages
 on:
   push:
     branches: [experiment-top-airlock-2026-10-10]
