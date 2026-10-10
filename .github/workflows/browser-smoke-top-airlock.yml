@@ -14,7 +14,9 @@ jobs:
           python -m playwright install chromium
       - name: Render all 18 books, chapter openers and regular pages
         run: |
-          python3 -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          mkdir -p /tmp/preview-check/GUTS/top-airlock
+          cp -a public/. /tmp/preview-check/GUTS/top-airlock/
+          python3 -m http.server 8765 --directory /tmp/preview-check >/tmp/http.log 2>&1 &
           python3 - <<'PY'
           from playwright.sync_api import sync_playwright
           ids=['aam','jeeves','farewell','huck','dr','ac','jj','jt','brodie','chandler','keys','kontiki','parker','peake','perelman','policeman','ripley','ubu']
@@ -22,7 +24,7 @@ jobs:
             b=pw.chromium.launch()
             p=b.new_page(viewport={'width':375,'height':667},device_scale_factor=2)
             errors=[];p.on('pageerror',lambda e:errors.append(str(e)))
-            p.goto('http://127.0.0.1:8765/index.html?browse=1')
+            p.goto('http://127.0.0.1:8765/GUTS/top-airlock/index.html?browse=1')
             checked=0
             for name in ids:
               for opener in (True,False):
