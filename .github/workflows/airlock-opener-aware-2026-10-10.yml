@@ -1,0 +1,60 @@
+name: Airlock pump opener-aware validation
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/airlock-opener-aware-2026-10-10.yml]
+jobs:
+  airlock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install chromium
+      - name: Recover and patch historical pump for socket-free openers
+        run: |
+          mkdir -p tools
+          curl -fsSL https://raw.githubusercontent.com/stanjarin/GUTS/line-pump-corpus-repair-2026-10-05/tools/line_pump_repair.py -o tools/line_pump_repair.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('tools/line_pump_repair.py');s=p.read_text()
+          a='''            e=extract_page(p)
+              '''
+          assert '            e=extract_page(p)\n            if not e:' in s
+          s=s.replace('''            e=extract_page(p)
+            if not e:''','''            e=extract_page(p)
+            if pi==0 and e is None and not any("$$$" in str(x) for x in (p.get("force_paragraphs") or [])):
+                # Genuine chapter opening. Never introduce an airlock here.
+                e={"genuine":list(p.get("paragraphs") or []),"air":None,"old_ai":0}
+            if not e:''')
+          old='''                    fp=list(g); fp.insert(ai,prepared[pi]["air"])
+                    q["force_paragraphs"]=fp
+                    q["airlock_index"]=ai'''
+          assert old in s
+          s=s.replace(old,'''                    fp=list(g)
+                    if prepared[pi]["air"] is not None:
+                        fp.insert(ai,prepared[pi]["air"])
+                        q["airlock_index"]=ai
+                    q["force_paragraphs"]=fp''')
+          p.write_text(s)
+          PY
+          python -m py_compile tools/line_pump_repair.py
+      - name: Execute and check in temporary runner, no publication
+        id: pump
+        continue-on-error: true
+        run: python tools/line_pump_repair.py --write --report /tmp/airlock-report.md
+      - name: Report
+        if: always()
+        run: |
+          echo 'AIRLOCK_SUMMARY_BEGIN'
+          if [ -f /tmp/airlock-report.md ]; then head -65 /tmp/airlock-report.md; else echo 'NO REPORT'; fi
+          echo 'AIRLOCK_CHANGED_FILES'
+          git diff --name-only | head -50
+          echo 'AIRLOCK_STATUS: ${{ steps.pump.outcome }}'
+          echo 'AIRLOCK_SUMMARY_END'
+      - name: Gate
+        if: steps.pump.outcome != 'success'
+        run: exit 1
