@@ -1,4 +1,5 @@
 name: Publish isolated top-airlock phone preview
+# corrected base asset path
 on:
   push:
     branches: [experiment-top-airlock-2026-10-10]
