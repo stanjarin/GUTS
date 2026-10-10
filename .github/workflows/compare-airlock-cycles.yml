@@ -1,0 +1,45 @@
+name: Compare three and five position airlock cycles
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/compare-airlock-cycles.yml]
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Read-only side-by-side rendered line comparison
+        run: |
+          python3 - <<'PY'
+          import glob,json,collections
+          from playwright.sync_api import sync_playwright
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          js="""a=>{let p=document.querySelector('.page'),o=[];for(let s of a){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let y=[];for(let z of r.getClientRects())if(z.width&&z.height&&!y.some(t=>Math.abs(t-z.top)<.75))y.push(z.top);o.push(y.length+1)}return o}"""
+          total=collections.Counter()
+          print('CYCLE_COMPARISON_BEGIN',flush=True)
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();pg=b.new_page(viewport={'width':414,'height':736});pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+              book=json.load(open(path));r=collections.Counter()
+              for ch in book['chapters']:
+                arr=[]
+                for p in ch['pages']:
+                  f=p.get('force_paragraphs') or [];ai=next((i for i,z in enumerate(f) if '$$$' in str(z)),None)
+                  if ai is not None:arr.append(' '.join(map(str,f[:ai])))
+                q=pg.evaluate(js,arr) if arr else []
+                for seq,name in [((8,12,16),'three'),((8,12,16,10,14),'five')]:
+                  for i,n in enumerate(q):
+                    diff=abs(n-seq[i%len(seq)])
+                    r[name+'_exact']+=diff==0;r[name+'_within2']+=diff<=2;r[name+'_far3']+=diff>=3;r[name+'_distance']+=diff
+                r['sockets']+=len(q)
+                r['retention']+=sum(abs(a-z)<4 for a,z in zip(q,q[1:]))
+              total.update(r);print('BOOK',path.rsplit('/',1)[-1],dict(r),flush=True)
+            b.close()
+          print('TOTAL',dict(total),flush=True)
+          print('CYCLE_COMPARISON_END',flush=True)
+          PY
