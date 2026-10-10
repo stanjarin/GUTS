@@ -1,0 +1,24 @@
+name: Ripley chapter 3 page 4 forensic
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/ripley-c3p4-forensic.yml]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 06086d6c1290692d283a6a855cc12cf8a4485143
+      - run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open('public/PERFORMANCE10/ripley_performance.json'))
+          p=d['chapters'][2]['pages'][3]
+          for name in ('paragraphs','force_paragraphs'):
+            a=p.get(name,[])
+            print(name,'COUNT',len(a))
+            for i,s in enumerate(a):
+              print('ENTRY',i,'LENGTH',len(str(s)),'TEXT',repr(str(s)[:1200]))
+          print('OTHER_KEYS',list(p.keys()))
+          PY
