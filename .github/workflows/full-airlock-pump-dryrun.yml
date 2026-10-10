@@ -1,0 +1,83 @@
+name: Full corpus airlock pump dry run
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/full-airlock-pump-dryrun.yml]
+jobs:
+  dryrun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Dry-run all corpus files with hard preservation gate
+        run: |
+          python3 - <<'PY'
+          import glob,json,re,copy,collections,hashlib
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          targets=[8,12,16,10,14]
+          token=lambda ps:re.findall(r'\S+',' '.join(str(x) for p in ps for x in p.get('force_paragraphs',[]) if '$$$' not in str(x)))
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          totals=collections.Counter()
+          print('PUMP_DRYRUN_BEGIN',flush=True)
+          with sync_playwright() as pw:
+            browser=pw.chromium.launch()
+            page=browser.new_page(viewport={'width':414,'height':736})
+            page.set_content('<style>'+css+'</style><div class="page"></div>')
+            js="""arr=>{let p=document.querySelector('.page'),out=[];for(let s of arr){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let yy=[];for(let z of r.getClientRects())if(z.width&&z.height&&!yy.some(t=>Math.abs(t-z.top)<.75))yy.push(z.top);out.push(yy.length+1)}return out}"""
+            def lines(s):return page.evaluate(js,[s])[0]
+            for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+              d=json.load(open(path));book=collections.Counter()
+              for ci,ch in enumerate(d['chapters']):
+                pages=ch['pages'];original=copy.deepcopy(pages);before=token(pages)
+                initial=[];final=[]
+                for pi in range(1,len(pages)):
+                  f=pages[pi].get('force_paragraphs') or []
+                  ai=next((k for k,x in enumerate(f) if '$$$' in str(x)),None)
+                  if ai is None:continue
+                  target=targets[(pi-1)%5]
+                  oldline=lines(' '.join(map(str,f[:ai])));initial.append((pi,oldline,target))
+                  if abs(oldline-target)<=2:continue
+                  if ai!=1:book['nonstandard_airlock']+=1;continue
+                  pf=pages[pi-1].get('force_paragraphs') or []
+                  if not pf or '$$$' in str(pf[-1]):book['boundary_unusable']+=1;continue
+                  prev=str(pf[-1]);carry=str(f[0])
+                  # Preserve exact token order, preserving the complete chapter
+                  # including all intentional duplicate-tail passages.
+                  # Candidate shifts cannot alter number of paragraphs or sockets.
+                  candidates=[]
+                  bits=prev.split()
+                  for k in range(4,min(65,len(bits)-8)):
+                    a=' '.join(bits[:-k]);b=' '.join(bits[-k:])+' '+carry
+                    n=lines(b)
+                    if abs(n-target)<abs(oldline-target) and len(a.split())>=8:candidates.append((abs(n-target),k,a,b,n))
+                  bits=carry.split()
+                  for k in range(4,min(65,len(bits)-8)):
+                    a=prev+' '+' '.join(bits[:k]);b=' '.join(bits[k:])
+                    n=lines(b)
+                    if abs(n-target)<abs(oldline-target):candidates.append((abs(n-target),k,a,b,n))
+                  if not candidates:book['unresolved']+=1;continue
+                  _,_,a,b,n=min(candidates,key=lambda x:(x[0],x[1]))
+                  pf[-1]=a;f[0]=b
+                  if token(pages)!=before:pf[-1]=prev;f[0]=carry;book['integrity_rejected']+=1;continue
+                  book['moved']+=1
+                for pi,oldline,target in initial:
+                  f=pages[pi]['force_paragraphs'];ai=next(k for k,x in enumerate(f) if '$$$' in str(x))
+                  new=lines(' '.join(map(str,f[:ai])))
+                  book['initial_bad']+=int(abs(oldline-target)>2)
+                  book['final_bad']+=int(abs(new-target)>2)
+                  if abs(new-target)>abs(oldline-target):book['worsened']+=1
+                integrity=(token(pages)==before and all(p['paragraphs']==q['paragraphs'] for p,q in zip(pages,original)) and all(sum('$$$' in str(x) for x in p.get('force_paragraphs',[]))==sum('$$$' in str(x) for x in q.get('force_paragraphs',[])) for p,q in zip(pages,original)))
+                if not integrity:book['chapter_integrity_failure']+=1
+              print(Path(path).name,dict(book),flush=True)
+              totals.update(book)
+            browser.close()
+          print('TOTAL',dict(totals),flush=True)
+          print('DRYRUN_VERDICT', 'PASS' if totals['chapter_integrity_failure']==0 and totals['worsened']==0 and totals['moved']>0 else 'HOLD',flush=True)
+          print('PUMP_DRYRUN_END',flush=True)
+          if totals['chapter_integrity_failure'] or totals['worsened']:raise SystemExit(2)
+          PY
