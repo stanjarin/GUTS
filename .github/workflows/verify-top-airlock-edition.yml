@@ -1,0 +1,33 @@
+name: Verify experimental top airlock edition
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/verify-top-airlock-edition.yml]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,json,glob,hashlib
+          paths=[Path('public/index.html'),Path('index.html'),Path('public/project_library/books/browse/index.html')]
+          content=[x.read_bytes() for x in paths]
+          assert len(set(content))==1,'Reader copies not in sync'
+          s=content[0].decode()
+          assert 'function topAirlockEdition()' in s
+          assert 'const paras=topAirlockEdition();' in s
+          assert 'rendered.splice(explicitTitle?1:0,0,browseMode?socket:inject(socket));' in s
+          assert 'if(!p.force_paragraphs&&state.pi!==0)return;' in s
+          script=re.search(r'<script[^>]*>(.*?)</script>',s,re.S).group(1)
+          Path('/tmp/verify-reader.js').write_text(script)
+          books=glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')
+          assert len(books)==18
+          for book in books:
+            d=json.load(open(book))
+            assert any('$$$' in str(t) for ch in d['chapters'] for p in ch['pages'] for t in p.get('force_paragraphs',[])),book
+          print('STATIC_VERIFY_PASS READERS=3 BOOKS=18')
+          PY
+          node --check /tmp/verify-reader.js
+          echo JAVASCRIPT_SYNTAX_PASS
