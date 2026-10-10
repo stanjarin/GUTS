@@ -1,4 +1,5 @@
 name: Verify experimental top airlock edition
+# second pass: corrected source replacement
 on:
   push:
     branches: [experiment-top-airlock-2026-10-10]
