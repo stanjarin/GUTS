@@ -1,0 +1,52 @@
+name: Full corpus rendered airlock gate
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/full-rendered-airlock-gate.yml]
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - name: Install browser
+        run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Measure actual current socket positions in all 18 books
+        run: |
+          python3 - <<'PY'
+          import glob,json,collections
+          from playwright.sync_api import sync_playwright
+          targets=[8,12,16,10,14]
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          print('RENDERED_GATE_BEGIN',flush=True)
+          with sync_playwright() as pw:
+            browser=pw.chromium.launch()
+            pg=browser.new_page(viewport={'width':414,'height':736})
+            pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            js="""arr=>{let p=document.querySelector('.page'),out=[];for(let s of arr){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let yy=[];for(let z of r.getClientRects())if(z.width&&z.height&&!yy.some(t=>Math.abs(t-z.top)<.75))yy.push(z.top);out.push(yy.length+1)}return out}"""
+            summary=collections.Counter()
+            for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+              book=json.load(open(path));counts=collections.Counter();samples=[]
+              for ci,ch in enumerate(book['chapters']):
+                jobs=[];last=[]
+                for pi,p in enumerate(ch['pages']):
+                  f=p.get('force_paragraphs') or []
+                  ai=next((i for i,x in enumerate(f) if '$$$' in str(x)),None)
+                  if ai is None:continue
+                  jobs.append(' '.join(f[:ai]));last.append((ci+1,pi+1,targets[(pi-1)%5]))
+                positions=pg.evaluate(js,jobs)
+                for (cn,pn,t),n in zip(last,positions):
+                  counts['socket_pages']+=1
+                  if abs(n-t)<=2:counts['within_2']+=1
+                  else:
+                    counts['out_of_band']+=1
+                    if len(samples)<4:samples.append(f'{cn}:{pn}={n}/{t}')
+              summary.update(counts)
+              print(path.split('/')[-1],dict(counts),'samples',','.join(samples),flush=True)
+            browser.close()
+          print('TOTAL',dict(summary),flush=True)
+          print('RENDERED_GATE_END',flush=True)
+          PY
