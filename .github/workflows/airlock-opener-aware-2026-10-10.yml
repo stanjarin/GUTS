@@ -39,7 +39,7 @@ jobs:
                     if prepared[pi]["air"] is not None:
                         fp.insert(ai,prepared[pi]["air"])
                         q["airlock_index"]=ai
-                    q["force_paragraphs"]=fp''')
+                    q["force_paragraphs"]=fp''',s)
           p.write_text(s)
           PY
           python -m py_compile tools/line_pump_repair.py
