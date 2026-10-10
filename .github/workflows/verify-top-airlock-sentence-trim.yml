@@ -1,0 +1,48 @@
+name: Verify sentence-start after every top airlock
+on:
+  push:
+    branches: [experiment-top-airlock-2026-10-10]
+    paths: [.github/workflows/verify-top-airlock-sentence-trim.yml]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Test all prepared pages and chapter openings in browser
+        run: |
+          python3 -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          python3 - <<'PY'
+          from playwright.sync_api import sync_playwright
+          from collections import Counter
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();p=b.new_page(viewport={'width':375,'height':667})
+            p.goto('http://127.0.0.1:8765/index.html?browse=1')
+            results=p.evaluate("""async()=>{
+               let counts={books:0,pages:0,sockets:0,missing:0,bad:0,removed:0},bad=[];
+               for(const m of META){
+                 const book=await load(m.id);counts.books++;
+                 for(let ci=0;ci<book.chapters.length;ci++)for(let pi=0;pi<book.chapters[ci].pages.length;pi++){
+                   state.book=book;state.ci=ci;state.pi=pi;
+                   const raw=displayParas(pi===0?book.chapters[ci].pages[pi].paragraphs.slice():(book.chapters[ci].pages[pi].force_paragraphs||book.chapters[ci].pages[pi].paragraphs).filter(x=>!String(x).includes('$$$')));
+                   const out=topAirlockEdition();
+                   const index=out.findIndex(x=>String(x).includes('$$$'));counts.pages++;
+                   if(index<0){counts.missing++;bad.push([m.id,ci+1,pi+1,'NO SOCKET']);continue}
+                   counts.sockets++;
+                   const next=out[index+1];
+                   if(next&&!/^(?:["“‘'(\[]\s*)*[A-Z]/.test(String(next))){counts.bad++;if(bad.length<20)bad.push([m.id,ci+1,pi+1,String(next).slice(0,90)])}
+                   if(out.length<raw.length+1)counts.removed++;
+                 }
+               }
+               return {counts,bad}
+            }""")
+            print('COUNTS',results['counts'],flush=True)
+            print('EXAMPLES',results['bad'][:15],flush=True)
+            assert results['counts']['books']==18
+            assert results['counts']['missing']==0
+            assert results['counts']['bad']==0
+            print('SENTENCE_TRIM_ALL_BOOKS_PASS',flush=True)
+            b.close()
+          PY
