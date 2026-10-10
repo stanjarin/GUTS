@@ -1,0 +1,50 @@
+name: Full corpus four-line staggering audit
+on:
+  push:
+    branches: [audit-short-pages-2026-10-10]
+    paths: [.github/workflows/full-four-line-audit.yml]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 57f46e3961f6e9bcb1f89040eac65d9546c900f5
+      - run: |
+          pip install playwright
+          python -m playwright install chromium
+      - name: Count four-line and retention defects, read-only
+        run: |
+          python3 - <<'PY'
+          import glob,json,collections
+          from playwright.sync_api import sync_playwright
+          css='body{margin:0}.page{padding:25px 15px 58px;font:15px/1.45 Georgia,serif}.page p{width:329px;margin:0 auto .72em}.page p+p{text-indent:1.5em}'
+          js="""a=>{let p=document.querySelector('.page'),o=[];for(let s of a){p.innerHTML='';let x=document.createElement('p');x.textContent=s;p.appendChild(x);let r=document.createRange();r.selectNodeContents(x);let y=[];for(let z of r.getClientRects())if(z.width&&z.height&&!y.some(t=>Math.abs(t-z.top)<.75))y.push(z.top);o.push(y.length+1)}return o}"""
+          total=collections.Counter()
+          print('FOUR_LINE_AUDIT_BEGIN',flush=True)
+          with sync_playwright() as pw:
+            b=pw.chromium.launch();pg=b.new_page(viewport={'width':414,'height':736});pg.set_content('<style>'+css+'</style><div class="page"></div>')
+            for path in sorted(glob.glob('public/PERFORMANCE10/*.json')+glob.glob('public/PERFORMANCE35/*_035.json')):
+              d=json.load(open(path));c=collections.Counter();examples=[]
+              for ci,ch in enumerate(d['chapters']):
+                entries=[]
+                for pi,p in enumerate(ch['pages']):
+                  f=p.get('force_paragraphs') or [];ai=next((i for i,s in enumerate(f) if '$$$' in str(s)),None)
+                  if ai is not None:entries.append((pi+1,' '.join(map(str,f[:ai]))))
+                pos=pg.evaluate(js,[x[1] for x in entries]) if entries else []
+                q=list(zip([x[0] for x in entries],pos))
+                c['socket_pages']+=len(q)
+                for (p1,v1),(p2,v2) in zip(q,q[1:]):
+                  if abs(v2-v1)<4:
+                    c['pair_faults']+=1
+                    if len(examples)<5:examples.append(f'c{ci+1}p{p1}-{p2}:{v1}/{v2}')
+                for a,b1,z in zip(q,q[1:],q[2:]):
+                  if max(a[1],b1[1],z[1])-min(a[1],b1[1],z[1])<=4:
+                    c['retention_faults']+=1
+                    if len(examples)<5:examples.append(f'c{ci+1}p{a[0]}-{z[0]}:retention')
+              total.update(c)
+              print(path.split('/')[-1],dict(c),'examples',','.join(examples),flush=True)
+            b.close()
+          print('TOTAL',dict(total),flush=True)
+          print('FOUR_LINE_AUDIT_END',flush=True)
+          PY
