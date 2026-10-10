@@ -12,10 +12,14 @@ jobs:
           set -euo pipefail
           site='https://stanjarin.github.io/GUTS/top-airlock/'
           for n in 1 2 3 4 5 6; do
-            if curl -fsSL --connect-timeout 8 --max-time 30 "$site?browse=1" -o /tmp/top.html && grep -q 'function topAirlockEdition()' /tmp/top.html; then break; fi
+            if curl -fsSL --connect-timeout 8 --max-time 30 "$site?browse=1" -o /tmp/top.html && grep -q 'function topAirlockEdition()' /tmp/top.html
+          grep -q '<base href="/GUTS/top-airlock/">' /tmp/top.html; then break; fi
             sleep 5
           done
           grep -q 'function topAirlockEdition()' /tmp/top.html
+          curl -fsSL --max-time 30 "${site}LANDING_PAGE_041.png" -o /tmp/landing.png
+          file /tmp/landing.png
+          test $(wc -c </tmp/landing.png) -gt 10000
           curl -fsSL --max-time 30 "${site}PERFORMANCE10/ripley_performance.json" -o /tmp/ripley.json
           curl -fsSL --max-time 30 "${site}PERFORMANCE35/jeeves_035.json" -o /tmp/jeeves.json
           python3 - <<'PY'
