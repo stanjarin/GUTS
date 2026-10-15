@@ -1,3 +1,6 @@
+## Final acceptance — 15 October 2026
+Stanley reports **ALL A-OK** after testing the live production chain on his iPhone. **PRODUCTION PHONE PASS**. Cloudflare screenshot shows Main production ready, including promotion and subsequent docs builds. Universe B is now the accepted production Reader. Universe A backup `backup-universe-A-pre-six-second-promotion-2026-10-15` retained. No additional Reader or NoBo changes.
+
 # Universe B Reader production promotion — 15 October 2026
 
 Status: GitHub Main MERGED; Cloudflare live deployment and actual-phone smoke test PENDING confirmation.
