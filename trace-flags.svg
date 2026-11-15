@@ -1,4 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="6600" viewBox="0 0 3000 6600"><rect width="3000" height="6600" fill="white"/><style>text{font-family:Helvetica,Arial,sans-serif;font-size:28px;fill:#111;text-anchor:middle}</style><!--NEXT:33--><svg x="1812" y="690" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 600"><path fill="#009e49" d="M0 0h900v600H0z"/><path fill="#ef2b2d" d="M0 0h900v300H0z"/><g transform="translate(450 300)" fill="#fcd116"><g id="b"><path id="a" d="M0-100V0h50" transform="rotate(18 0 -100)"/><use xlink:href="#a" transform="scale(-1 1)"/></g><use xlink:href="#b" transform="rotate(72)"/><use xlink:href="#b" transform="rotate(144)"/><use xlink:href="#b" transform="rotate(216)"/><use xlink:href="#b" transform="rotate(288)"/></g></svg><text x="1932" y="935">Burkina Faso</text><svg x="2109" y="690" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 300">
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="6600" viewBox="0 0 3000 6600"><rect width="3000" height="6600" fill="white"/><style>text{font-family:Helvetica,Arial,sans-serif;font-size:28px;fill:#111;text-anchor:middle}</style><!--NEXT:40--><svg x="921" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2"><path fill="#C8102E" d="M0 0h3v2H0z"/><path fill="#FFCD00" d="M0 0h2v2H0z"/><path fill="#00205B" d="M0 0h1v2H0z"/></svg><text x="1041" y="1260">Chad</text><svg x="1218" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-4 -4 24 16">
+<path d="M20,12H-4V-4H20z" fill="#d52b1e"/>
+<path d="M4,4H20V-4H-4z" fill="#fff"/>
+<path d="M4,4H-4V-4H4z" fill="#0039a6"/>
+<g id="f">
+<g id="t">
+<path d="M0,-2V0H1z" fill="#fff" transform="rotate(18,0,-2)" id="o"/>
+<use xlink:href="#o" transform="scale(-1,1)"/>
+</g>
+<use xlink:href="#t" transform="rotate(72)"/>
+</g>
+<use xlink:href="#t" transform="rotate(-72)"/>
+<use xlink:href="#f" transform="rotate(144)"/>
+</svg>
+<text x="1338" y="1260">Chile</text><svg x="1515" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 30 20"><defs><path id="a" d="M0-1L.588.809-.952-.309H.952L-.588.809z" fill="#FF0"/></defs><path fill="#EE1C25" d="M0 0h30v20H0z"/><use xlink:href="#a" transform="matrix(3 0 0 3 5 5)"/><use xlink:href="#a" transform="rotate(23.036 .093 25.536)"/><use xlink:href="#a" transform="rotate(45.87 1.273 16.18)"/><use xlink:href="#a" transform="rotate(69.945 .996 12.078)"/><use xlink:href="#a" transform="rotate(20.66 -19.689 31.932)"/></svg><text x="1635" y="1260">China</text><svg x="1812" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 4">
+<rect fill="#CE1126" width="6" height="4"/>
+<rect fill="#003893" width="6" height="3"/>
+<rect fill="#FCD116" width="6" height="2"/>
+</svg>
+<text x="1932" y="1260">Colombia</text><svg x="2109" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 300">
+<rect fill="#3A75C4" width="500" height="300"/>
+<rect fill="#CE1126" width="500" height="225"/>
+<rect fill="#FFF" width="500" height="150"/>
+<rect fill="#FFC61E" width="500" height="75"/>
+<path fill="#3D8E33" d="M0,300l250-150L0,0V300z"/>
+<circle fill="#FFF" cx="85" cy="150" r="67.5"/>
+<circle fill="#3D8E33" cx="115" cy="150" r="67.5"/>
+<path id="star" fill="#FFF" d="M100.0104,89.1996l7.3594,22.5883L88.1125,97.8394h23.775l-19.2573,13.9486L100.0104,89.1996z"/>
+<use xlink:href="#star" y="32.2083"/>
+<use xlink:href="#star" y="64.4166"/>
+<use xlink:href="#star" y="96.625"/>
+</svg>
+<text x="2229" y="1260">Comoros</text><svg x="2406" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><path fill="#007fff" d="M0 0h800v600H0z"/><path d="M36 120h84l26-84 26 84h84l-68 52 26 84-68-52-68 52 26-84-68-52zM750 0L0 450v150h50l750-450V0h-50" fill="#f7d618"/><path d="M800 0L0 480v120l800-480V0" fill="#ce1021"/></svg><text x="2526" y="1260">Dem. Rep. of the Congo</text><svg x="2703" y="1015" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2">
+<rect id="green_area" width="3" height="2" fill="#009543"/>
+<path id="yellow_area" d="M 0 2 L 2 0 h 1 v 2 z" fill="#FBDE4A"/>
+<path id="red_area" d="M 3 0 v 2 h -2 z" fill="#DC241F"/>
+</svg>
+<text x="2823" y="1260">Congo</text><svg x="1812" y="690" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 900 600"><path fill="#009e49" d="M0 0h900v600H0z"/><path fill="#ef2b2d" d="M0 0h900v300H0z"/><g transform="translate(450 300)" fill="#fcd116"><g id="b"><path id="a" d="M0-100V0h50" transform="rotate(18 0 -100)"/><use xlink:href="#a" transform="scale(-1 1)"/></g><use xlink:href="#b" transform="rotate(72)"/><use xlink:href="#b" transform="rotate(144)"/><use xlink:href="#b" transform="rotate(216)"/><use xlink:href="#b" transform="rotate(288)"/></g></svg><text x="1932" y="935">Burkina Faso</text><svg x="2109" y="690" width="240" height="210" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 300">
 <defs>
 <clipPath id="a"><path d="M0 0h500v300H0z"/></clipPath>
 <g id="b" fill="#1eb53a">
