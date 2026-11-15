@@ -1,0 +1,40 @@
+name: Build self-contained TRACE SVG
+on:
+  push:
+    paths:
+      - '.github/workflows/build-trace-svg.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch flag vectors
+        run: git clone --depth 1 https://github.com/hampusborgos/country-flags.git /tmp/country-flags
+      - name: Build master SVG
+        shell: python
+        run: |
+          import re, html, pathlib
+          src=pathlib.Path("trace-flags.html").read_text()
+          pairs=re.findall(r'\\["([^"]+)","([^"]+)"\\]',src)
+          W,H=3000,6600
+          out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}"><rect width="{W}" height="{H}" fill="white"/><style>text{{font-family:Helvetica,Arial,sans-serif;font-size:28px;fill:#111;text-anchor:middle}}</style>']
+          for i,(code,name) in enumerate(pairs):
+            x=30+(i%10)*297; y=40+(i//10)*325
+            s=pathlib.Path(f"/tmp/country-flags/svg/{code}.svg").read_text()
+            s=re.sub(r'<\\?xml[^>]*>\\s*','',s)
+            s=re.sub(r'<!DOCTYPE[\\s\\S]*?>\\s*','',s,flags=re.I)
+            s=re.sub(r'<svg\\b([^>]*)>',lambda m:f'<svg x="{x}" y="{y}" width="240" height="210" preserveAspectRatio="xMidYMid meet"'+re.sub(r'\\s(width|height)="[^"]*"','',m.group(1))+'>',s,count=1)
+            out += [s,f'<text x="{x+120}" y="{y+245}">{html.escape(name)}</text>']
+          out.append('</svg>')
+          pathlib.Path("trace-flags-selfcontained.svg").write_text(''.join(out))
+          print(len(pairs), "flags")
+      - name: Commit master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add trace-flags-selfcontained.svg
+          git commit -m "Build self-contained TRACE flags SVG"
+          git push
