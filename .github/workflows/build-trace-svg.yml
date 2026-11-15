@@ -38,3 +38,5 @@ jobs:
           git add trace-flags-selfcontained.svg
           git commit -m "Build self-contained TRACE flags SVG"
           git push
+
+# trigger build
