@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>TRACE — Voice Test</title><style>
+:root{font-family:Helvetica,Arial,sans-serif;color:#222;background:#f5f5f7}*{box-sizing:border-box}body{margin:0}.top{background:#fff;padding:17px 22px;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;align-items:center}.top strong{font-size:21px}.top span{color:#e6a100}.wrap{max-width:520px;margin:auto}.note{background:white;margin:24px 15px;border-radius:14px;min-height:360px;padding:20px;text-align:center;box-shadow:0 1px 5px #ddd}.date{font-size:13px;color:#999;margin:0 0 30px}.flag{font-size:145px;line-height:1.35;min-height:200px}.name{font-size:23px;font-weight:600}.controls{padding:0 20px;text-align:center}button{font:600 18px Helvetica,Arial,sans-serif;border:0;border-radius:13px;padding:16px 32px;background:#f3b522;color:#171717;min-width:180px}button:disabled{opacity:.5}.status{min-height:50px;margin-top:14px;font-size:15px;color:#555}.hint{font-size:13px;color:#777;line-height:1.5;padding:0 24px 30px;text-align:center}
+</style></head><body><div class="wrap"><div class="top"><strong>Notes</strong><span>TRACE test</span></div><div class="note"><div class="date" id="date">New Note</div><div class="flag" id="flag">—</div><div class="name" id="name">Say a country</div></div><div class="controls"><button id="listen">Listen</button><div class="status" id="status">Ready</div></div><p class="hint">Try Albania, Estonia, Japan, Canada, Brazil, Australia, France, India, Kenya or New Zealand. This uses flag emoji as temporary artwork, not your JPEGs. Voice recognition requires a supported browser and microphone permission.</p></div><script>
+const flags={albania:'🇦🇱',estonia:'🇪🇪',japan:'🇯🇵',canada:'🇨🇦',brazil:'🇧🇷',australia:'🇦🇺',france:'🇫🇷',india:'🇮🇳',kenya:'🇰🇪','new zealand':'🇳🇿'};
+const btn=document.getElementById('listen'),status=document.getElementById('status'),name=document.getElementById('name'),flag=document.getElementById('flag'),date=document.getElementById('date');
+const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!Recognition){btn.disabled=true;status.textContent='Speech recognition is not available in this browser.'}
+else{const r=new Recognition();r.lang='en-AU';r.interimResults=false;r.continuous=false;r.maxAlternatives=3;let got=false;
+r.onstart=()=>{got=false;btn.disabled=true;status.textContent='Listening… say a country';};
+r.onresult=e=>{got=true;const phrases=Array.from(e.results[0]).map(x=>x.transcript.trim());const match=Object.keys(flags).find(k=>phrases.some(p=>p.toLowerCase().includes(k)));
+if(match){flag.textContent=flags[match];name.textContent=match.replace(/\b\w/g,c=>c.toUpperCase());date.textContent=new Intl.DateTimeFormat('en-AU',{dateStyle:'medium',timeStyle:'short'}).format(new Date());status.textContent='Heard: '+phrases[0];}
+else{status.textContent='Heard: '+phrases[0]+' — not in this 10-country test';}};
+r.onerror=e=>{status.textContent='Microphone / recognition error: '+e.error;};r.onend=()=>{btn.disabled=false;if(!got&&status.textContent.startsWith('Listening'))status.textContent='No speech recognised — try again';};
+btn.addEventListener('click',()=>{try{r.start()}catch(e){status.textContent=e.message;btn.disabled=false;}});
+}
+</script></body></html>
